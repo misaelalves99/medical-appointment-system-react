@@ -1,0 +1,58 @@
+/* src/pages/Doctors/Delete/DeleteDoctor.module.css */
+
+.container {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.06);
+}
+
+h1 {
+  color: #dc3545;
+}
+
+h3 {
+  margin-bottom: 1rem;
+}
+
+dl {
+  margin-bottom: 1.5rem;
+}
+
+dt {
+  font-weight: 700;
+  margin-top: 0.5rem;
+}
+
+dd {
+  margin-left: 0;
+}
+
+.deleteButton {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 0.7rem 1.2rem;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-right: 0.5rem;
+}
+
+.deleteButton:hover {
+  background-color: #c82333;
+}
+
+.cancelButton {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  padding: 0.7rem 1.2rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.cancelButton:hover {
+  background-color: #5a6268;
+}
