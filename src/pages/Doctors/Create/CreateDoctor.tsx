@@ -1,12 +1,15 @@
 // src/pages/Doctors/Create/CreateDoctor.tsx
 
 import { useState } from "react";
-import styles from "./CreateDoctor.module.css";
-import { Doctor, doctorsMock } from "../../../mocks/doctors";
 import { useNavigate } from "react-router-dom";
+import styles from "./CreateDoctor.module.css";
+import type { Doctor } from "../../../types/Doctor";
+import { useDoctor } from "../../../hooks/useDoctor";
 
 export default function CreateDoctor() {
   const navigate = useNavigate();
+  const { doctors, addDoctor } = useDoctor();
+
   const [form, setForm] = useState<Doctor>({
     id: 0,
     name: "",
@@ -27,24 +30,24 @@ export default function CreateDoctor() {
       newValue = e.target.checked;
     }
 
-    setForm((prev) => ({
+    setForm(prev => ({
       ...prev,
       [name]: newValue,
     }));
   }
 
-  async function handleSubmit(e: React.FormEvent) {
+  function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
-    const newId =
-      doctorsMock.length > 0
-        ? Math.max(...doctorsMock.map((d) => d.id)) + 1
-        : 1;
+    // Gera um novo ID baseado na lista atual do contexto
+    const newId = doctors.length > 0 ? Math.max(...doctors.map(d => d.id)) + 1 : 1;
 
-    doctorsMock.push({ ...form, id: newId });
+    const newDoctor: Doctor = { ...form, id: newId };
 
-    console.log("Novo médico adicionado:", { ...form, id: newId });
-    console.log("Lista atualizada de médicos:", doctorsMock);
+    // Adiciona o novo médico via contexto
+    addDoctor(newDoctor);
+
+    console.log("Novo médico adicionado:", newDoctor);
 
     navigate("/doctors");
   }

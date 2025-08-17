@@ -1,19 +1,14 @@
 // src/pages/Doctors/index.tsx
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./DoctorList.module.css";
-import { Doctor, doctorsMock } from "../../mocks/doctors";
+import { useDoctor } from "../../hooks/useDoctor";
 
 export default function DoctorList() {
-  const [doctors, setDoctors] = useState<Doctor[]>([]);
-  const [search, setSearch] = useState("");
   const navigate = useNavigate();
-
-  useEffect(() => {
-    // Carrega diretamente do mock
-    setDoctors(doctorsMock);
-  }, []);
+  const { doctors } = useDoctor();
+  const [search, setSearch] = useState("");
 
   const filteredDoctors = doctors.filter((doctor) =>
     Object.values(doctor).some((value) =>
@@ -83,6 +78,13 @@ export default function DoctorList() {
               </td>
             </tr>
           ))}
+          {filteredDoctors.length === 0 && (
+            <tr>
+              <td colSpan={7} style={{ textAlign: "center" }}>
+                Nenhum médico encontrado.
+              </td>
+            </tr>
+          )}
         </tbody>
       </table>
     </div>

@@ -1,41 +1,45 @@
 // src/pages/Patient/Details/DetailsPatient.tsx
 
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styles from "./DetailsPatient.module.css";
-
-interface PatientDetailsProps {
-  patient: {
-    id: number;
-    name: string;
-    dateOfBirth: string; // ISO date string
-    gender: string;
-    phone?: string;
-    email?: string;
-    // profilePicturePath?: string; // Uncomment if using photo
-  };
-}
+import { usePatient } from "../../../hooks/usePatient";
 
 const formatDate = (isoDate: string) => {
   const date = new Date(isoDate);
   return date.toLocaleDateString("pt-BR");
 };
 
-const DetailsPatient: React.FC<PatientDetailsProps> = ({ patient }) => {
+const DetailsPatient: React.FC = () => {
+  const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const { patients } = usePatient();
+
+  const patient = patients.find((p) => p.id === Number(id));
+
+  if (!patient) {
+    return (
+      <div className={styles.patientDetailsContainer}>
+        <h1>Detalhes do Paciente</h1>
+        <p>Paciente não encontrado.</p>
+        <button className={styles.back} onClick={() => navigate("/patient")}>
+          Voltar para a Lista
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.patientDetailsContainer}>
       <h1>Detalhes do Paciente</h1>
 
-      {/* Exemplo imagem se quiser usar */}
-      {/* {patient.profilePicturePath && (
+      {patient.profilePicturePath && (
         <img
           src={patient.profilePicturePath}
           alt="Foto do Paciente"
           className={styles.profileImage}
         />
-      )} */}
+      )}
 
       <p>
         <strong>Nome:</strong> {patient.name}
@@ -44,7 +48,7 @@ const DetailsPatient: React.FC<PatientDetailsProps> = ({ patient }) => {
         <strong>Data de Nascimento:</strong> {formatDate(patient.dateOfBirth)}
       </p>
       <p>
-        <strong>Sexo:</strong> {patient.gender}
+        <strong>Sexo:</strong> {patient.gender || "-"}
       </p>
       <p>
         <strong>Telefone:</strong> {patient.phone || "-"}
@@ -52,10 +56,13 @@ const DetailsPatient: React.FC<PatientDetailsProps> = ({ patient }) => {
       <p>
         <strong>Email:</strong> {patient.email || "-"}
       </p>
+      <p>
+        <strong>Endereço:</strong> {patient.address || "-"}
+      </p>
 
       <div className={styles.actions}>
         <button
-          className={`${styles.edit}`}
+          className={styles.edit}
           onClick={() => navigate(`/patient/edit/${patient.id}`)}
         >
           Editar

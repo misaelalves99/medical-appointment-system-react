@@ -3,28 +3,26 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styles from "./DeleteDoctor.module.css";
-import { Doctor, doctorsMock } from "../../../mocks/doctors";
+import type { Doctor } from "../../../types/Doctor";
+import { useDoctor } from "../../../hooks/useDoctor";
 
 export default function DeleteDoctor() {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
+  const { doctors, removeDoctor } = useDoctor();
   const [doctor, setDoctor] = useState<Doctor | null>(null);
 
   useEffect(() => {
     if (id) {
-      const foundDoctor = doctorsMock.find((d) => d.id === Number(id)) || null;
+      const foundDoctor = doctors.find(d => d.id === Number(id)) || null;
       setDoctor(foundDoctor);
     }
-  }, [id]);
+  }, [id, doctors]);
 
   function handleDelete() {
     if (doctor) {
-      const index = doctorsMock.findIndex((d) => d.id === doctor.id);
-      if (index !== -1) {
-        doctorsMock.splice(index, 1);
-      }
+      removeDoctor(doctor.id);
       console.log("Médico excluído:", doctor);
-      console.log("Lista atualizada:", doctorsMock);
       navigate("/doctors");
     }
   }

@@ -1,38 +1,32 @@
-// src/pages/Appointment/Delete/DeleteAppointment.tsx
-
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styles from "./DeleteAppointment.module.css";
+import { useAppointments } from "../../../hooks/useAppointments";
+import { AppointmentStatus } from "../../../types/Appointment";
 
-import { Appointment, AppointmentStatus } from "../../../types/Appointment";
-
-interface DeleteAppointmentProps {
-  appointment: Appointment;
-  onDelete: (id: number) => void;
-}
-
-// Função para converter enum para string legível (em português)
 const getStatusLabel = (status: AppointmentStatus): string => {
   switch (status) {
-    case AppointmentStatus.Scheduled:
-      return "Agendada";
-    case AppointmentStatus.Confirmed:
-      return "Confirmada";
-    case AppointmentStatus.Cancelled:
-      return "Cancelada";
-    case AppointmentStatus.Completed:
-      return "Concluída";
-    default:
-      return "Desconhecido";
+    case AppointmentStatus.Scheduled: return "Agendada";
+    case AppointmentStatus.Confirmed: return "Confirmada";
+    case AppointmentStatus.Cancelled: return "Cancelada";
+    case AppointmentStatus.Completed: return "Concluída";
+    default: return "Desconhecido";
   }
 };
 
-const DeleteAppointment: React.FC<DeleteAppointmentProps> = ({ appointment, onDelete }) => {
+const DeleteAppointment: React.FC = () => {
+  const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const { appointments, deleteAppointment } = useAppointments();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const appointment = appointments.find(a => a.id === Number(id));
+
+  if (!appointment) return <p>Consulta não encontrada.</p>;
+
+  const handleDelete = (e: React.FormEvent) => {
     e.preventDefault();
-    onDelete(appointment.id);
+    deleteAppointment(appointment.id);
+    navigate("/appointments");
   };
 
   return (
@@ -51,18 +45,12 @@ const DeleteAppointment: React.FC<DeleteAppointmentProps> = ({ appointment, onDe
         <dd>{new Date(appointment.appointmentDate).toLocaleString("pt-BR")}</dd>
 
         <dt>Status</dt>
-        <dd>{getStatusLabel(appointment.status)}</dd>
+        <dd>{appointment.status !== undefined ? getStatusLabel(appointment.status) : "Desconhecido"}</dd>
       </dl>
 
-      <form onSubmit={handleSubmit}>
-        <button type="submit" className={styles.btnDanger}>
-          Excluir
-        </button>
-        <button
-          type="button"
-          className={styles.btnSecondary}
-          onClick={() => navigate("/appointments")}
-        >
+      <form onSubmit={handleDelete}>
+        <button type="submit" className={styles.btnDanger}>Excluir</button>
+        <button type="button" className={styles.btnSecondary} onClick={() => navigate("/appointments")}>
           Cancelar
         </button>
       </form>

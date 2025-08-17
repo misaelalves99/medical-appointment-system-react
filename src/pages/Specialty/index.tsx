@@ -3,17 +3,10 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "./SpecialtyList.module.css";
+import { useSpecialty } from "../../hooks/useSpecialty";
 
-export interface Specialty {
-  id: number;
-  name: string;
-}
-
-interface SpecialtyListProps {
-  specialties: Specialty[];
-}
-
-const SpecialtyList: React.FC<SpecialtyListProps> = ({ specialties }) => {
+const SpecialtyList: React.FC = () => {
+  const { specialties } = useSpecialty();
   const [filter, setFilter] = useState("");
 
   const filteredSpecialties = specialties
@@ -61,15 +54,13 @@ const SpecialtyList: React.FC<SpecialtyListProps> = ({ specialties }) => {
                     className={styles.detailsLink}
                   >
                     Detalhes
-                  </Link>
-                  {" "}
+                  </Link>{" "}
                   <Link
                     to={`/specialty/edit/${specialty.id}`}
                     className={styles.detailsLink}
                   >
                     Editar
-                  </Link>
-                  {" "}
+                  </Link>{" "}
                   <Link
                     to={`/specialty/delete/${specialty.id}`}
                     className={styles.detailsLink}

@@ -1,17 +1,27 @@
 // src/pages/Doctors/Edit/DoctorEdit.tsx
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import styles from "./DoctorEdit.module.css";
-import { Doctor } from "../Details/DoctorDetails";
+import type { Doctor } from "../../../types/Doctor";
+import { useDoctor } from "../../../hooks/useDoctor";
 
-interface DoctorEditProps {
-  doctor: Doctor;
-  onSave: (updated: Doctor) => void;
-  onCancel: () => void;
-}
+const DoctorEdit: React.FC = () => {
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const { doctors, updateDoctor } = useDoctor();
+  const [form, setForm] = useState<Doctor | null>(null);
 
-const DoctorEdit: React.FC<DoctorEditProps> = ({ doctor, onSave, onCancel }) => {
-  const [form, setForm] = useState<Doctor>(doctor);
+  useEffect(() => {
+    if (id) {
+      const foundDoctor = doctors.find(d => d.id === Number(id)) || null;
+      setForm(foundDoctor);
+    }
+  }, [id, doctors]);
+
+  if (!form) {
+    return <p>Carregando...</p>;
+  }
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -23,15 +33,16 @@ const DoctorEdit: React.FC<DoctorEditProps> = ({ doctor, onSave, onCancel }) => 
       newValue = e.target.checked;
     }
 
-    setForm((prev) => ({
-      ...prev,
+    setForm(prev => ({
+      ...prev!,
       [name]: newValue,
     }));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSave(form);
+    updateDoctor(form);
+    navigate("/doctors");
   };
 
   return (
@@ -45,6 +56,7 @@ const DoctorEdit: React.FC<DoctorEditProps> = ({ doctor, onSave, onCancel }) => 
             name="name"
             value={form.name}
             onChange={handleChange}
+            required
           />
         </label>
 
@@ -55,6 +67,7 @@ const DoctorEdit: React.FC<DoctorEditProps> = ({ doctor, onSave, onCancel }) => 
             name="crm"
             value={form.crm}
             onChange={handleChange}
+            required
           />
         </label>
 
@@ -65,6 +78,7 @@ const DoctorEdit: React.FC<DoctorEditProps> = ({ doctor, onSave, onCancel }) => 
             name="specialty"
             value={form.specialty}
             onChange={handleChange}
+            required
           />
         </label>
 
@@ -75,6 +89,7 @@ const DoctorEdit: React.FC<DoctorEditProps> = ({ doctor, onSave, onCancel }) => 
             name="email"
             value={form.email}
             onChange={handleChange}
+            required
           />
         </label>
 
@@ -85,6 +100,7 @@ const DoctorEdit: React.FC<DoctorEditProps> = ({ doctor, onSave, onCancel }) => 
             name="phone"
             value={form.phone}
             onChange={handleChange}
+            required
           />
         </label>
 
@@ -99,7 +115,7 @@ const DoctorEdit: React.FC<DoctorEditProps> = ({ doctor, onSave, onCancel }) => 
         </label>
 
         <button type="submit">Salvar Alterações</button>
-        <button type="button" onClick={onCancel}>
+        <button type="button" onClick={() => navigate("/doctors")}>
           Cancelar
         </button>
       </form>

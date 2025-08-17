@@ -1,22 +1,25 @@
 // src/pages/Specialty/Edit/EditSpecialty.tsx
 
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import styles from "./EditSpecialty.module.css";
+import { useSpecialty } from "../../../hooks/useSpecialty";
 
-interface EditSpecialtyProps {
-  id: number;
-  initialName: string;
-  onSubmit: (id: number, name: string) => void;
-}
+const EditSpecialty: React.FC = () => {
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const { specialties, updateSpecialty } = useSpecialty();
 
-const EditSpecialty: React.FC<EditSpecialtyProps> = ({
-  id,
-  initialName,
-  onSubmit,
-}) => {
-  const [name, setName] = useState(initialName);
+  const specialty = specialties.find((s) => s.id === Number(id));
+
+  const [name, setName] = useState(specialty?.name || "");
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (specialty) setName(specialty.name);
+  }, [specialty]);
+
+  if (!specialty) return <p>Especialidade não encontrada.</p>;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,7 +28,8 @@ const EditSpecialty: React.FC<EditSpecialtyProps> = ({
       return;
     }
     setError(null);
-    onSubmit(id, name.trim());
+    updateSpecialty(specialty.id, name.trim());
+    navigate("/specialty");
   };
 
   return (
@@ -33,7 +37,6 @@ const EditSpecialty: React.FC<EditSpecialtyProps> = ({
       <h1>Editar Especialidade</h1>
 
       <form onSubmit={handleSubmit}>
-        <input type="hidden" value={id} />
         <div>
           <label htmlFor="specialtyName">Nome da Especialidade:</label>
           <input

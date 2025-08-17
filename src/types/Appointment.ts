@@ -10,10 +10,21 @@ export enum AppointmentStatus {
 export interface Appointment {
   id: number;
   patientId: number;
-  patientName?: string | null;
+  patientName?: string;
   doctorId: number;
-  doctorName?: string | null;
+  doctorName?: string;
   appointmentDate: string; // ISO string
   status: AppointmentStatus;
-  notes?: string | null;
+  notes?: string;
+}
+
+// Tipo específico para o formulário de criação/edição
+export interface AppointmentFormState {
+  patientId: number;
+  patientName: string;
+  doctorId: number;
+  doctorName: string;
+  appointmentDate: string; // formato datetime-local
+  status: AppointmentStatus;
+  notes?: string;
 }

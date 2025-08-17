@@ -2,42 +2,31 @@
 
 import React, { useState } from "react";
 import styles from "./CreateAppointment.module.css";
-
-interface AppointmentFormData {
-  patientId: string;
-  doctorId: string;
-  appointmentDate: string;
-  status: string;
-  notes: string;
-}
-
-interface Option {
-  value: string;
-  label: string;
-}
+import type { AppointmentForm, Option } from "../../../types/AppointmentForm";
+import { useNavigate } from "react-router-dom";
+import { useAppointments } from "../../../hooks/useAppointments";
 
 interface CreateAppointmentProps {
   patients: Option[];
   doctors: Option[];
   statusOptions: Option[];
-  onSubmit: (data: AppointmentFormData) => void;
-  onCancel: () => void;
 }
 
 const CreateAppointment: React.FC<CreateAppointmentProps> = ({
   patients,
   doctors,
   statusOptions,
-  onSubmit,
-  onCancel,
 }) => {
-  const [formData, setFormData] = useState<AppointmentFormData>({
+  const [formData, setFormData] = useState<AppointmentForm>({
     patientId: "",
     doctorId: "",
     appointmentDate: "",
     status: "",
     notes: "",
   });
+
+  const { addAppointment } = useAppointments();
+  const navigate = useNavigate();
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
@@ -46,10 +35,23 @@ const CreateAppointment: React.FC<CreateAppointmentProps> = ({
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    onSubmit(formData);
+const handleSubmit = (e: React.FormEvent) => {
+  e.preventDefault();
+
+  // Conversão de tipos
+  const payload = {
+    patientId: Number(formData.patientId),
+    patientName: "", // opcional, você pode adicionar input se quiser
+    doctorId: Number(formData.doctorId),
+    doctorName: "", // opcional
+    appointmentDate: formData.appointmentDate,
+    status: Number(formData.status), // assume que statusOptions.value é number compatível com AppointmentStatus
+    notes: formData.notes,
   };
+
+  addAppointment(payload);
+  navigate("/appointments"); // Volta para a lista após criar
+};
 
   return (
     <div className={styles.createAppointmentContainer}>
@@ -134,10 +136,12 @@ const CreateAppointment: React.FC<CreateAppointmentProps> = ({
         </div>
 
         {/* Botões */}
-        <button type="submit">Salvar</button>
-        <button type="button" onClick={onCancel} className="btn-secondary">
-          Cancelar
-        </button>
+        <div className="form-actions">
+          <button type="submit">Salvar</button>
+          <button type="button" onClick={() => navigate("/appointments")} className="btn-secondary">
+            Cancelar
+          </button>
+        </div>
       </form>
     </div>
   );

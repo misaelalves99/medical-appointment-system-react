@@ -1,14 +1,6 @@
 // src/mocks/doctors.ts
 
-export interface Doctor {
-  id: number;
-  name: string;
-  crm: string;
-  specialty: string;
-  email: string;
-  phone: string;
-  isActive: boolean;
-}
+import type { Doctor } from "../types/Doctor";
 
 export const doctorsMock: Doctor[] = [
   {

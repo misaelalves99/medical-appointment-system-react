@@ -1,33 +1,42 @@
 // src/pages/Patient/Create/CreatePatient.tsx
 
 import React, { useState, FormEvent } from "react";
+import { useNavigate } from "react-router-dom";
 import styles from "./CreatePatient.module.css";
-
-interface PatientCreateForm {
-  name: string;
-  dateOfBirth: string; // ISO date string
-  gender: string;
-  phone: string;
-  email: string;
-}
+import type { PatientForm } from "../../../types/PatientForm";
+import type { Patient } from "../../../types/Patient";
+import { usePatient } from "../../../hooks/usePatient";
 
 const CreatePatient: React.FC = () => {
-  const [formData, setFormData] = useState<PatientCreateForm>({
+  const { addPatient } = usePatient();
+  const navigate = useNavigate();
+
+  const [formData, setFormData] = useState<PatientForm>({
     name: "",
+    cpf: "",
     dateOfBirth: "",
-    gender: "",
-    phone: "",
     email: "",
+    phone: "",
+    address: "",
+    gender: "",
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((old) => ({ ...old, [name]: value }));
   };
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    // Aqui você faria a chamada à API para criar o paciente
-    console.log("Dados enviados:", formData);
+
+    // ✅ Converte PatientForm para Patient, adicionando um id único
+    const newPatient: Patient = { ...formData, id: Date.now() };
+
+    addPatient(newPatient);
+
+    navigate("/patient");
   };
 
   return (
@@ -42,6 +51,18 @@ const CreatePatient: React.FC = () => {
             name="name"
             type="text"
             value={formData.name}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        <div>
+          <label htmlFor="cpf">CPF:</label>
+          <input
+            id="cpf"
+            name="cpf"
+            type="text"
+            value={formData.cpf}
             onChange={handleChange}
             required
           />
@@ -94,6 +115,18 @@ const CreatePatient: React.FC = () => {
             type="email"
             value={formData.email}
             onChange={handleChange}
+          />
+        </div>
+
+        <div>
+          <label htmlFor="address">Endereço:</label>
+          <input
+            id="address"
+            name="address"
+            type="text"
+            value={formData.address}
+            onChange={handleChange}
+            required
           />
         </div>
 

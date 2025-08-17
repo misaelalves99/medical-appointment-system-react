@@ -1,13 +1,17 @@
 // src/types/Patient.ts
 
+import type { PatientHistoryItem } from "./PatientHistory";
+
 export interface Patient {
-  id?: number;             // pode ser opcional se estiver criando um novo paciente
+  id: number;
   name: string;
   cpf: string;
-  dateOfBirth: string;     // string ISO, ex: '1990-05-15'
+  dateOfBirth: string;
   email: string;
   phone: string;
   address: string;
-  gender?: string;         // opcional, pois pode não ser obrigatório em todos casos
-  // Você pode incluir outros campos que usar no seu projeto
+  gender?: string;
+  fullName?: string;
+  profilePicturePath?: string;
+  history?: PatientHistoryItem[]; // Adicionado para histórico
 }

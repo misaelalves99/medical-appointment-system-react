@@ -2,18 +2,16 @@
 
 import React, { useState } from "react";
 import styles from "./CreateSpecialty.module.css";
+import { useSpecialty } from "../../../hooks/useSpecialty";
 
-interface SpecialtyFormProps {
-  onSubmit: (name: string) => void;
-}
-
-const CreateSpecialty: React.FC<SpecialtyFormProps> = ({ onSubmit }) => {
+const CreateSpecialty: React.FC = () => {
+  const { addSpecialty } = useSpecialty();
   const [name, setName] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (name.trim()) {
-      onSubmit(name.trim());
+      addSpecialty(name.trim());
       setName("");
     }
   };

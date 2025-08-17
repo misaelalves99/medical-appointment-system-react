@@ -3,31 +3,34 @@
 import React from "react";
 import { Link, useParams } from "react-router-dom";
 import styles from "./DetailsAppointment.module.css";
-
-export interface Appointment {
-  id: number;
-  patientId: number;
-  patient?: { fullName: string };
-  doctorId: number;
-  doctor?: { fullName: string };
-  appointmentDate: string; // ISO date string
-  status: string;
-  notes?: string;
-}
+import { AppointmentStatus } from "../../../types/Appointment";
+import { useAppointments } from "../../../hooks/useAppointments";
 
 const AppointmentDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
+  const appointmentId = Number(id);
+  const { appointments } = useAppointments();
 
-  // Simulação de dados — depois você pode substituir por fetch API
-  const appointment: Appointment = {
-    id: Number(id),
-    patientId: 1,
-    patient: { fullName: "João da Silva" },
-    doctorId: 2,
-    doctor: { fullName: "Dra. Maria Oliveira" },
-    appointmentDate: "2025-08-15T14:30",
-    status: "Confirmada",
-    notes: "Paciente apresentou melhora significativa."
+  // Busca o appointment no contexto
+  const appointment = appointments.find(a => a.id === appointmentId);
+
+  if (!appointment) {
+    return <p>Consulta não encontrada.</p>;
+  }
+
+  const statusLabel = () => {
+    switch (appointment.status) {
+      case AppointmentStatus.Scheduled:
+        return "Agendada";
+      case AppointmentStatus.Confirmed:
+        return "Confirmada";
+      case AppointmentStatus.Cancelled:
+        return "Cancelada";
+      case AppointmentStatus.Completed:
+        return "Concluída";
+      default:
+        return "Desconhecido";
+    }
   };
 
   return (
@@ -37,14 +40,14 @@ const AppointmentDetails: React.FC = () => {
       <div className={styles.infoRow}>
         <span className={styles.infoLabel}>Paciente</span>
         <span className={styles.infoValue}>
-          {appointment.patient?.fullName ?? `ID ${appointment.patientId}`}
+          {appointment.patientName ?? `ID ${appointment.patientId}`}
         </span>
       </div>
 
       <div className={styles.infoRow}>
         <span className={styles.infoLabel}>Médico</span>
         <span className={styles.infoValue}>
-          {appointment.doctor?.fullName ?? `ID ${appointment.doctorId}`}
+          {appointment.doctorName ?? `ID ${appointment.doctorId}`}
         </span>
       </div>
 
@@ -57,10 +60,14 @@ const AppointmentDetails: React.FC = () => {
 
       <div className={styles.infoRow}>
         <span className={styles.infoLabel}>Status</span>
-        <span className={styles.infoValue}>{appointment.status}</span>
+        <span className={styles.infoValue}>{statusLabel()}</span>
       </div>
 
-      <div className={styles.notes}>{appointment.notes}</div>
+      {appointment.notes && (
+        <div className={styles.notes}>
+          <strong>Observações:</strong> {appointment.notes}
+        </div>
+      )}
 
       <div className={styles.actions}>
         <Link to={`/appointments/edit/${appointment.id}`}>Editar</Link>

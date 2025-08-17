@@ -1,29 +1,21 @@
-// src/pages/Appointment/Confirm/ConfirmAppointment.tsx
-
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styles from "./ConfirmAppointment.module.css";
+import { useAppointments } from "../../../hooks/useAppointments";
 
-export interface Appointment {
-  id: number;
-  patientId: number;
-  patient?: { fullName: string };
-  doctorId: number;
-  doctor?: { fullName: string };
-  appointmentDate: string;
-}
-
-interface ConfirmAppointmentProps {
-  appointment: Appointment;
-  onConfirm: (id: number) => void;
-}
-
-const ConfirmAppointment: React.FC<ConfirmAppointmentProps> = ({ appointment, onConfirm }) => {
+const ConfirmAppointment: React.FC = () => {
+  const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const { appointments, confirmAppointment } = useAppointments();
+
+  const appointment = appointments.find(a => a.id === Number(id));
+
+  if (!appointment) return <p>Consulta não encontrada.</p>;
 
   const handleConfirm = (e: React.FormEvent) => {
     e.preventDefault();
-    onConfirm(appointment.id);
+    confirmAppointment(appointment.id);
+    navigate("/appointments");
   };
 
   return (
@@ -32,31 +24,16 @@ const ConfirmAppointment: React.FC<ConfirmAppointmentProps> = ({ appointment, on
       <p>Deseja confirmar esta consulta?</p>
 
       <ul>
-        <li>
-          <strong>Data e Hora:</strong>{" "}
-          {new Date(appointment.appointmentDate).toLocaleString("pt-BR")}
-        </li>
-        <li>
-          <strong>Paciente:</strong>{" "}
-          {appointment.patient?.fullName ?? `ID ${appointment.patientId}`}
-        </li>
-        <li>
-          <strong>Médico:</strong>{" "}
-          {appointment.doctor?.fullName ?? `ID ${appointment.doctorId}`}
-        </li>
+        <li><strong>Data e Hora:</strong> {new Date(appointment.appointmentDate).toLocaleString("pt-BR")}</li>
+        <li><strong>Paciente:</strong> {appointment.patientName ?? `ID ${appointment.patientId}`}</li>
+        <li><strong>Médico:</strong> {appointment.doctorName ?? `ID ${appointment.doctorId}`}</li>
       </ul>
 
       <form onSubmit={handleConfirm}>
-        <button type="submit" className={styles.btnSuccess}>
-          Confirmar
-        </button>
+        <button type="submit" className={styles.btnSuccess}>Confirmar</button>
       </form>
 
-      <button
-        type="button"
-        className={styles.backLink}
-        onClick={() => navigate("/appointments")}
-      >
+      <button type="button" className={styles.backLink} onClick={() => navigate("/appointments")}>
         Cancelar
       </button>
     </div>

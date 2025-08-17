@@ -1,6 +1,6 @@
 // src/utils/enumHelpers.ts
 
-import { AppointmentStatus } from '../types/Appointment'; // Corrected import path
+import { AppointmentStatus } from '../types/Appointment';
 
 export function getAppointmentStatusLabel(status: AppointmentStatus): string {
   switch (status) {

@@ -1,67 +1,39 @@
-// src/pages/Appointments/Cancel/CancelAppointment.tsx
-
 import React from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import styles from "./CancelAppointment.module.css";
+import { useAppointments } from "../../../hooks/useAppointments";
 
-interface Patient {
-  id: number;
-  fullName?: string;
-}
+const CancelAppointment: React.FC = () => {
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const { appointments, cancelAppointment } = useAppointments();
 
-interface Doctor {
-  id: number;
-  fullName?: string;
-}
+  const appointment = appointments.find(a => a.id === Number(id));
 
-interface Appointment {
-  id: number;
-  appointmentDate: string; // formato ISO
-  patient?: Patient;
-  patientId: number;
-  doctor?: Doctor;
-  doctorId: number;
-}
+  if (!appointment) return <p>Consulta não encontrada.</p>;
 
-interface CancelAppointmentProps {
-  appointment: Appointment;
-  onCancel: (id: number) => void;
-  onBack: () => void;
-}
+  const handleCancel = (e: React.FormEvent) => {
+    e.preventDefault();
+    cancelAppointment(appointment.id);
+    navigate("/appointments");
+  };
 
-const CancelAppointment: React.FC<CancelAppointmentProps> = ({
-  appointment,
-  onCancel,
-  onBack,
-}) => {
   return (
     <div className={styles.cancelContainer}>
       <h1>Cancelar Consulta</h1>
-      <p>Tem certeza de que deseja cancelar esta consulta?</p>
+      <p>Tem certeza que deseja cancelar esta consulta?</p>
 
       <ul>
-        <li>
-          <strong>Data e Hora:</strong>{" "}
-          {new Date(appointment.appointmentDate).toLocaleString("pt-BR")}
-        </li>
-        <li>
-          <strong>Paciente:</strong>{" "}
-          {appointment.patient?.fullName || `ID ${appointment.patientId}`}
-        </li>
-        <li>
-          <strong>Médico:</strong>{" "}
-          {appointment.doctor?.fullName || `ID ${appointment.doctorId}`}
-        </li>
+        <li><strong>Data e Hora:</strong> {new Date(appointment.appointmentDate).toLocaleString("pt-BR")}</li>
+        <li><strong>Paciente:</strong> {appointment.patientName ?? `ID ${appointment.patientId}`}</li>
+        <li><strong>Médico:</strong> {appointment.doctorName ?? `ID ${appointment.doctorId}`}</li>
       </ul>
 
-      <button
-        type="button"
-        className={styles.btnDanger}
-        onClick={() => onCancel(appointment.id)}
-      >
-        Confirmar Cancelamento
-      </button>
+      <form onSubmit={handleCancel}>
+        <button type="submit" className={styles.btnDanger}>Confirmar Cancelamento</button>
+      </form>
 
-      <button type="button" className={styles.backLink} onClick={onBack}>
+      <button type="button" className={styles.backLink} onClick={() => navigate("/appointments")}>
         Voltar
       </button>
     </div>

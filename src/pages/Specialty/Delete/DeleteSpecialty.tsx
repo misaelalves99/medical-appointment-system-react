@@ -1,23 +1,25 @@
 // src/pages/Specialty/Delete/DeleteSpecialty.tsx
 
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import styles from "./DeleteSpecialty.module.css";
+import { useSpecialty } from "../../../hooks/useSpecialty";
 
-interface DeleteSpecialtyProps {
-  id: number;
-  name: string;
-  onDelete: (id: number) => void;
-}
+const DeleteSpecialty: React.FC = () => {
+  const navigate = useNavigate();
+  const { id } = useParams<{ id: string }>();
+  const { specialties, removeSpecialty } = useSpecialty();
 
-const DeleteSpecialty: React.FC<DeleteSpecialtyProps> = ({
-  id,
-  name,
-  onDelete,
-}) => {
+  const specialty = specialties.find((s) => s.id === Number(id));
+
+  if (!specialty) {
+    return <p>Especialidade não encontrada.</p>;
+  }
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onDelete(id);
+    removeSpecialty(specialty.id);
+    navigate("/specialty");
   };
 
   return (
@@ -25,9 +27,9 @@ const DeleteSpecialty: React.FC<DeleteSpecialtyProps> = ({
       <h1>Excluir Especialidade</h1>
       <h4>Tem certeza que deseja excluir esta especialidade?</h4>
       <div>
-        <strong>ID:</strong> {id}
+        <strong>ID:</strong> {specialty.id}
         <br />
-        <strong>Nome:</strong> {name}
+        <strong>Nome:</strong> {specialty.name}
       </div>
 
       <form onSubmit={handleSubmit}>

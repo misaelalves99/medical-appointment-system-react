@@ -1,35 +1,17 @@
-// src/pages/Patient/index.tsx
+// src/pages/Patient/PatientIndex.tsx
 
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import styles from "./Patient.module.css";
-
-interface Patient {
-  id: number;
-  name: string;
-  cpf: string;
-  email: string;
-  phone: string;
-}
+import { usePatient } from "../../hooks/usePatient";
 
 const PatientIndex: React.FC = () => {
-  const [patients, setPatients] = useState<Patient[]>([]);
+  const { patients } = usePatient();
   const [search, setSearch] = useState("");
-
-  useEffect(() => {
-    // Simula chamada à API (substituir pelo fetch real)
-    const fetchPatients = async () => {
-      const data: Patient[] = [
-        { id: 1, name: "João da Silva", cpf: "111.111.111-11", email: "joao@email.com", phone: "9999-9999" },
-        { id: 2, name: "Maria Souza", cpf: "222.222.222-22", email: "maria@email.com", phone: "8888-8888" }
-      ];
-      setPatients(data);
-    };
-    fetchPatients();
-  }, []);
+  const navigate = useNavigate();
 
   const filteredPatients = patients.filter((p) =>
-    [p.name, p.cpf, p.email, p.phone].some((field) =>
+    [p.name, p.cpf, p.email ?? "", p.phone ?? ""].some((field) =>
       field.toLowerCase().includes(search.toLowerCase())
     )
   );
@@ -37,6 +19,7 @@ const PatientIndex: React.FC = () => {
   return (
     <div className={styles.patientIndexContainer}>
       <h1>Pacientes</h1>
+
       <div className={styles.actionsContainer}>
         <Link to="/patient/create" className={styles.createLink}>
           Cadastrar Novo Paciente
@@ -50,38 +33,52 @@ const PatientIndex: React.FC = () => {
           className={styles.searchInput}
         />
       </div>
-      <table>
-        <thead>
-          <tr>
-            <th>Nome</th>
-            <th>CPF</th>
-            <th>Email</th>
-            <th>Telefone</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredPatients.map((patient) => (
-            <tr key={patient.id}>
-              <td>{patient.name}</td>
-              <td>{patient.cpf}</td>
-              <td>{patient.email}</td>
-              <td>{patient.phone}</td>
-              <td>
-                <a href={`/patient/details/${patient.id}`} className={styles.detailsLink}>
-                  Detalhes
-                </a>{" "}
-                <a href={`/patient/edit/${patient.id}`} className={styles.editLink}>
-                  Editar
-                </a>{" "}
-                <a href={`/patient/delete/${patient.id}`} className={styles.deleteLink}>
-                  Excluir
-                </a>
-              </td>
+
+      {filteredPatients.length === 0 ? (
+        <p className={styles.noResults}>Nenhum paciente encontrado.</p>
+      ) : (
+        <table className={styles.table}>
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>CPF</th>
+              <th>Email</th>
+              <th>Telefone</th>
+              <th>Ações</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {filteredPatients.map((patient) => (
+              <tr key={patient.id}>
+                <td>{patient.name}</td>
+                <td>{patient.cpf}</td>
+                <td>{patient.email || "-"}</td>
+                <td>{patient.phone || "-"}</td>
+                <td className={styles.actionsColumn}>
+                  <button
+                    onClick={() => navigate(`/patient/details/${patient.id}`)}
+                    className={styles.detailsLink}
+                  >
+                    Detalhes
+                  </button>
+                  <button
+                    onClick={() => navigate(`/patient/edit/${patient.id}`)}
+                    className={styles.editLink}
+                  >
+                    Editar
+                  </button>
+                  <button
+                    onClick={() => navigate(`/patient/delete/${patient.id}`)}
+                    className={styles.deleteLink}
+                  >
+                    Excluir
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
     </div>
   );
 };

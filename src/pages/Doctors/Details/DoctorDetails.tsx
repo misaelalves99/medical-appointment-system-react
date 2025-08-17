@@ -1,25 +1,28 @@
 // src/pages/Doctors/Details/DoctorDetails.tsx
 
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import styles from "./DoctorDetails.module.css";
+import type { Doctor } from "../../../types/Doctor";
+import { useDoctor } from "../../../hooks/useDoctor";
 
-export interface Doctor {
-  id: number;
-  name: string;
-  crm: string;
-  specialty: string;
-  email: string;
-  phone: string;
-  isActive: boolean;
-}
+const DoctorDetails: React.FC = () => {
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const { doctors } = useDoctor();
+  const [doctor, setDoctor] = useState<Doctor | null>(null);
 
-interface DoctorDetailsProps {
-  doctor: Doctor;
-  onEdit: (id: number) => void;
-  onBack: () => void;
-}
+  useEffect(() => {
+    if (id) {
+      const foundDoctor = doctors.find(d => d.id === Number(id)) || null;
+      setDoctor(foundDoctor);
+    }
+  }, [id, doctors]);
 
-const DoctorDetails: React.FC<DoctorDetailsProps> = ({ doctor, onEdit, onBack }) => {
+  if (!doctor) {
+    return <p>Carregando...</p>;
+  }
+
   return (
     <div className={styles.container}>
       <h1>Detalhes do Médico</h1>
@@ -32,10 +35,10 @@ const DoctorDetails: React.FC<DoctorDetailsProps> = ({ doctor, onEdit, onBack })
       <p><strong>Ativo:</strong> {doctor.isActive ? "Sim" : "Não"}</p>
 
       <div className={styles.actions}>
-        <button className={styles.edit} onClick={() => onEdit(doctor.id)}>
+        <button className={styles.edit} onClick={() => navigate(`/doctors/edit/${doctor.id}`)}>
           Editar
         </button>
-        <button className={styles.back} onClick={onBack}>
+        <button className={styles.back} onClick={() => navigate("/doctors")}>
           Voltar
         </button>
       </div>

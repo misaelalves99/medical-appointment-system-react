@@ -1,42 +1,23 @@
 // src/pages/Appointments/index.tsx
 
-import React, { useEffect, useState } from 'react';
-import { appointmentsMock } from '../../mocks/appointments';
+import React, { useState } from 'react';
 import { getAppointmentStatusLabel } from '../../utils/enumHelpers';
 import styles from './AppointmentList.module.css';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAppointments } from '../../hooks/useAppointments';
 
 const AppointmentList: React.FC = () => {
-  const [appointments, setAppointments] = useState(appointmentsMock);
-  const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState("");
+  const { appointments, deleteAppointment } = useAppointments();
+  const [search, setSearch] = useState('');
   const navigate = useNavigate();
 
-  useEffect(() => {
-    // Simulação de carregamento
-    setLoading(true);
-    setTimeout(() => {
-      setAppointments(appointmentsMock);
-      setLoading(false);
-    }, 300);
-  }, []);
-
-  const handleDelete = (id: number) => {
-    if (!confirm('Confirma exclusão da consulta?')) return;
-    const index = appointmentsMock.findIndex(a => a.id === id);
-    if (index !== -1) {
-      appointmentsMock.splice(index, 1); // Remove do mock
-      setAppointments(prev => prev.filter(a => a.id !== id)); // Atualiza tela
-    }
-  };
-
-  // Filtra os appointments pelo search: busca por pacienteId, doctorId e status
+  // Filtra os appointments pelo search: data, hora, paciente, médico ou status
   const filteredAppointments = appointments.filter(a => {
     const searchLower = search.toLowerCase();
     const dateStr = new Date(a.appointmentDate).toLocaleDateString().toLowerCase();
     const timeStr = new Date(a.appointmentDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }).toLowerCase();
-    const patientStr = a.patientId ? `paciente id: ${a.patientId}` : "";
-    const doctorStr = a.doctorId ? `médico id: ${a.doctorId}` : "";
+    const patientStr = a.patientId ? `paciente id: ${a.patientId}` : '';
+    const doctorStr = a.doctorId ? `médico id: ${a.doctorId}` : '';
     const statusStr = getAppointmentStatusLabel(a.status).toLowerCase();
 
     return (
@@ -47,6 +28,11 @@ const AppointmentList: React.FC = () => {
       statusStr.includes(searchLower)
     );
   });
+
+  const handleDelete = (id: number) => {
+    if (!confirm('Confirma exclusão da consulta?')) return;
+    deleteAppointment(id);
+  };
 
   return (
     <div className={styles.container}>
@@ -69,8 +55,8 @@ const AppointmentList: React.FC = () => {
         />
       </div>
 
-      {loading ? (
-        <p>Carregando...</p>
+      {appointments.length === 0 ? (
+        <p>Nenhuma consulta cadastrada.</p>
       ) : (
         <table className={styles.table}>
           <thead>
@@ -90,10 +76,7 @@ const AppointmentList: React.FC = () => {
                 <tr key={a.id}>
                   <td>{dt.toLocaleDateString()}</td>
                   <td>
-                    {dt.toLocaleTimeString([], {
-                      hour: '2-digit',
-                      minute: '2-digit',
-                    })}
+                    {dt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                   </td>
                   <td>{a.patientId ? `Paciente ID: ${a.patientId}` : '—'}</td>
                   <td>{a.doctorId ? `Médico ID: ${a.doctorId}` : '—'}</td>
@@ -103,17 +86,11 @@ const AppointmentList: React.FC = () => {
                       Detalhes
                     </Link>
                     <span className={styles.sep}>|</span>
-                    <Link
-                      className={styles.link}
-                      to={`/appointments/edit/${a.id}`}
-                    >
+                    <Link className={styles.link} to={`/appointments/edit/${a.id}`}>
                       Editar
                     </Link>
                     <span className={styles.sep}>|</span>
-                    <button
-                      className={styles.deleteBtn}
-                      onClick={() => handleDelete(a.id)}
-                    >
+                    <button className={styles.deleteBtn} onClick={() => handleDelete(a.id)}>
                       Excluir
                     </button>
                   </td>

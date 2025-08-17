@@ -1,20 +1,10 @@
 // src/pages/Appointments/AppointmentForm.tsx
 
 import React, { useEffect, useState } from 'react';
-import { Appointment, AppointmentStatus } from '../../types/Appointment';
+import { AppointmentStatus, AppointmentFormState, Appointment } from '../../types/Appointment';
 import styles from './AppointmentForm.module.css';
 import { useNavigate, useParams } from 'react-router-dom';
-import { appointmentsMock } from '../../mocks/appointments';
-
-interface FormState {
-  patientId: number;
-  patientName: string;
-  doctorId: number;
-  doctorName: string;
-  appointmentDate: string; // datetime-local
-  status: AppointmentStatus;
-  notes?: string;
-}
+import { useAppointments } from '../../hooks/useAppointments';
 
 const toLocalDateTimeInput = (iso: string) => {
   const d = new Date(iso);
@@ -25,7 +15,8 @@ const toLocalDateTimeInput = (iso: string) => {
 const fromLocalDateTimeInputToISO = (val: string) => new Date(val).toISOString();
 
 const AppointmentForm: React.FC<{ mode: 'create' | 'edit' }> = ({ mode }) => {
-  const [state, setState] = useState<FormState>({
+  const { appointments, addAppointment, updateAppointment } = useAppointments();
+  const [state, setState] = useState<AppointmentFormState>({
     patientId: 0,
     patientName: '',
     doctorId: 0,
@@ -41,10 +32,11 @@ const AppointmentForm: React.FC<{ mode: 'create' | 'edit' }> = ({ mode }) => {
   const params = useParams();
   const idParam = params.id ? Number(params.id) : undefined;
 
+  // Preenche formulário em modo de edição
   useEffect(() => {
     if (mode === 'edit' && idParam) {
       setLoading(true);
-      const item = appointmentsMock.find(a => a.id === idParam);
+      const item = appointments.find(a => a.id === idParam);
       if (item) {
         setState({
           patientId: item.patientId,
@@ -58,7 +50,7 @@ const AppointmentForm: React.FC<{ mode: 'create' | 'edit' }> = ({ mode }) => {
       }
       setLoading(false);
     }
-  }, [mode, idParam]);
+  }, [mode, idParam, appointments]);
 
   const validate = (): boolean => {
     const e: Record<string, string> = {};
@@ -83,15 +75,11 @@ const AppointmentForm: React.FC<{ mode: 'create' | 'edit' }> = ({ mode }) => {
       notes: state.notes,
     };
 
-    if (mode === 'create') {
-      const newId = appointmentsMock.length > 0 ? Math.max(...appointmentsMock.map(a => a.id)) + 1 : 1;
-      appointmentsMock.push({ id: newId, ...payload });
-    } else if (mode === 'edit' && idParam) {
-      const idx = appointmentsMock.findIndex(a => a.id === idParam);
-      if (idx !== -1) {
-        appointmentsMock[idx] = { id: idParam, ...payload };
-      }
-    }
+  if (mode === 'create') {
+    addAppointment(payload);
+  } else if (mode === 'edit' && idParam) {
+    updateAppointment({ id: idParam, ...payload });
+  }
 
     navigate('/appointments');
   };

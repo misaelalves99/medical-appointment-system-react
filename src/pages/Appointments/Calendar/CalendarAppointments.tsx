@@ -1,39 +1,25 @@
-// src/pages/Appointments/Calendar/CalendarAppointments.tsx
-
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import styles from "./CalendarAppointments.module.css";
+import { AppointmentStatus } from "../../../types/Appointment";
+import { useAppointments } from "../../../hooks/useAppointments";
 
-import { Appointment as AppointmentType, AppointmentStatus } from "../../../types/Appointment";
-
-interface CalendarAppointmentsProps {
-  appointments: AppointmentType[];
-  onBack: () => void;
-}
-
-// Helper para converter enum para string legível
 const statusToString = (status: AppointmentStatus) => {
   switch (status) {
-    case AppointmentStatus.Scheduled:
-      return "Agendada";
-    case AppointmentStatus.Confirmed:
-      return "Confirmada";
-    case AppointmentStatus.Cancelled:
-      return "Cancelada";
-    case AppointmentStatus.Completed:
-      return "Concluída";
-    default:
-      return "Desconhecido";
+    case AppointmentStatus.Scheduled: return "Agendada";
+    case AppointmentStatus.Confirmed: return "Confirmada";
+    case AppointmentStatus.Cancelled: return "Cancelada";
+    case AppointmentStatus.Completed: return "Concluída";
+    default: return "Desconhecido";
   }
 };
 
-const CalendarAppointments: React.FC<CalendarAppointmentsProps> = ({
-  appointments,
-  onBack,
-}) => {
+const CalendarAppointments: React.FC = () => {
+  const navigate = useNavigate();
+  const { appointments } = useAppointments();
+
   const sortedAppointments = [...appointments].sort(
-    (a, b) =>
-      new Date(a.appointmentDate).getTime() -
-      new Date(b.appointmentDate).getTime()
+    (a, b) => new Date(a.appointmentDate).getTime() - new Date(b.appointmentDate).getTime()
   );
 
   return (
@@ -50,30 +36,26 @@ const CalendarAppointments: React.FC<CalendarAppointmentsProps> = ({
           </tr>
         </thead>
         <tbody>
-          {sortedAppointments.map((appointment) => (
-            <tr key={appointment.id}>
-              <td>
-                {new Date(appointment.appointmentDate).toLocaleDateString(
-                  "pt-BR"
-                )}
-              </td>
-              <td>
-                {new Date(appointment.appointmentDate).toLocaleTimeString(
-                  "pt-BR",
-                  { hour: "2-digit", minute: "2-digit" }
-                )}
-              </td>
-              <td>
-                {appointment.patientName || `ID ${appointment.patientId}`}
-              </td>
-              <td>{appointment.doctorName || `ID ${appointment.doctorId}`}</td>
-              <td>{statusToString(appointment.status)}</td>
+          {sortedAppointments.map(a => (
+            <tr key={a.id}>
+              <td>{new Date(a.appointmentDate).toLocaleDateString("pt-BR")}</td>
+              <td>{new Date(a.appointmentDate).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}</td>
+              <td>{a.patientName ?? `ID ${a.patientId}`}</td>
+              <td>{a.doctorName ?? `ID ${a.doctorId}`}</td>
+              <td>{statusToString(a.status)}</td>
             </tr>
           ))}
+          {sortedAppointments.length === 0 && (
+            <tr>
+              <td colSpan={5} style={{ textAlign: "center", padding: "1rem" }}>
+                Nenhuma consulta cadastrada.
+              </td>
+            </tr>
+          )}
         </tbody>
       </table>
 
-      <button className={styles.backLink} onClick={onBack}>
+      <button className={styles.backLink} onClick={() => navigate("/appointments")}>
         Voltar
       </button>
     </div>

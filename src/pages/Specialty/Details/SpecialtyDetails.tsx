@@ -1,28 +1,33 @@
 // src/pages/Specialty/Details/DetailsSpecialty.tsx
 
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import styles from "./SpecialtyDetails.module.css";
+import { useSpecialty } from "../../../hooks/useSpecialty";
 
-interface SpecialtyDetailsProps {
-  id: number;
-  name: string;
-}
+const DetailsSpecialty: React.FC = () => {
+  const { id } = useParams<{ id: string }>();
+  const { specialties } = useSpecialty();
 
-const DetailsSpecialty: React.FC<SpecialtyDetailsProps> = ({ id, name }) => {
+  const specialty = specialties.find((s) => s.id === Number(id));
+
+  if (!specialty) {
+    return <p>Especialidade não encontrada.</p>;
+  }
+
   return (
     <div className={styles.specialtyDetailsContainer}>
       <h1>Detalhes da Especialidade</h1>
 
       <p>
-        <strong>ID:</strong> {id}
+        <strong>ID:</strong> {specialty.id}
       </p>
       <p>
-        <strong>Nome:</strong> {name}
+        <strong>Nome:</strong> {specialty.name}
       </p>
 
       <div className={styles.actions}>
-        <Link to={`/specialty/edit/${id}`} className={styles.edit}>
+        <Link to={`/specialty/edit/${specialty.id}`} className={styles.edit}>
           Editar
         </Link>
         <Link to="/specialty" className={styles.back}>

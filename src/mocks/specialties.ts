@@ -1,10 +1,6 @@
 // src/mocks/specialties.ts
 
-export interface Specialty {
-  id: number;
-  name: string;
-  // add other properties if needed
-}
+import type { Specialty } from '../types/Specialty';
 
 export const specialtiesMock: Specialty[] = [
   { id: 1, name: "Cardiologia" },

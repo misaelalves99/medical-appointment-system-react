@@ -1,15 +1,6 @@
 // src/mocks/patients.ts
 
-export interface Patient {
-  id: number;
-  name: string;
-  cpf: string;
-  dateOfBirth: string; // ISO string (e.g. '1990-05-15')
-  email: string;
-  phone: string;
-  address: string;
-  gender: string;
-}
+import type { Patient } from '../types/Patient';
 
 export const patientsMock: Patient[] = [
   {
