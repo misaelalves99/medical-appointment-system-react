@@ -1,4 +1,4 @@
-// src/pages/Specialty/Details/DetailsSpecialty.tsx
+// src/pages/Specialty/Details/SpecialtyDetails.tsx
 
 import React from "react";
 import { Link, useParams } from "react-router-dom";

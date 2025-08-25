@@ -13,5 +13,14 @@ export interface Patient {
   gender?: string;
   fullName?: string;
   profilePicturePath?: string;
-  history?: PatientHistoryItem[]; // Adicionado para histórico
+  history?: PatientHistoryItem[];
+}
+
+// Tipo para o contexto de pacientes
+export interface PatientContextType {
+  patients: Patient[];
+  addPatient: (patient: Omit<Patient, "id">) => Patient;
+  updatePatient: (patient: Patient) => void;
+  deletePatient: (id: number) => void;
+  updatePatientProfilePicture: (id: number, profilePicturePath: string) => void;
 }
