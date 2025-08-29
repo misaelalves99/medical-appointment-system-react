@@ -1,74 +1,115 @@
 /* src/pages/Patient/Edit/EditPatient.module.css */
 
+/* src/pages/Patient/Edit/EditPatient.module.css */
+
+/* Container principal */
 .editPatientContainer {
-  max-width: 600px;
+  max-width: 400px; /* mesma largura do CreatePatient */
   margin: 2rem auto;
-  padding: 1rem;
-  background: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 0 8px rgba(0,0,0,0.05);
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 1.75rem 1.5rem;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  color: #1f2937;
 }
 
+/* Título */
 .editPatientContainer h1 {
+  font-size: 1.6rem;
+  font-weight: 700;
   text-align: center;
-  margin-bottom: 1rem;
-  color: #ffc107;
+  margin-bottom: 1.25rem;
+  color: #111827;
 }
 
-.editPatientContainer form {
+/* Formulário */
+form {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.85rem;
 }
 
-.editPatientContainer input,
-.editPatientContainer select,
-.editPatientContainer textarea {
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 1rem;
-  width: 100%;
-  box-sizing: border-box;
+/* Grupo de campos */
+form > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
 }
 
-.editPatientContainer label {
+/* Labels */
+label {
   font-weight: 600;
-  margin-bottom: 0.3rem;
-  display: block;
-  color: #212529;
+  font-size: 0.925rem;
+  color: #374151;
 }
 
-.editPatientContainer button[type="submit"] {
-  background: #ffc107;
-  color: #212529;
+/* Inputs e selects */
+input,
+select {
+  padding: 0.5rem 0.65rem;
+  font-size: 0.925rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  transition: all 0.15s ease;
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+}
+
+/* Botões */
+button {
+  padding: 0.5rem 1.15rem;
+  font-size: 0.925rem;
+  font-weight: 600;
+  border-radius: 8px;
   border: none;
-  padding: 0.6rem;
-  border-radius: 6px;
   cursor: pointer;
-  transition: background 0.2s;
-  font-weight: 700;
-  font-size: 1rem;
-  margin-top: 1rem;
+  transition: all 0.15s ease-in-out;
+  margin-top: 0.75rem;
 }
 
-.editPatientContainer button[type="submit"]:hover {
-  background: #e0a800;
-}
-
-.back {
-  background: #6c757d;
+/* Botão de salvar */
+button[type="submit"] {
+  background-color: #2563eb;
   color: #fff;
-  border: none;
-  padding: 0.6rem 1rem;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 600;
-  margin-top: 1rem;
-  transition: background 0.2s;
+}
+
+button[type="submit"]:hover {
+  background-color: #1d4ed8;
+  transform: translateY(-1px);
+}
+
+/* Botão de voltar */
+.back {
+  background-color: #e5e7eb;
+  color: #374151;
 }
 
 .back:hover {
-  background: #5a6268;
+  background-color: #d1d5db;
+  transform: translateY(-1px);
+}
+
+/* Mensagem de paciente não encontrado */
+.editPatientContainer p {
+  text-align: center;
+  margin: 1rem 0;
+  color: #6b7280;
+}
+
+/* Responsividade */
+@media (max-width: 480px) {
+  .editPatientContainer {
+    width: 90%;
+    padding: 1.25rem;
+  }
+
+  button {
+    width: 100%;
+  }
 }

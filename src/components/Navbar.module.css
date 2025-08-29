@@ -1,17 +1,13 @@
 /* src/components/Layout/Navbar.module.css */
 
 .navbar {
-  /* max-width: 1400px;
-  width: 100%; */
   margin: 0 auto;
-  padding: 0.75rem 1rem;
+  padding: 1rem 7rem;
   background-color: #0d6efd;
   color: #fff;
   display: flex;
   justify-content: space-between;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
-  position: sticky;
-  top: 0;
   z-index: 1000;
 }
 

@@ -1,5 +1,6 @@
 // src/pages/Patient/Create/CreatePatient.tsx
 
+// src/pages/Patient/Create/CreatePatient.tsx
 import React, { useState, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./CreatePatient.module.css";
@@ -8,7 +9,7 @@ import type { Patient } from "../../../types/Patient";
 import { usePatient } from "../../../hooks/usePatient";
 
 const CreatePatient: React.FC = () => {
-  const { addPatient } = usePatient();
+  const { patients, addPatient } = usePatient();
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState<PatientForm>({
@@ -31,8 +32,10 @@ const CreatePatient: React.FC = () => {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
-    // ✅ Converte PatientForm para Patient, adicionando um id único
-    const newPatient: Patient = { ...formData, id: Date.now() };
+    // ✅ ID sequencial simples
+    const newId = patients.length + 1;
+
+    const newPatient: Patient = { ...formData, id: newId };
 
     addPatient(newPatient);
 
@@ -131,6 +134,9 @@ const CreatePatient: React.FC = () => {
         </div>
 
         <button type="submit">Salvar</button>
+        <button type="button" onClick={() => navigate("/patient")}>
+          Cancelar
+        </button>
       </form>
     </div>
   );

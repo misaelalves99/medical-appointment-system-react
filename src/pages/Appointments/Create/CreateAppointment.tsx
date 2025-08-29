@@ -1,22 +1,19 @@
 // src/pages/Appointments/Create/CreateAppointment.tsx
 
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styles from "./CreateAppointment.module.css";
 import type { AppointmentForm, Option } from "../../../types/AppointmentForm";
-import { useNavigate } from "react-router-dom";
 import { useAppointments } from "../../../hooks/useAppointments";
+import { usePatient } from "../../../hooks/usePatient";
+import { useDoctor } from "../../../hooks/useDoctor";
 
-interface CreateAppointmentProps {
-  patients: Option[];
-  doctors: Option[];
-  statusOptions: Option[];
-}
+const CreateAppointment: React.FC = () => {
+  const { patients } = usePatient();
+  const { doctors } = useDoctor();
+  const { addAppointment } = useAppointments();
+  const navigate = useNavigate();
 
-const CreateAppointment: React.FC<CreateAppointmentProps> = ({
-  patients,
-  doctors,
-  statusOptions,
-}) => {
   const [formData, setFormData] = useState<AppointmentForm>({
     patientId: "",
     doctorId: "",
@@ -25,8 +22,21 @@ const CreateAppointment: React.FC<CreateAppointmentProps> = ({
     notes: "",
   });
 
-  const { addAppointment } = useAppointments();
-  const navigate = useNavigate();
+  const patientOptions: Option[] = patients.map((p) => ({
+    value: p.id.toString(),
+    label: p.name,
+  }));
+
+  const doctorOptions: Option[] = doctors.map((d) => ({
+    value: d.id.toString(),
+    label: d.name,
+  }));
+
+  const statusOptions: Option[] = [
+    { value: "1", label: "Agendado" },
+    { value: "2", label: "Confirmado" },
+    { value: "3", label: "Cancelado" },
+  ];
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
@@ -35,23 +45,25 @@ const CreateAppointment: React.FC<CreateAppointmentProps> = ({
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-const handleSubmit = (e: React.FormEvent) => {
-  e.preventDefault();
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
 
-  // Conversão de tipos
-  const payload = {
-    patientId: Number(formData.patientId),
-    patientName: "", // opcional, você pode adicionar input se quiser
-    doctorId: Number(formData.doctorId),
-    doctorName: "", // opcional
-    appointmentDate: formData.appointmentDate,
-    status: Number(formData.status), // assume que statusOptions.value é number compatível com AppointmentStatus
-    notes: formData.notes,
+    // Encontrar os nomes selecionados
+    const patientName = patientOptions.find(p => p.value === formData.patientId)?.label || "";
+    const doctorName = doctorOptions.find(d => d.value === formData.doctorId)?.label || "";
+
+    addAppointment({
+      patientId: Number(formData.patientId),
+      doctorId: Number(formData.doctorId),
+      patientName,  // salva o nome do paciente
+      doctorName,   // salva o nome do médico
+      appointmentDate: formData.appointmentDate,
+      status: Number(formData.status),
+      notes: formData.notes,
+    });
+
+    navigate("/appointments");
   };
-
-  addAppointment(payload);
-  navigate("/appointments"); // Volta para a lista após criar
-};
 
   return (
     <div className={styles.createAppointmentContainer}>
@@ -65,11 +77,12 @@ const handleSubmit = (e: React.FormEvent) => {
             name="patientId"
             value={formData.patientId}
             onChange={handleChange}
+            required
           >
             <option value="">-- Selecione o paciente --</option>
-            {patients.map((p) => (
+            {patientOptions.map((p) => (
               <option key={p.value} value={p.value}>
-                {p.label}
+                {p.label} {/* Aqui mostra o nome */}
               </option>
             ))}
           </select>
@@ -83,17 +96,18 @@ const handleSubmit = (e: React.FormEvent) => {
             name="doctorId"
             value={formData.doctorId}
             onChange={handleChange}
+            required
           >
             <option value="">-- Selecione o médico --</option>
-            {doctors.map((d) => (
+            {doctorOptions.map((d) => (
               <option key={d.value} value={d.value}>
-                {d.label}
+                {d.label} {/* Aqui mostra o nome */}
               </option>
             ))}
           </select>
         </div>
 
-        {/* Data */}
+        {/* Data e hora */}
         <div className="form-group">
           <label htmlFor="appointmentDate">Data da Consulta</label>
           <input
@@ -102,6 +116,7 @@ const handleSubmit = (e: React.FormEvent) => {
             name="appointmentDate"
             value={formData.appointmentDate}
             onChange={handleChange}
+            required
           />
         </div>
 
@@ -113,6 +128,7 @@ const handleSubmit = (e: React.FormEvent) => {
             name="status"
             value={formData.status}
             onChange={handleChange}
+            required
           >
             <option value="">-- Selecione o status --</option>
             {statusOptions.map((s) => (
@@ -135,10 +151,13 @@ const handleSubmit = (e: React.FormEvent) => {
           />
         </div>
 
-        {/* Botões */}
         <div className="form-actions">
           <button type="submit">Salvar</button>
-          <button type="button" onClick={() => navigate("/appointments")} className="btn-secondary">
+          <button
+            type="button"
+            className="btn-secondary"
+            onClick={() => navigate("/appointments")}
+          >
             Cancelar
           </button>
         </div>

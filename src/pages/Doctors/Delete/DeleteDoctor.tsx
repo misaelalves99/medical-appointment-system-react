@@ -33,28 +33,11 @@ export default function DeleteDoctor() {
 
   return (
     <div className={styles.container}>
-      <h1>Excluir Médico</h1>
-      <h3>Tem certeza que deseja excluir o médico abaixo?</h3>
-
-      <dl>
-        <dt>Nome</dt>
-        <dd>{doctor.name}</dd>
-
-        <dt>CRM</dt>
-        <dd>{doctor.crm}</dd>
-
-        <dt>Especialidade</dt>
-        <dd>{doctor.specialty}</dd>
-
-        <dt>Email</dt>
-        <dd>{doctor.email}</dd>
-
-        <dt>Telefone</dt>
-        <dd>{doctor.phone}</dd>
-
-        <dt>Ativo</dt>
-        <dd>{doctor.isActive ? "Sim" : "Não"}</dd>
-      </dl>
+      <h1>Confirmar Exclusão</h1>
+      <p>
+        Tem certeza de que deseja excluir o doutor{" "}
+        <strong>{doctor.name}</strong>?
+      </p>
 
       <button onClick={handleDelete} className={styles.deleteButton}>
         Excluir

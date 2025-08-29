@@ -24,13 +24,11 @@ const DeleteSpecialty: React.FC = () => {
 
   return (
     <div className={styles.deleteSpecialtyContainer}>
-      <h1>Excluir Especialidade</h1>
-      <h4>Tem certeza que deseja excluir esta especialidade?</h4>
-      <div>
-        <strong>ID:</strong> {specialty.id}
-        <br />
-        <strong>Nome:</strong> {specialty.name}
-      </div>
+      <h1>Confirmar Exclusão</h1>
+      <p>
+        Tem certeza de que deseja excluir a especialidade{" "}
+        <strong>{specialty.name}</strong>?
+      </p>
 
       <form onSubmit={handleSubmit}>
         <button type="submit">Excluir</button>

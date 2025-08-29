@@ -1,42 +1,84 @@
 /* src/pages/Specialty/Create/CreateSpecialty.module.css */
 
+/* Container principal */
 .createSpecialtyContainer {
-  max-width: 500px;
+  max-width: 400px;
   margin: 2rem auto;
-  padding: 1rem;
-  background: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+  padding: 1.75rem 1.5rem;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  color: #1f2937;
 }
 
+/* Título */
 .createSpecialtyContainer h1 {
+  font-size: 1.6rem;
+  font-weight: 700;
   text-align: center;
-  margin-bottom: 1rem;
-  color: #17a2b8;
+  margin-bottom: 1.25rem;
+  color: #111827;
 }
 
-.createSpecialtyContainer form {
+/* Formulário */
+form {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.85rem;
 }
 
-.createSpecialtyContainer input {
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 6px;
+/* Labels e Inputs */
+label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 600;
+  font-size: 0.925rem;
+  color: #374151;
+  margin-bottom: 0.25rem;
 }
 
-.createSpecialtyContainer button {
-  background: #17a2b8;
-  color: #fff;
+input[type="text"] {
+  padding: 0.5rem 0.65rem;
+  font-size: 0.925rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  transition: all 0.15s ease;
+}
+
+input[type="text"]:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+}
+
+/* Botão */
+button {
+  padding: 0.5rem 1.15rem;
+  font-size: 0.925rem;
+  font-weight: 600;
+  border-radius: 8px;
   border: none;
-  padding: 0.6rem;
-  border-radius: 6px;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: all 0.15s ease-in-out;
+  margin-top: 0.75rem;
+  background-color: #2563eb;
+  color: #ffffff;
 }
 
-.createSpecialtyContainer button:hover {
-  background: #138496;
+button:hover {
+  background-color: #1d4ed8;
+  transform: translateY(-1px);
+}
+
+/* Responsividade */
+@media (max-width: 480px) {
+  .createSpecialtyContainer {
+    width: 90%;
+    padding: 1.25rem;
+  }
+
+  button {
+    width: 100%;
+  }
 }

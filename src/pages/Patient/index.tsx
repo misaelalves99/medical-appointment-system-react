@@ -11,7 +11,7 @@ const PatientIndex: React.FC = () => {
   const navigate = useNavigate();
 
   const filteredPatients = patients.filter((p) =>
-    [p.name, p.cpf, p.email ?? "", p.phone ?? ""].some((field) =>
+    [p.id.toString(), p.name, p.cpf, p.phone ?? ""].some((field) =>
       field.toLowerCase().includes(search.toLowerCase())
     )
   );
@@ -27,7 +27,7 @@ const PatientIndex: React.FC = () => {
 
         <input
           type="text"
-          placeholder="Pesquisar por Nome, CPF, Email ou Telefone..."
+          placeholder="Pesquisar por ID, Nome, CPF ou Telefone..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className={styles.searchInput}
@@ -40,9 +40,9 @@ const PatientIndex: React.FC = () => {
         <table className={styles.table}>
           <thead>
             <tr>
+              <th>ID</th>
               <th>Nome</th>
               <th>CPF</th>
-              <th>Email</th>
               <th>Telefone</th>
               <th>Ações</th>
             </tr>
@@ -50,9 +50,9 @@ const PatientIndex: React.FC = () => {
           <tbody>
             {filteredPatients.map((patient) => (
               <tr key={patient.id}>
+                <td>{patient.id}</td>
                 <td>{patient.name}</td>
                 <td>{patient.cpf}</td>
-                <td>{patient.email || "-"}</td>
                 <td>{patient.phone || "-"}</td>
                 <td className={styles.actionsColumn}>
                   <button

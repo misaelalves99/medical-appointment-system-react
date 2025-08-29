@@ -11,9 +11,10 @@ export default function DoctorList() {
   const [search, setSearch] = useState("");
 
   const filteredDoctors = doctors.filter((doctor) =>
-    Object.values(doctor).some((value) =>
-      String(value).toLowerCase().includes(search.toLowerCase())
-    )
+    [doctor.id.toString(), doctor.name, doctor.crm, doctor.specialty, doctor.isActive ? "Sim" : "Não"]
+      .some((value) =>
+        String(value).toLowerCase().includes(search.toLowerCase())
+      )
   );
 
   return (
@@ -28,7 +29,7 @@ export default function DoctorList() {
         </button>
         <input
           type="text"
-          placeholder="Pesquisar médicos..."
+          placeholder="Pesquisar por ID, Nome, CRM, Especialidade ou Status..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className={styles.searchInput}
@@ -38,11 +39,10 @@ export default function DoctorList() {
       <table className={styles.table}>
         <thead>
           <tr>
+            <th>ID</th>
             <th>Nome</th>
             <th>CRM</th>
             <th>Especialidade</th>
-            <th>Email</th>
-            <th>Telefone</th>
             <th>Ativo</th>
             <th>Ações</th>
           </tr>
@@ -50,11 +50,10 @@ export default function DoctorList() {
         <tbody>
           {filteredDoctors.map((doctor) => (
             <tr key={doctor.id}>
+              <td>{doctor.id}</td>
               <td>{doctor.name}</td>
               <td>{doctor.crm}</td>
               <td>{doctor.specialty}</td>
-              <td>{doctor.email}</td>
-              <td>{doctor.phone}</td>
               <td>{doctor.isActive ? "Sim" : "Não"}</td>
               <td>
                 <button
@@ -80,7 +79,7 @@ export default function DoctorList() {
           ))}
           {filteredDoctors.length === 0 && (
             <tr>
-              <td colSpan={7} style={{ textAlign: "center" }}>
+              <td colSpan={6} style={{ textAlign: "center" }}>
                 Nenhum médico encontrado.
               </td>
             </tr>

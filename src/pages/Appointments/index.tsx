@@ -7,32 +7,26 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAppointments } from '../../hooks/useAppointments';
 
 const AppointmentList: React.FC = () => {
-  const { appointments, deleteAppointment } = useAppointments();
+  const { appointments } = useAppointments();
   const [search, setSearch] = useState('');
   const navigate = useNavigate();
 
-  // Filtra os appointments pelo search: data, hora, paciente, médico ou status
   const filteredAppointments = appointments.filter(a => {
     const searchLower = search.toLowerCase();
-    const dateStr = new Date(a.appointmentDate).toLocaleDateString().toLowerCase();
-    const timeStr = new Date(a.appointmentDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }).toLowerCase();
-    const patientStr = a.patientId ? `paciente id: ${a.patientId}` : '';
-    const doctorStr = a.doctorId ? `médico id: ${a.doctorId}` : '';
+    const dt = new Date(a.appointmentDate);
+    const dateStr = dt.toLocaleDateString().toLowerCase();
+    const timeStr = dt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }).toLowerCase();
+    const patientStr = a.patientName ? a.patientName.toLowerCase() : '';
     const statusStr = getAppointmentStatusLabel(a.status).toLowerCase();
 
     return (
       dateStr.includes(searchLower) ||
       timeStr.includes(searchLower) ||
       patientStr.includes(searchLower) ||
-      doctorStr.includes(searchLower) ||
-      statusStr.includes(searchLower)
+      statusStr.includes(searchLower) ||
+      String(a.id).includes(searchLower)
     );
   });
-
-  const handleDelete = (id: number) => {
-    if (!confirm('Confirma exclusão da consulta?')) return;
-    deleteAppointment(id);
-  };
 
   return (
     <div className={styles.container}>
@@ -48,7 +42,7 @@ const AppointmentList: React.FC = () => {
 
         <input
           type="text"
-          placeholder="Pesquisar por data, hora, paciente, médico ou status..."
+          placeholder="Pesquisar por ID, data, hora, paciente ou status..."
           value={search}
           onChange={e => setSearch(e.target.value)}
           className={styles.searchInput}
@@ -61,10 +55,10 @@ const AppointmentList: React.FC = () => {
         <table className={styles.table}>
           <thead>
             <tr>
+              <th>ID</th>
               <th>Data</th>
               <th>Hora</th>
               <th>Paciente</th>
-              <th>Médico</th>
               <th>Status</th>
               <th>Ações</th>
             </tr>
@@ -74,23 +68,22 @@ const AppointmentList: React.FC = () => {
               const dt = new Date(a.appointmentDate);
               return (
                 <tr key={a.id}>
+                  <td>{a.id}</td>
                   <td>{dt.toLocaleDateString()}</td>
-                  <td>
-                    {dt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                  </td>
-                  <td>{a.patientId ? `Paciente ID: ${a.patientId}` : '—'}</td>
-                  <td>{a.doctorId ? `Médico ID: ${a.doctorId}` : '—'}</td>
+                  <td>{dt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</td>
+                  <td>{a.patientName || '—'}</td>
                   <td>{getAppointmentStatusLabel(a.status)}</td>
                   <td>
                     <Link className={styles.link} to={`/appointments/${a.id}`}>
                       Detalhes
                     </Link>
-                    <span className={styles.sep}>|</span>
                     <Link className={styles.link} to={`/appointments/edit/${a.id}`}>
                       Editar
                     </Link>
-                    <span className={styles.sep}>|</span>
-                    <button className={styles.deleteBtn} onClick={() => handleDelete(a.id)}>
+                    <button
+                      className={styles.deleteBtn}
+                      onClick={() => navigate(`/appointments/delete/${a.id}`)}
+                    >
                       Excluir
                     </button>
                   </td>

@@ -1,62 +1,98 @@
 /* src/pages/Appointment/DeleteAppointment.module.css */
 
+/* Container principal */
 .deleteContainer {
-  max-width: 600px;
+  max-width: 450px;
   margin: 3rem auto;
   padding: 2rem;
-  background: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.08);
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  color: #1f2937;
+  text-align: center;
 }
 
+/* Títulos */
 .deleteContainer h1 {
-  color: #dc3545;
-  text-align: center;
+  font-size: 1.8rem;
   font-weight: 700;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
+  color: #b91c1c; /* Vermelho forte para alerta */
 }
 
 .deleteContainer h3 {
-  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+  color: #374151;
+}
+
+/* Mensagem de confirmação */
+.deleteContainer p {
+  font-size: 1rem;
   margin-bottom: 2rem;
 }
 
-.deleteContainer dl {
-  margin-bottom: 2rem;
+.deleteContainer strong {
+  color: #b91c1c;
 }
 
-.deleteContainer dt {
-  font-weight: 600;
-  color: #555;
-}
-
-.deleteContainer dd {
-  margin-bottom: 1rem;
+/* Botões do formulário */
+form {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 }
 
 .btnDanger {
-  background-color: #dc3545;
-  color: #fff;
-  border: none;
-  padding: 0.6rem 1.2rem;
-  border-radius: 6px;
+  padding: 0.55rem 1.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border-radius: 8px;
   cursor: pointer;
-  margin-right: 0.5rem;
+  transition: all 0.2s ease-in-out;
+  color: #fff;
+  background-color: #b91c1c;
+  border: none;
 }
 
 .btnDanger:hover {
-  background-color: #a71d2a;
+  background-color: #991b1b;
+  transform: translateY(-1px);
 }
 
 .btnSecondary {
-  background-color: #6c757d;
-  color: #fff;
-  border: none;
-  padding: 0.6rem 1.2rem;
-  border-radius: 6px;
+  padding: 0.55rem 1.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border-radius: 8px;
   cursor: pointer;
+  background-color: #e5e7eb;
+  color: #374151;
+  border: none;
+  transition: all 0.2s ease-in-out;
 }
 
 .btnSecondary:hover {
-  background-color: #565e64;
+  background-color: #d1d5db;
+  transform: translateY(-1px);
+}
+
+/* Responsividade */
+@media (max-width: 480px) {
+  .deleteContainer {
+    padding: 1.5rem;
+  }
+
+  form {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .btnDanger,
+  .btnSecondary {
+    width: 100%;
+  }
 }
