@@ -122,16 +122,15 @@ export default function CreateDoctor() {
           />
         </div>
 
-        <div>
-          <label htmlFor="isActive">Ativo</label>
+        <label className={styles.checkboxLabel}>
           <input
-            id="isActive"
+            type="checkbox"
             name="isActive"
             checked={form.isActive}
             onChange={handleChange}
-            type="checkbox"
           />
-        </div>
+          Ativo
+         </label>
 
         <button type="submit">Salvar</button>
         <button type="button" onClick={() => navigate("/doctors")}>

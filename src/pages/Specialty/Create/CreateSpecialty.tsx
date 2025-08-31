@@ -15,7 +15,7 @@ const CreateSpecialty: React.FC = () => {
     if (name.trim()) {
       addSpecialty(name.trim());
       setName("");
-      navigate("/specialty"); // redireciona para a página de listagem após criar
+      navigate("/specialty"); // redireciona após criar
     }
   };
 
@@ -33,7 +33,16 @@ const CreateSpecialty: React.FC = () => {
             required
           />
         </div>
-        <button type="submit">Salvar</button>
+        <div className={styles.actions}>
+          <button type="submit">Salvar</button>
+          <button
+            type="button"
+            className={styles.back}
+            onClick={() => navigate("/specialty")}
+          >
+            Voltar
+          </button>
+        </div>
       </form>
     </div>
   );

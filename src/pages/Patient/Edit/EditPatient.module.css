@@ -1,7 +1,5 @@
 /* src/pages/Patient/Edit/EditPatient.module.css */
 
-/* src/pages/Patient/Edit/EditPatient.module.css */
-
 /* Container principal */
 .editPatientContainer {
   max-width: 400px; /* mesma largura do CreatePatient */
@@ -73,7 +71,7 @@ button {
   margin-top: 0.75rem;
 }
 
-/* Botão de salvar */
+/* Botão de salvar (igual DoctorEdit) */
 button[type="submit"] {
   background-color: #2563eb;
   color: #fff;
@@ -84,7 +82,7 @@ button[type="submit"]:hover {
   transform: translateY(-1px);
 }
 
-/* Botão de voltar */
+/* Botão de voltar (igual DoctorEdit) */
 .back {
   background-color: #e5e7eb;
   color: #374151;

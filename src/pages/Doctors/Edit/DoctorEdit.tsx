@@ -5,11 +5,14 @@ import { useNavigate, useParams } from "react-router-dom";
 import styles from "./DoctorEdit.module.css";
 import type { Doctor } from "../../../types/Doctor";
 import { useDoctor } from "../../../hooks/useDoctor";
+import { useSpecialty } from "../../../hooks/useSpecialty"; // import do hook de especialidades
 
 const DoctorEdit: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { doctors, updateDoctor } = useDoctor();
+  const { specialties } = useSpecialty(); // lista de especialidades cadastradas
+
   const [form, setForm] = useState<Doctor | null>(null);
 
   useEffect(() => {
@@ -73,13 +76,19 @@ const DoctorEdit: React.FC = () => {
 
         <label>
           Especialidade:
-          <input
-            type="text"
+          <select
             name="specialty"
             value={form.specialty}
             onChange={handleChange}
             required
-          />
+          >
+            <option value="">Selecione uma especialidade</option>
+            {specialties.map(s => (
+              <option key={s.id} value={s.name}>
+                {s.name}
+              </option>
+            ))}
+          </select>
         </label>
 
         <label>
@@ -105,13 +114,13 @@ const DoctorEdit: React.FC = () => {
         </label>
 
         <label className={styles.checkboxLabel}>
-          Ativo:
           <input
             type="checkbox"
             name="isActive"
             checked={form.isActive}
             onChange={handleChange}
           />
+          Ativo
         </label>
 
         <button type="submit">Salvar Alterações</button>

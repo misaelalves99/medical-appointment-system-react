@@ -6,40 +6,50 @@ import styles from "./DeleteAppointment.module.css";
 import { useAppointments } from "../../../hooks/useAppointments";
 
 const DeleteAppointment: React.FC = () => {
-  const { id } = useParams<{ id?: string }>(); // id opcional
+  const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { appointments, deleteAppointment } = useAppointments();
 
-  if (!id) {
-    return <p>Consulta não encontrada.</p>;
-  }
+  if (!id) return <p>Agendamento não encontrado.</p>;
 
   const appointmentId = Number(id);
   const appointment = appointments.find(a => a.id === appointmentId);
 
-  if (!appointment) {
-    return <p>Consulta não encontrada.</p>;
-  }
+  if (!appointment) return <p>Agendamento não encontrado.</p>;
 
   const handleDelete = (e: React.FormEvent) => {
     e.preventDefault();
-    deleteAppointment(appointmentId);
+    deleteAppointment(appointment.id);
     navigate("/appointments");
   };
 
-  return (
-    <div className={styles.deleteContainer}>
-      <h1>Excluir Consulta</h1>
-      <p>Tem certeza de que deseja excluir a consulta <strong>{appointment.id}</strong>?</p>
+  // Corrigido: usar appointmentDate do tipo Appointment
+  const appointmentDate = new Date(appointment.appointmentDate);
+  const formattedDate = appointmentDate.toLocaleDateString();
+  const formattedTime = appointmentDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-      <div className={styles.actions}>
-        <button type="button" className={styles.btnSecondary} onClick={() => navigate("/appointments")}>
-          Cancelar
-        </button>
-        <button type="button" className={styles.btnDanger} onClick={handleDelete}>
+  return (
+    <div className={styles.container}>
+      <h1>Confirmar Exclusão</h1>
+      <p>
+        Tem certeza de que deseja excluir o agendamento de{" "}
+        <strong>{appointment.patientName}</strong> com{" "}
+        <strong>{appointment.doctorName}</strong> no dia{" "}
+        <strong>{formattedDate}</strong> às <strong>{formattedTime}</strong>?
+      </p>
+
+      <form onSubmit={handleDelete}>
+        <button type="submit" className={styles.deleteButton}>
           Excluir
         </button>
-      </div>
+        <button
+          type="button"
+          className={styles.cancelButton}
+          onClick={() => navigate("/appointments")}
+        >
+          Cancelar
+        </button>
+      </form>
     </div>
   );
 };

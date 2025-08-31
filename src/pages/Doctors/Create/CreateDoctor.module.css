@@ -104,6 +104,12 @@ form button[type="button"]:hover {
   transform: translateY(-1px);
 }
 
+.checkboxLabel {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 /* Responsividade */
 @media (max-width: 480px) {
   .container {

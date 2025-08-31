@@ -1,23 +1,7 @@
 // src/mocks/appointments.ts
 
-export enum AppointmentStatus {
-  Scheduled = 1,
-  Confirmed = 2,
-  Cancelled = 3,
-}
+import { Appointment, AppointmentStatus } from "../types/Appointment";
 
-export interface Appointment {
-  id: number;
-  patientId: number;
-  patientName: string;
-  doctorId: number;
-  doctorName: string;
-  appointmentDate: string; // ISO
-  status: AppointmentStatus;
-  notes: string;
-}
-
-// Mock inicial
 export const appointmentsMock: Appointment[] = [
   {
     id: 1,

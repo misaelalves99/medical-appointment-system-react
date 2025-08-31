@@ -1,7 +1,7 @@
 /* src/pages/Specialty/Delete/DeleteSpecialty.module.css */
 
 /* Container principal */
-.deleteSpecialtyContainer {
+.container {
   max-width: 450px;
   margin: 3rem auto;
   padding: 2rem;
@@ -14,7 +14,7 @@
 }
 
 /* Título */
-.deleteSpecialtyContainer h1 {
+.container h1 {
   font-size: 1.8rem;
   font-weight: 700;
   margin-bottom: 1rem;
@@ -22,70 +22,58 @@
 }
 
 /* Mensagem de confirmação */
-.deleteSpecialtyContainer p {
+.container p {
   font-size: 1rem;
   margin-bottom: 2rem;
 }
 
-.deleteSpecialtyContainer strong {
+.container strong {
   color: #b91c1c;
 }
 
-/* Botões do form */
-form {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-button[type="submit"] {
+/* Botões */
+button {
   padding: 0.55rem 1.5rem;
   font-size: 0.95rem;
   font-weight: 600;
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
+  margin: 0 0.5rem;
+}
+
+/* Botão de exclusão */
+.deleteButton {
   color: #fff;
   background-color: #b91c1c;
   border: none;
 }
 
-button[type="submit"]:hover {
+.deleteButton:hover {
   background-color: #991b1b;
   transform: translateY(-1px);
 }
 
-/* Link de cancelamento */
-.cancelLink {
-  padding: 0.55rem 1.5rem;
-  font-size: 0.95rem;
-  font-weight: 600;
-  border-radius: 8px;
-  text-decoration: none;
+/* Botão de cancelamento */
+.cancelButton {
   color: #374151;
   background-color: #e5e7eb;
-  transition: all 0.2s ease-in-out;
+  border: none;
 }
 
-.cancelLink:hover {
+.cancelButton:hover {
   background-color: #d1d5db;
   transform: translateY(-1px);
 }
 
 /* Responsividade */
 @media (max-width: 480px) {
-  .deleteSpecialtyContainer {
+  .container {
     padding: 1.5rem;
   }
 
-  form {
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  button,
-  .cancelLink {
+  button {
     width: 100%;
+    margin: 0.3rem 0;
   }
 }

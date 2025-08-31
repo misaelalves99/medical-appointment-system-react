@@ -1,7 +1,7 @@
-/* src/pages/Appointment/DeleteAppointment.module.css */
+/* src/pages/Appointments/Delete/DeleteAppointment.module.css */
 
 /* Container principal */
-.deleteContainer {
+.container {
   max-width: 450px;
   margin: 3rem auto;
   padding: 2rem;
@@ -13,86 +13,67 @@
   text-align: center;
 }
 
-/* Títulos */
-.deleteContainer h1 {
+/* Título */
+.container h1 {
   font-size: 1.8rem;
   font-weight: 700;
-  margin-bottom: 0.5rem;
+  margin-bottom: 1rem;
   color: #b91c1c; /* Vermelho forte para alerta */
 }
 
-.deleteContainer h3 {
-  font-size: 1.1rem;
-  font-weight: 500;
-  margin-bottom: 1.5rem;
-  color: #374151;
-}
-
 /* Mensagem de confirmação */
-.deleteContainer p {
+.container p {
   font-size: 1rem;
   margin-bottom: 2rem;
 }
 
-.deleteContainer strong {
+.container strong {
   color: #b91c1c;
 }
 
-/* Botões do formulário */
-form {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.btnDanger {
+/* Botões */
+button {
   padding: 0.55rem 1.5rem;
   font-size: 0.95rem;
   font-weight: 600;
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
+  margin: 0 0.5rem;
+}
+
+/* Botão de exclusão */
+.deleteButton {
   color: #fff;
   background-color: #b91c1c;
   border: none;
 }
 
-.btnDanger:hover {
+.deleteButton:hover {
   background-color: #991b1b;
   transform: translateY(-1px);
 }
 
-.btnSecondary {
-  padding: 0.55rem 1.5rem;
-  font-size: 0.95rem;
-  font-weight: 600;
-  border-radius: 8px;
-  cursor: pointer;
-  background-color: #e5e7eb;
+/* Botão de cancelamento */
+.cancelButton {
   color: #374151;
+  background-color: #e5e7eb;
   border: none;
-  transition: all 0.2s ease-in-out;
 }
 
-.btnSecondary:hover {
+.cancelButton:hover {
   background-color: #d1d5db;
   transform: translateY(-1px);
 }
 
 /* Responsividade */
 @media (max-width: 480px) {
-  .deleteContainer {
+  .container {
     padding: 1.5rem;
   }
 
-  form {
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .btnDanger,
-  .btnSecondary {
+  button {
     width: 100%;
+    margin: 0.3rem 0;
   }
 }

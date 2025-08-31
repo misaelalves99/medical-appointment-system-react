@@ -1,5 +1,4 @@
 // src/contexts/AppointmentsProvider.tsx
-
 import React, { useState } from "react";
 import { AppointmentsContext } from "./AppointmentsContext";
 import type { Appointment } from "../types/Appointment";
@@ -11,7 +10,7 @@ interface AppointmentsProviderProps {
 }
 
 export const AppointmentsProvider: React.FC<AppointmentsProviderProps> = ({ children }) => {
-  const [appointments, setAppointments] = useState<Appointment[]>(appointmentsMock);
+  const [appointments, setAppointments] = useState<Appointment[]>([...appointmentsMock]);
 
   const addAppointment = (appointment: Omit<Appointment, "id">) => {
     const newId = appointments.length > 0 ? Math.max(...appointments.map(a => a.id)) + 1 : 1;

@@ -1,7 +1,7 @@
 /* src/pages/Patient/Delete/DeletePatient.module.css */
 
 /* Container principal */
-.deletePatientContainer {
+.container {
   max-width: 450px;
   margin: 3rem auto;
   padding: 2rem;
@@ -14,7 +14,7 @@
 }
 
 /* Título */
-.deletePatientContainer h1 {
+.container h1 {
   font-size: 1.8rem;
   font-weight: 700;
   margin-bottom: 1rem;
@@ -22,71 +22,58 @@
 }
 
 /* Mensagem de confirmação */
-.deletePatientContainer p {
+.container p {
   font-size: 1rem;
   margin-bottom: 2rem;
 }
 
-.deletePatientContainer strong {
+.container strong {
   color: #b91c1c;
 }
 
 /* Botões */
-form {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-/* Botão de exclusão */
-.btnDelete {
+button {
   padding: 0.55rem 1.5rem;
   font-size: 0.95rem;
   font-weight: 600;
-  color: #fff;
-  background-color: #b91c1c;
-  border: none;
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
+  margin: 0 0.5rem;
 }
 
-.btnDelete:hover {
+/* Botão de exclusão */
+.deleteButton {
+  color: #fff;
+  background-color: #b91c1c;
+  border: none;
+}
+
+.deleteButton:hover {
   background-color: #991b1b;
   transform: translateY(-1px);
 }
 
 /* Botão de cancelamento */
-.btnCancel {
-  padding: 0.55rem 1.5rem;
-  font-size: 0.95rem;
-  font-weight: 600;
+.cancelButton {
   color: #374151;
   background-color: #e5e7eb;
   border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
 }
 
-.btnCancel:hover {
+.cancelButton:hover {
   background-color: #d1d5db;
   transform: translateY(-1px);
 }
 
 /* Responsividade */
 @media (max-width: 480px) {
-  .deletePatientContainer {
+  .container {
     padding: 1.5rem;
   }
 
-  form {
-    flex-direction: column;
-  }
-
-  .btnDelete,
-  .btnCancel {
+  button {
     width: 100%;
+    margin: 0.3rem 0;
   }
 }

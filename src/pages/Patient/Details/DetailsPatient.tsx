@@ -45,6 +45,9 @@ const DetailsPatient: React.FC = () => {
         <strong>Nome:</strong> {patient.name}
       </p>
       <p>
+        <strong>CPF:</strong> {patient.cpf || "-"}
+      </p>
+      <p>
         <strong>Data de Nascimento:</strong> {formatDate(patient.dateOfBirth)}
       </p>
       <p>
