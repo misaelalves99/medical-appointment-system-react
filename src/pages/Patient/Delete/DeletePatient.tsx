@@ -1,7 +1,5 @@
 // src/pages/Patient/Delete/DeletePatient.tsx
 
-// src/pages/Patient/Delete/DeletePatient.tsx
-
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styles from "./DeletePatient.module.css";
