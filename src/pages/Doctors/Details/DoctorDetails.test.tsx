@@ -1,6 +1,8 @@
 // src/pages/Doctors/Details/DoctorDetails.test.tsx
 
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+// src/pages/Doctors/Details/DoctorDetails.test.tsx
+
+import { render, screen, fireEvent } from "@testing-library/react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDoctor } from "../../../hooks/useDoctor";
 import DoctorDetails from "./DoctorDetails";
@@ -36,28 +38,26 @@ describe("DoctorDetails Component", () => {
     expect(screen.getByText("Carregando...")).toBeInTheDocument();
   });
 
-  it("renderiza corretamente os detalhes do médico", async () => {
+  it("renderiza corretamente os detalhes do médico", () => {
     render(<DoctorDetails />);
-    await waitFor(() => {
-      expect(screen.getByText("Detalhes do Médico")).toBeInTheDocument();
-      expect(screen.getByText(/Nome:/)).toHaveTextContent(`Nome: ${doctorExample.name}`);
-      expect(screen.getByText(/CRM:/)).toHaveTextContent(`CRM: ${doctorExample.crm}`);
-      expect(screen.getByText(/Especialidade:/)).toHaveTextContent(`Especialidade: ${doctorExample.specialty}`);
-      expect(screen.getByText(/Email:/)).toHaveTextContent(`Email: ${doctorExample.email}`);
-      expect(screen.getByText(/Telefone:/)).toHaveTextContent(`Telefone: ${doctorExample.phone}`);
-      expect(screen.getByText(/Ativo:/)).toHaveTextContent("Ativo: Sim");
-    });
+    expect(screen.getByText("Detalhes do Médico")).toBeInTheDocument();
+    expect(screen.getByText(/Nome:/)).toHaveTextContent(`Nome: ${doctorExample.name}`);
+    expect(screen.getByText(/CRM:/)).toHaveTextContent(`CRM: ${doctorExample.crm}`);
+    expect(screen.getByText(/Especialidade:/)).toHaveTextContent(`Especialidade: ${doctorExample.specialty}`);
+    expect(screen.getByText(/Email:/)).toHaveTextContent(`Email: ${doctorExample.email}`);
+    expect(screen.getByText(/Telefone:/)).toHaveTextContent(`Telefone: ${doctorExample.phone}`);
+    expect(screen.getByText(/Ativo:/)).toHaveTextContent(`Ativo: Sim`);
   });
 
-  it("botão 'Editar' chama navigate com o path correto", async () => {
+  it("botão 'Editar' chama navigate com o path correto", () => {
     render(<DoctorDetails />);
-    await waitFor(() => fireEvent.click(screen.getByText("Editar")));
+    fireEvent.click(screen.getByText("Editar"));
     expect(navigateMock).toHaveBeenCalledWith(`/doctors/edit/${doctorExample.id}`);
   });
 
-  it("botão 'Voltar' chama navigate com /doctors", async () => {
+  it("botão 'Voltar' chama navigate com /doctors", () => {
     render(<DoctorDetails />);
-    await waitFor(() => fireEvent.click(screen.getByText("Voltar")));
+    fireEvent.click(screen.getByText("Voltar"));
     expect(navigateMock).toHaveBeenCalledWith("/doctors");
   });
 });

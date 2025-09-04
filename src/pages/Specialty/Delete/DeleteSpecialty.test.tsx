@@ -1,6 +1,6 @@
 // src/pages/Specialty/Delete/DeleteSpecialty.test.tsx
 
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import DeleteSpecialty from './DeleteSpecialty';
 import { useSpecialty } from '../../../hooks/useSpecialty';
@@ -12,8 +12,9 @@ jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
   useNavigate: jest.fn(),
   useParams: jest.fn(),
-  Link: ({ children, to }: { children: React.ReactNode; to: string }) => <a href={to}>{children}</a>,
 }));
+
+const mockedUseSpecialty = useSpecialty as jest.MockedFunction<typeof useSpecialty>;
 
 describe('DeleteSpecialty', () => {
   const navigateMock = jest.fn();
@@ -27,7 +28,8 @@ describe('DeleteSpecialty', () => {
     jest.clearAllMocks();
 
     (useNavigate as jest.Mock).mockReturnValue(navigateMock);
-    (useSpecialty as jest.MockedFunction<typeof useSpecialty>).mockReturnValue({
+
+    mockedUseSpecialty.mockReturnValue({
       specialties,
       addSpecialty: addSpecialtyMock,
       updateSpecialty: updateSpecialtyMock,
@@ -35,10 +37,10 @@ describe('DeleteSpecialty', () => {
     } as SpecialtyContextType);
   });
 
-  it('deve mostrar mensagem se especialidade não for encontrada', () => {
+  it('deve mostrar "Carregando..." se especialidade não existir', () => {
     (useParams as jest.Mock).mockReturnValue({ id: '999' });
 
-    (useSpecialty as jest.MockedFunction<typeof useSpecialty>).mockReturnValue({
+    mockedUseSpecialty.mockReturnValue({
       specialties: [],
       addSpecialty: addSpecialtyMock,
       updateSpecialty: updateSpecialtyMock,
@@ -51,10 +53,10 @@ describe('DeleteSpecialty', () => {
       </MemoryRouter>
     );
 
-    expect(screen.getByText(/especialidade não encontrada/i)).toBeInTheDocument();
+    expect(screen.getByText(/carregando/i)).toBeInTheDocument();
   });
 
-  it('deve renderizar especialidade corretamente', () => {
+  it('deve renderizar especialidade corretamente', async () => {
     (useParams as jest.Mock).mockReturnValue({ id: '1' });
 
     render(
@@ -63,12 +65,13 @@ describe('DeleteSpecialty', () => {
       </MemoryRouter>
     );
 
-    expect(screen.getByText(/excluir especialidade/i)).toBeInTheDocument();
-    expect(screen.getByText(/cardiologia/i)).toBeInTheDocument();
-    expect(screen.getByText(/id: 1/i)).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText(/confirmar exclusão/i)).toBeInTheDocument();
+      expect(screen.getByText(/cardiologia/i)).toBeInTheDocument();
+    });
   });
 
-  it('deve chamar removeSpecialty e navegar ao submeter', () => {
+  it('deve chamar removeSpecialty e navegar ao clicar em Excluir', async () => {
     (useParams as jest.Mock).mockReturnValue({ id: '1' });
 
     render(
@@ -77,14 +80,14 @@ describe('DeleteSpecialty', () => {
       </MemoryRouter>
     );
 
-    const submitBtn = screen.getByRole('button', { name: /excluir/i });
-    fireEvent.click(submitBtn);
+    const deleteBtn = await screen.findByRole('button', { name: /excluir/i });
+    fireEvent.click(deleteBtn);
 
     expect(removeSpecialtyMock).toHaveBeenCalledWith(1);
     expect(navigateMock).toHaveBeenCalledWith('/specialty');
   });
 
-  it('deve ter link de cancelar direcionando para /specialty', () => {
+  it('deve navegar ao clicar em Cancelar', async () => {
     (useParams as jest.Mock).mockReturnValue({ id: '1' });
 
     render(
@@ -93,7 +96,9 @@ describe('DeleteSpecialty', () => {
       </MemoryRouter>
     );
 
-    const cancelLink = screen.getByText(/cancelar/i) as HTMLAnchorElement;
-    expect(cancelLink).toHaveAttribute('href', '/specialty');
+    const cancelBtn = await screen.findByRole('button', { name: /cancelar/i });
+    fireEvent.click(cancelBtn);
+
+    expect(navigateMock).toHaveBeenCalledWith('/specialty');
   });
 });

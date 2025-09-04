@@ -8,6 +8,8 @@ import type { Specialty, SpecialtyContextType } from '../../types/Specialty';
 
 jest.mock('../../hooks/useSpecialty');
 
+const mockedUseSpecialty = useSpecialty as jest.MockedFunction<typeof useSpecialty>;
+
 describe('SpecialtyList', () => {
   const specialties: Specialty[] = [
     { id: 1, name: 'Cardiologia' },
@@ -20,8 +22,7 @@ describe('SpecialtyList', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-
-    (useSpecialty as jest.MockedFunction<typeof useSpecialty>).mockReturnValue({
+    mockedUseSpecialty.mockReturnValue({
       specialties,
       addSpecialty: addSpecialtyMock,
       updateSpecialty: updateSpecialtyMock,
@@ -81,7 +82,7 @@ describe('SpecialtyList', () => {
     expect(screen.getByText(/nenhuma especialidade encontrada/i)).toBeInTheDocument();
   });
 
-  it('deve ter links de ação corretos', () => {
+  it('deve ter links de ação corretos para cada especialidade', () => {
     render(
       <MemoryRouter>
         <SpecialtyList />
@@ -97,5 +98,28 @@ describe('SpecialtyList', () => {
     expect(editLink).toHaveAttribute('href', '/specialty/edit/1');
     expect(deleteLink).toHaveAttribute('href', '/specialty/delete/1');
     expect(createLink).toHaveAttribute('href', '/specialty/create');
+  });
+
+  it('deve ordenar especialidades por nome', () => {
+    // Alterar ordem intencionalmente
+    mockedUseSpecialty.mockReturnValue({
+      specialties: [
+        { id: 2, name: 'Neurologia' },
+        { id: 1, name: 'Cardiologia' },
+      ],
+      addSpecialty: addSpecialtyMock,
+      updateSpecialty: updateSpecialtyMock,
+      removeSpecialty: removeSpecialtyMock,
+    } as SpecialtyContextType);
+
+    render(
+      <MemoryRouter>
+        <SpecialtyList />
+      </MemoryRouter>
+    );
+
+    const rows = screen.getAllByRole('row').slice(1); // Ignora o header
+    expect(rows[0]).toHaveTextContent('Cardiologia');
+    expect(rows[1]).toHaveTextContent('Neurologia');
   });
 });

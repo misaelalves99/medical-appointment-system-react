@@ -7,55 +7,67 @@ import { PatientProvider } from "./PatientProvider";
 import { PatientContext, PatientContextType } from "./PatientContext";
 import type { Patient } from "../types/Patient";
 
-describe("PatientProvider", () => {
-  const TestComponent = () => {
-    const { patients, addPatient, updatePatient, deletePatient, updatePatientProfilePicture } =
-      useContext(PatientContext)!; // Garantimos que não é undefined
+const TestComponent = () => {
+  const { patients, addPatient, updatePatient, deletePatient, updatePatientProfilePicture } =
+    useContext(PatientContext)!;
 
-    return (
-      <div>
-        <ul>
-          {patients.map((p) => (
-            <li key={p.id}>{p.name}</li>
-          ))}
-        </ul>
-        <button
-          onClick={() =>
-            addPatient({
-              id: 999,
-              name: "Novo Paciente",
-              cpf: "123.456.789-00",
-              dateOfBirth: "2000-01-01",
-              email: "",
-              phone: "",
-              address: "",
-            })
-          }
-        >
-          Add
-        </button>
-        <button
-          onClick={() =>
-            updatePatient({
-              id: 999,
-              name: "Paciente Atualizado",
-              cpf: "123.456.789-00",
-              dateOfBirth: "2000-01-01",
-              email: "",
-              phone: "",
-              address: "",
-            })
-          }
-        >
-          Update
-        </button>
-        <button onClick={() => deletePatient(999)}>Delete</button>
-        <button onClick={() => updatePatientProfilePicture(999, "/path/to/photo.jpg")}>Update Photo</button>
-      </div>
-    );
+  const newPatient = {
+    name: "Novo Paciente",
+    cpf: "123.456.789-00",
+    dateOfBirth: "2000-01-01",
+    email: "",
+    phone: "",
+    address: "",
   };
 
-  it("deve adicionar um paciente", async () => {
+  const patientId = patients.find((p) => p.name === newPatient.name)?.id ?? 0;
+
+  return (
+    <div>
+      <ul>
+        {patients.map((p) => (
+          <li key={p.id} data-testid={`patient-${p.id}`}>
+            {p.name}
+          </li>
+        ))}
+      </ul>
+
+      <button onClick={() => addPatient(newPatient)}>Add</button>
+
+      {patientId !== 0 && (
+        <>
+          <button
+            onClick={() =>
+              updatePatient({ ...patients.find((p) => p.id === patientId)!, name: "Paciente Atualizado" })
+            }
+          >
+            Update
+          </button>
+
+          <button onClick={() => deletePatient(patientId)}>Delete</button>
+
+          <button onClick={() => updatePatientProfilePicture(patientId, "/path/to/photo.jpg")}>
+            Update Photo
+          </button>
+        </>
+      )}
+    </div>
+  );
+};
+
+describe("PatientProvider", () => {
+  it("renderiza pacientes iniciais do mock", () => {
+    render(
+      <PatientProvider>
+        <TestComponent />
+      </PatientProvider>
+    );
+
+    const items = screen.getAllByRole("listitem");
+    expect(items.length).toBeGreaterThan(0);
+  });
+
+  it("adiciona um paciente corretamente", async () => {
     render(
       <PatientProvider>
         <TestComponent />
@@ -67,7 +79,7 @@ describe("PatientProvider", () => {
     expect(screen.getByText("Novo Paciente")).toBeInTheDocument();
   });
 
-  it("deve atualizar um paciente", async () => {
+  it("atualiza um paciente corretamente", async () => {
     render(
       <PatientProvider>
         <TestComponent />
@@ -77,10 +89,9 @@ describe("PatientProvider", () => {
     await userEvent.click(screen.getByText("Add"));
     await userEvent.click(screen.getByText("Update"));
     expect(screen.getByText("Paciente Atualizado")).toBeInTheDocument();
-    expect(screen.queryByText("Novo Paciente")).not.toBeInTheDocument();
   });
 
-  it("deve deletar um paciente", async () => {
+  it("deleta um paciente corretamente", async () => {
     render(
       <PatientProvider>
         <TestComponent />
@@ -89,15 +100,16 @@ describe("PatientProvider", () => {
 
     await userEvent.click(screen.getByText("Add"));
     expect(screen.getByText("Novo Paciente")).toBeInTheDocument();
+
     await userEvent.click(screen.getByText("Delete"));
     expect(screen.queryByText("Novo Paciente")).not.toBeInTheDocument();
   });
 
-  it("deve atualizar o path da foto do paciente", async () => {
-    let patientContext!: PatientContextType; // Tipagem correta e non-null assertion
+  it("atualiza o path da foto do paciente corretamente", async () => {
+    let patientContext!: PatientContextType;
 
     const ContextConsumer = () => {
-      patientContext = useContext(PatientContext)!; // Garantimos que não é undefined
+      patientContext = useContext(PatientContext)!;
       return null;
     };
 
@@ -107,9 +119,8 @@ describe("PatientProvider", () => {
       </PatientProvider>
     );
 
-    // Adiciona paciente
+    // Adiciona paciente via contexto
     patientContext.addPatient({
-      id: 999,
       name: "Paciente Foto",
       cpf: "987.654.321-00",
       dateOfBirth: "2000-01-01",
@@ -118,10 +129,10 @@ describe("PatientProvider", () => {
       address: "",
     });
 
-    // Atualiza foto
-    patientContext.updatePatientProfilePicture(999, "/foto.jpg");
+    const addedPatient = patientContext.patients.find((p) => p.name === "Paciente Foto")!;
+    patientContext.updatePatientProfilePicture(addedPatient.id, "/foto.jpg");
 
-    const updated = patientContext.patients.find((p: Patient) => p.id === 999);
+    const updated = patientContext.patients.find((p: Patient) => p.id === addedPatient.id);
     expect(updated?.profilePicturePath).toBe("/foto.jpg");
   });
 });

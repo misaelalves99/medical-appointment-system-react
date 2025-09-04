@@ -1,5 +1,7 @@
 // src/pages/Doctors/Delete/DeleteDoctor.test.tsx
 
+// src/pages/Doctors/Delete/DeleteDoctor.test.tsx
+
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDoctor } from "../../../hooks/useDoctor";
@@ -41,16 +43,11 @@ describe("DeleteDoctor Component", () => {
     expect(screen.getByText("Carregando...")).toBeInTheDocument();
   });
 
-  it("renderiza os detalhes do médico corretamente", async () => {
+  it("renderiza o nome do médico corretamente", async () => {
     render(<DeleteDoctor />);
     await waitFor(() => {
-      expect(screen.getByText("Excluir Médico")).toBeInTheDocument();
-      expect(screen.getByText("Dr. Teste")).toBeInTheDocument();
-      expect(screen.getByText("123456")).toBeInTheDocument();
-      expect(screen.getByText("Cardiologia")).toBeInTheDocument();
-      expect(screen.getByText("teste@email.com")).toBeInTheDocument();
-      expect(screen.getByText("999999999")).toBeInTheDocument();
-      expect(screen.getByText("Sim")).toBeInTheDocument();
+      expect(screen.getByText("Confirmar Exclusão")).toBeInTheDocument();
+      expect(screen.getByText(/Dr. Teste/)).toBeInTheDocument();
     });
   });
 

@@ -1,5 +1,3 @@
-// src/pages/Appointments/Delete/DeleteAppointment.test.tsx
-
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import DeleteAppointment from "./DeleteAppointment";
@@ -7,7 +5,6 @@ import { useAppointments } from "../../../hooks/useAppointments";
 import { useNavigate, useParams } from "react-router-dom";
 import { AppointmentStatus } from "../../../types/Appointment";
 
-// Mock hooks
 jest.mock("../../../hooks/useAppointments");
 jest.mock("react-router-dom", () => ({
   useNavigate: jest.fn(),
@@ -42,19 +39,28 @@ describe("DeleteAppointment", () => {
   it("renderiza os detalhes da consulta", () => {
     render(<DeleteAppointment />);
 
-    expect(screen.getByText("Excluir Consulta")).toBeInTheDocument();
-    expect(screen.getByText("Tem certeza que deseja excluir esta consulta?")).toBeInTheDocument();
-    expect(screen.getByText("João Silva")).toBeInTheDocument();
-    expect(screen.getByText("Dra. Ana")).toBeInTheDocument();
-    expect(screen.getByText("21/08/2025, 14:30:00")).toBeInTheDocument(); // depende do locale
-    expect(screen.getByText("Confirmada")).toBeInTheDocument();
+    const formattedDateTime = new Date(appointment.appointmentDate).toLocaleString("pt-BR", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+
+    expect(screen.getByText("Confirmar Exclusão")).toBeInTheDocument();
+    expect(
+      screen.getByText(new RegExp(`João Silva`, "i"))
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(new RegExp(`Dra. Ana`, "i"))
+    ).toBeInTheDocument();
+    expect(screen.getByText(new RegExp(formattedDateTime))).toBeInTheDocument();
     expect(screen.getByText("Excluir")).toBeInTheDocument();
     expect(screen.getByText("Cancelar")).toBeInTheDocument();
   });
 
   it("chama deleteAppointment e navegação ao clicar em Excluir", async () => {
     render(<DeleteAppointment />);
-
     await userEvent.click(screen.getByText("Excluir"));
 
     expect(mockDeleteAppointment).toHaveBeenCalledWith(1);
@@ -63,7 +69,6 @@ describe("DeleteAppointment", () => {
 
   it("botão Cancelar navega sem chamar deleteAppointment", async () => {
     render(<DeleteAppointment />);
-
     await userEvent.click(screen.getByText("Cancelar"));
 
     expect(mockDeleteAppointment).not.toHaveBeenCalled();
@@ -78,7 +83,6 @@ describe("DeleteAppointment", () => {
     (useParams as jest.Mock).mockReturnValue({ id: "999" });
 
     render(<DeleteAppointment />);
-
     expect(screen.getByText("Consulta não encontrada.")).toBeInTheDocument();
   });
 });

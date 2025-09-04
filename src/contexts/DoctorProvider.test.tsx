@@ -11,8 +11,9 @@ const TestComponent = () => {
 
   return (
     <div>
+      <span data-testid="count">{doctors.length}</span>
       <ul>
-        {doctors.map(d => (
+        {doctors.map((d) => (
           <li key={d.id} data-testid={`doctor-${d.id}`}>
             {d.name} - {d.specialty}
           </li>
@@ -22,7 +23,7 @@ const TestComponent = () => {
       <button
         onClick={() =>
           addDoctor({
-            id: 0,
+            id: 0, // será sobrescrito no Provider
             name: "Dr. Teste",
             fullName: "Dr. Teste Completo",
             crm: "99999",
@@ -61,7 +62,8 @@ describe("DoctorsProvider", () => {
     );
 
     const items = screen.getAllByRole("listitem");
-    expect(items.length).toBeGreaterThan(0); // deve vir do doctorsMock
+    expect(items.length).toBeGreaterThan(0); // vem do doctorsMock
+    expect(Number(screen.getByTestId("count").textContent)).toBe(items.length);
   });
 
   it("adiciona, atualiza e remove médico corretamente", async () => {
@@ -75,16 +77,36 @@ describe("DoctorsProvider", () => {
     const updateBtn = screen.getByText("Update");
     const removeBtn = screen.getByText("Remove");
 
+    const user = userEvent.setup();
+
     // Adicionar
-    await userEvent.click(addBtn);
+    await user.click(addBtn);
     expect(screen.getByText("Dr. Teste - Teste")).toBeInTheDocument();
+    expect(Number(screen.getByTestId("count").textContent)).toBeGreaterThan(0);
 
     // Atualizar
-    await userEvent.click(updateBtn);
+    await user.click(updateBtn);
     expect(screen.getByText("Dr. Updated - Teste")).toBeInTheDocument();
 
     // Remover
-    await userEvent.click(removeBtn);
+    await user.click(removeBtn);
     expect(screen.queryByText("Dr. Updated - Teste")).not.toBeInTheDocument();
+  });
+
+  it("não quebra ao tentar remover um médico inexistente", async () => {
+    render(
+      <DoctorsProvider>
+        <TestComponent />
+      </DoctorsProvider>
+    );
+
+    const user = userEvent.setup();
+    const countBefore = Number(screen.getByTestId("count").textContent);
+
+    // Remover com ID inexistente
+    await user.click(screen.getByText("Remove"));
+
+    const countAfter = Number(screen.getByTestId("count").textContent);
+    expect(countAfter).toBeLessThanOrEqual(countBefore); // nunca aumenta
   });
 });

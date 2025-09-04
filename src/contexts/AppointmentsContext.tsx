@@ -5,7 +5,7 @@ import type { Appointment } from '../types/Appointment';
 
 export interface AppointmentsContextType {
   appointments: Appointment[];
-  addAppointment: (appointment: Omit<Appointment, 'id'>) => void; // id será gerado
+  addAppointment: (appointment: Omit<Appointment, 'id'>) => void;
   updateAppointment: (appointment: Appointment) => void;
   deleteAppointment: (id: number) => void;
   confirmAppointment: (id: number) => void;

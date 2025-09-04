@@ -15,6 +15,10 @@ jest.mock('react-router-dom', () => ({
   Link: ({ children, to }: { children: React.ReactNode; to: string }) => <a href={to}>{children}</a>,
 }));
 
+const mockedUseSpecialty = useSpecialty as jest.MockedFunction<typeof useSpecialty>;
+const mockedUseParams = useParams as jest.Mock;
+const mockedUseNavigate = useNavigate as jest.Mock;
+
 describe('EditSpecialty', () => {
   const navigateMock = jest.fn();
   const addSpecialtyMock = jest.fn();
@@ -26,20 +30,18 @@ describe('EditSpecialty', () => {
   beforeEach(() => {
     jest.clearAllMocks();
 
-    // Mock completo do hook useSpecialty
-    (useSpecialty as jest.MockedFunction<typeof useSpecialty>).mockReturnValue({
+    mockedUseSpecialty.mockReturnValue({
       specialties,
       addSpecialty: addSpecialtyMock,
       updateSpecialty: updateSpecialtyMock,
       removeSpecialty: removeSpecialtyMock,
     } as SpecialtyContextType);
 
-    // Mock do useNavigate sem require()
-    (useNavigate as jest.Mock).mockReturnValue(navigateMock);
+    mockedUseNavigate.mockReturnValue(navigateMock);
   });
 
   it('deve mostrar mensagem se especialidade não for encontrada', () => {
-    (useParams as jest.Mock).mockReturnValue({ id: '999' });
+    mockedUseParams.mockReturnValue({ id: '999' });
 
     render(
       <MemoryRouter>
@@ -51,7 +53,7 @@ describe('EditSpecialty', () => {
   });
 
   it('deve renderizar especialidade corretamente', () => {
-    (useParams as jest.Mock).mockReturnValue({ id: '1' });
+    mockedUseParams.mockReturnValue({ id: '1' });
 
     render(
       <MemoryRouter>
@@ -65,7 +67,7 @@ describe('EditSpecialty', () => {
   });
 
   it('deve atualizar o input ao digitar', () => {
-    (useParams as jest.Mock).mockReturnValue({ id: '1' });
+    mockedUseParams.mockReturnValue({ id: '1' });
 
     render(
       <MemoryRouter>
@@ -79,7 +81,7 @@ describe('EditSpecialty', () => {
   });
 
   it('deve mostrar erro se tentar submeter com input vazio', () => {
-    (useParams as jest.Mock).mockReturnValue({ id: '1' });
+    mockedUseParams.mockReturnValue({ id: '1' });
 
     render(
       <MemoryRouter>
@@ -98,7 +100,7 @@ describe('EditSpecialty', () => {
   });
 
   it('deve chamar updateSpecialty e navegar ao submeter corretamente', () => {
-    (useParams as jest.Mock).mockReturnValue({ id: '1' });
+    mockedUseParams.mockReturnValue({ id: '1' });
 
     render(
       <MemoryRouter>
@@ -117,7 +119,7 @@ describe('EditSpecialty', () => {
   });
 
   it('deve ter link de voltar com href correto', () => {
-    (useParams as jest.Mock).mockReturnValue({ id: '1' });
+    mockedUseParams.mockReturnValue({ id: '1' });
 
     render(
       <MemoryRouter>

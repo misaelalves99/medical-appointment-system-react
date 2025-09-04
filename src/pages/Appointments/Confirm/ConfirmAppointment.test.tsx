@@ -6,7 +6,6 @@ import ConfirmAppointment from "./ConfirmAppointment";
 import { useAppointments } from "../../../hooks/useAppointments";
 import { useNavigate, useParams } from "react-router-dom";
 
-// Mock dos hooks
 jest.mock("../../../hooks/useAppointments");
 jest.mock("react-router-dom", () => ({
   useNavigate: jest.fn(),
@@ -27,11 +26,10 @@ describe("ConfirmAppointment", () => {
     (useAppointments as jest.Mock).mockReturnValue({ appointments: [], confirmAppointment: mockConfirmAppointment });
 
     render(<ConfirmAppointment />);
-
     expect(screen.getByText("Consulta não encontrada.")).toBeInTheDocument();
   });
 
-  it("renderiza os detalhes da consulta corretamente", () => {
+  it("renderiza detalhes da consulta corretamente com data formatada", () => {
     (useParams as jest.Mock).mockReturnValue({ id: "1" });
     (useAppointments as jest.Mock).mockReturnValue({
       appointments: [
@@ -48,32 +46,23 @@ describe("ConfirmAppointment", () => {
     });
 
     render(<ConfirmAppointment />);
-
     expect(screen.getByText("Confirmar Consulta")).toBeInTheDocument();
     expect(screen.getByText(/João/)).toBeInTheDocument();
     expect(screen.getByText(/Dra. Ana/)).toBeInTheDocument();
-    expect(screen.getByText(/21\/08\/2025/)).toBeInTheDocument(); // Data formatada pt-BR
+    expect(screen.getByText("21/08/2025 10:30:00") || screen.getByText(/21\/08\/2025/)).toBeInTheDocument();
   });
 
   it("chama confirmAppointment e navigate ao confirmar", async () => {
     (useParams as jest.Mock).mockReturnValue({ id: "1" });
     (useAppointments as jest.Mock).mockReturnValue({
       appointments: [
-        {
-          id: 1,
-          patientId: 5,
-          patientName: "João",
-          doctorId: 10,
-          doctorName: "Dra. Ana",
-          appointmentDate: "2025-08-21T10:30:00Z",
-        },
+        { id: 1, patientId: 5, patientName: "João", doctorId: 10, doctorName: "Dra. Ana", appointmentDate: "2025-08-21T10:30:00Z" },
       ],
       confirmAppointment: mockConfirmAppointment,
     });
 
     render(<ConfirmAppointment />);
-
-    const button = screen.getByText("Confirmar");
+    const button = screen.getByRole("button", { name: /Confirmar/i });
     await userEvent.click(button);
 
     expect(mockConfirmAppointment).toHaveBeenCalledWith(1);
@@ -84,22 +73,14 @@ describe("ConfirmAppointment", () => {
     (useParams as jest.Mock).mockReturnValue({ id: "1" });
     (useAppointments as jest.Mock).mockReturnValue({
       appointments: [
-        {
-          id: 1,
-          patientId: 5,
-          patientName: "João",
-          doctorId: 10,
-          doctorName: "Dra. Ana",
-          appointmentDate: "2025-08-21T10:30:00Z",
-        },
+        { id: 1, patientId: 5, patientName: "João", doctorId: 10, doctorName: "Dra. Ana", appointmentDate: "2025-08-21T10:30:00Z" },
       ],
       confirmAppointment: mockConfirmAppointment,
     });
 
     render(<ConfirmAppointment />);
-
-    const backButton = screen.getByText("Cancelar");
-    await userEvent.click(backButton);
+    const cancelButton = screen.getByRole("button", { name: /Cancelar/i });
+    await userEvent.click(cancelButton);
 
     expect(mockConfirmAppointment).not.toHaveBeenCalled();
     expect(mockNavigate).toHaveBeenCalledWith("/appointments");
@@ -109,20 +90,12 @@ describe("ConfirmAppointment", () => {
     (useParams as jest.Mock).mockReturnValue({ id: "1" });
     (useAppointments as jest.Mock).mockReturnValue({
       appointments: [
-        {
-          id: 1,
-          patientId: 5,
-          patientName: "",
-          doctorId: 10,
-          doctorName: "",
-          appointmentDate: "2025-08-21T10:30:00Z",
-        },
+        { id: 1, patientId: 5, patientName: "", doctorId: 10, doctorName: "", appointmentDate: "2025-08-21T10:30:00Z" },
       ],
       confirmAppointment: mockConfirmAppointment,
     });
 
     render(<ConfirmAppointment />);
-
     expect(screen.getByText("ID 5")).toBeInTheDocument();
     expect(screen.getByText("ID 10")).toBeInTheDocument();
   });

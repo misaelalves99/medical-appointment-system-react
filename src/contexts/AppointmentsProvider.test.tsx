@@ -6,14 +6,27 @@ import { useContext } from "react";
 import { AppointmentsContext, AppointmentsContextType } from "./AppointmentsContext";
 import { AppointmentsProvider } from "./AppointmentsProvider";
 import { AppointmentStatus } from "../types/Appointment";
+import { appointmentsMock } from "../mocks/appointments";
 
 const TestComponent = () => {
-  const { appointments, addAppointment, updateAppointment, deleteAppointment, confirmAppointment, cancelAppointment } =
-    useContext<AppointmentsContextType>(AppointmentsContext);
+  const {
+    appointments,
+    addAppointment,
+    updateAppointment,
+    deleteAppointment,
+    confirmAppointment,
+    cancelAppointment,
+  } = useContext<AppointmentsContextType>(AppointmentsContext);
 
   return (
     <div>
       <span data-testid="appointments-count">{appointments.length}</span>
+      {appointments[0] && (
+        <>
+          <span data-testid="first-appointment-name">{appointments[0].patientName}</span>
+          <span data-testid="first-appointment-status">{appointments[0].status}</span>
+        </>
+      )}
       <button
         onClick={() =>
           addAppointment({
@@ -49,7 +62,7 @@ const TestComponent = () => {
 };
 
 describe("AppointmentsProvider", () => {
-  it("manages appointments state correctly", async () => {
+  it("loads initial state from appointmentsMock", () => {
     render(
       <AppointmentsProvider>
         <TestComponent />
@@ -57,25 +70,98 @@ describe("AppointmentsProvider", () => {
     );
 
     const count = screen.getByTestId("appointments-count");
-    expect(Number(count.textContent)).toBeGreaterThanOrEqual(0);
+    expect(Number(count.textContent)).toBe(appointmentsMock.length);
+
+    if (appointmentsMock.length > 0) {
+      expect(screen.getByTestId("first-appointment-name").textContent).toBe(
+        appointmentsMock[0].patientName
+      );
+    }
+  });
+
+  it("adds a new appointment", async () => {
+    render(
+      <AppointmentsProvider>
+        <TestComponent />
+      </AppointmentsProvider>
+    );
+
+    const user = userEvent.setup();
+    const count = screen.getByTestId("appointments-count");
+    const initialCount = Number(count.textContent);
+
+    await user.click(screen.getByText("Add"));
+
+    expect(Number(count.textContent)).toBe(initialCount + 1);
+    expect(screen.getByTestId("first-appointment-name").textContent).toBeTruthy();
+  });
+
+  it("updates an appointment", async () => {
+    render(
+      <AppointmentsProvider>
+        <TestComponent />
+      </AppointmentsProvider>
+    );
 
     const user = userEvent.setup();
 
-    // Adicionar
+    // garante pelo menos 1 agendamento
     await user.click(screen.getByText("Add"));
-    expect(Number(count.textContent)).toBeGreaterThanOrEqual(1);
+    await user.click(screen.getByText("Update"));
 
-    // Atualizar
-    if (screen.queryByText("Update")) await user.click(screen.getByText("Update"));
+    expect(screen.getByTestId("first-appointment-name").textContent).toBe("Bob");
+  });
 
-    // Confirmar
-    if (screen.queryByText("Confirm")) await user.click(screen.getByText("Confirm"));
+  it("confirms an appointment", async () => {
+    render(
+      <AppointmentsProvider>
+        <TestComponent />
+      </AppointmentsProvider>
+    );
 
-    // Cancelar
-    if (screen.queryByText("Cancel")) await user.click(screen.getByText("Cancel"));
+    const user = userEvent.setup();
 
-    // Excluir
-    if (screen.queryByText("Delete")) await user.click(screen.getByText("Delete"));
+    await user.click(screen.getByText("Add"));
+    await user.click(screen.getByText("Confirm"));
+
+    expect(screen.getByTestId("first-appointment-status").textContent).toBe(
+      AppointmentStatus.Confirmed
+    );
+  });
+
+  it("cancels an appointment", async () => {
+    render(
+      <AppointmentsProvider>
+        <TestComponent />
+      </AppointmentsProvider>
+    );
+
+    const user = userEvent.setup();
+
+    await user.click(screen.getByText("Add"));
+    await user.click(screen.getByText("Cancel"));
+
+    expect(screen.getByTestId("first-appointment-status").textContent).toBe(
+      AppointmentStatus.Cancelled
+    );
+  });
+
+  it("deletes an appointment", async () => {
+    render(
+      <AppointmentsProvider>
+        <TestComponent />
+      </AppointmentsProvider>
+    );
+
+    const user = userEvent.setup();
+
+    await user.click(screen.getByText("Add"));
+    const count = screen.getByTestId("appointments-count");
+
+    expect(Number(count.textContent)).toBeGreaterThan(0);
+
+    await user.click(screen.getByText("Delete"));
+
     expect(Number(count.textContent)).toBeGreaterThanOrEqual(0);
   });
 });

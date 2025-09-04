@@ -1,5 +1,4 @@
 // src/hooks/usePatient.test.tsx
-
 import { renderHook, act } from "@testing-library/react";
 import React from "react";
 import { PatientContext, PatientContextType } from "../contexts/PatientContext";
@@ -19,24 +18,74 @@ describe("usePatient hook", () => {
     <PatientContext.Provider value={mockContext}>{children}</PatientContext.Provider>
   );
 
-  it("deve retornar o contexto de pacientes quando usado dentro do provider", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it("deve retornar o contexto de pacientes dentro do provider", () => {
     const { result } = renderHook(() => usePatient(), { wrapper });
     expect(result.current).toBe(mockContext);
+  });
+
+  it("deve chamar addPatient corretamente", () => {
+    const { result } = renderHook(() => usePatient(), { wrapper });
+
+    const newPatient: Omit<Patient, "id"> = {
+      name: "Paciente Teste",
+      cpf: "123.456.789-00",
+      dateOfBirth: "2000-01-01",
+      email: "teste@paciente.com",
+      phone: "11999999999",
+      address: "Rua Teste, 123",
+    };
 
     act(() => {
-      const newPatient: Patient = {
-        id: 1,
-        name: "Paciente Teste",
-        cpf: "123.456.789-00",
-        dateOfBirth: "2000-01-01",
-        email: "teste@paciente.com",
-        phone: "11999999999",
-        address: "Rua Teste, 123",
-      };
       result.current.addPatient(newPatient);
     });
 
-    expect(mockContext.addPatient).toHaveBeenCalled();
+    expect(mockContext.addPatient).toHaveBeenCalledWith(newPatient);
+  });
+
+  it("deve chamar updatePatient corretamente", () => {
+    const { result } = renderHook(() => usePatient(), { wrapper });
+
+    const updatedPatient: Patient = {
+      id: 1,
+      name: "Paciente Atualizado",
+      cpf: "123.456.789-00",
+      dateOfBirth: "2000-01-01",
+      email: "teste@paciente.com",
+      phone: "11999999999",
+      address: "Rua Teste, 123",
+    };
+
+    act(() => {
+      result.current.updatePatient(updatedPatient);
+    });
+
+    expect(mockContext.updatePatient).toHaveBeenCalledWith(updatedPatient);
+  });
+
+  it("deve chamar deletePatient corretamente", () => {
+    const { result } = renderHook(() => usePatient(), { wrapper });
+
+    act(() => {
+      result.current.deletePatient(1);
+    });
+
+    expect(mockContext.deletePatient).toHaveBeenCalledWith(1);
+  });
+
+  it("deve chamar updatePatientProfilePicture corretamente", () => {
+    const { result } = renderHook(() => usePatient(), { wrapper });
+
+    const profilePath = "/path/to/foto.png";
+
+    act(() => {
+      result.current.updatePatientProfilePicture(1, profilePath);
+    });
+
+    expect(mockContext.updatePatientProfilePicture).toHaveBeenCalledWith(1, profilePath);
   });
 
   it("deve lançar erro se usado fora do PatientProvider", () => {

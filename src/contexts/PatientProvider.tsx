@@ -1,5 +1,4 @@
 // src/contexts/PatientProvider.tsx
-
 import React, { useState } from "react";
 import { PatientContext } from "./PatientContext";
 import type { Patient } from "../types/Patient";
@@ -12,8 +11,14 @@ interface Props {
 export const PatientProvider: React.FC<Props> = ({ children }) => {
   const [patients, setPatients] = useState<Patient[]>(patientsMock);
 
-  const addPatient = (patient: Patient) => {
-    setPatients((prev) => [...prev, patient]);
+  // Agora aceita Omit<Patient, "id"> e gera id automaticamente
+  const addPatient = (patient: Omit<Patient, "id">) => {
+    const newPatient: Patient = {
+      id: patients.length ? Math.max(...patients.map((p) => p.id)) + 1 : 1,
+      ...patient,
+    };
+    setPatients((prev) => [...prev, newPatient]);
+    return newPatient;
   };
 
   const updatePatient = (updated: Patient) => {

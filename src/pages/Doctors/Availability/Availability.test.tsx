@@ -1,5 +1,7 @@
 // src/pages/Doctor/Availability/Availability.test.tsx
 
+// src/pages/Doctor/Availability/Availability.test.tsx
+
 import { render, screen, fireEvent } from "@testing-library/react";
 import { useNavigate } from "react-router-dom";
 import { useDoctor } from "../../../hooks/useDoctor";
@@ -30,29 +32,33 @@ describe("Availability Component", () => {
     (useNavigate as jest.Mock).mockReturnValue(navigateMock);
   });
 
-  it("renderiza a tabela com disponibilidades e nomes dos médicos", () => {
+  it("renderiza corretamente a tabela com disponibilidades ordenadas por data/hora", () => {
     render(<Availability availabilities={availabilitiesMock} />);
-
     expect(screen.getByText("Disponibilidade dos Médicos")).toBeInTheDocument();
 
-    // Verifica se os médicos aparecem corretos e ordenados por data/hora
     const rows = screen.getAllByRole("row");
-    // header + 2 rows
+    // header + 2 linhas de dados
     expect(rows).toHaveLength(3);
 
-    expect(screen.getByText("Dr. Ana")).toBeInTheDocument();
-    expect(screen.getByText("22/08/2025")).toBeInTheDocument();
-    expect(screen.getByText("09:00")).toBeInTheDocument();
-    expect(screen.getByText("Sim")).toBeInTheDocument();
+    // Verifica os dados da primeira disponibilidade (ordenada)
+    const firstRowCells = rows[1].querySelectorAll("td");
+    expect(firstRowCells[0].textContent).toBe("Dr. Ana");
+    expect(firstRowCells[1].textContent).toBe(new Date("2025-08-21").toLocaleDateString("pt-BR"));
+    expect(firstRowCells[2].textContent).toBe("14:00");
+    expect(firstRowCells[4].textContent).toBe("Não");
 
-    expect(screen.getByText("Dr. João")).toBeInTheDocument();
-    expect(screen.getByText("21/08/2025")).toBeInTheDocument();
-    expect(screen.getByText("14:00")).toBeInTheDocument();
-    expect(screen.getByText("Não")).toBeInTheDocument();
+    // Verifica a segunda linha
+    const secondRowCells = rows[2].querySelectorAll("td");
+    expect(secondRowCells[0].textContent).toBe("Dr. João");
+    expect(secondRowCells[1].textContent).toBe(new Date("2025-08-22").toLocaleDateString("pt-BR"));
+    expect(secondRowCells[2].textContent).toBe("09:00");
+    expect(secondRowCells[4].textContent).toBe("Sim");
   });
 
   it("mostra ID do médico se não encontrado no hook", () => {
-    const unknownAvailabilities = [{ doctorId: 999, date: "2025-08-23", startTime: "08:00", endTime: "09:00", isAvailable: true }];
+    const unknownAvailabilities = [
+      { doctorId: 999, date: "2025-08-23", startTime: "08:00", endTime: "09:00", isAvailable: true }
+    ];
     render(<Availability availabilities={unknownAvailabilities} />);
     expect(screen.getByText("ID 999")).toBeInTheDocument();
   });
@@ -61,5 +67,11 @@ describe("Availability Component", () => {
     render(<Availability availabilities={availabilitiesMock} />);
     fireEvent.click(screen.getByText("Voltar"));
     expect(navigateMock).toHaveBeenCalledWith("/doctors");
+  });
+
+  it("exibe corretamente Disponível como 'Sim' ou 'Não'", () => {
+    render(<Availability availabilities={availabilitiesMock} />);
+    expect(screen.getByText("Sim")).toBeInTheDocument();
+    expect(screen.getByText("Não")).toBeInTheDocument();
   });
 });

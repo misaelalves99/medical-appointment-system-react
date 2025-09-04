@@ -4,45 +4,39 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import CreateAppointment from "./CreateAppointment";
 import { useAppointments } from "../../../hooks/useAppointments";
+import { usePatient } from "../../../hooks/usePatient";
+import { useDoctor } from "../../../hooks/useDoctor";
 import { useNavigate } from "react-router-dom";
 
-// Mock hooks
 jest.mock("../../../hooks/useAppointments");
-jest.mock("react-router-dom", () => ({
-  useNavigate: jest.fn(),
-}));
+jest.mock("../../../hooks/usePatient");
+jest.mock("../../../hooks/useDoctor");
+jest.mock("react-router-dom", () => ({ useNavigate: jest.fn() }));
 
 describe("CreateAppointment", () => {
   const mockAddAppointment = jest.fn();
   const mockNavigate = jest.fn();
 
-  // Pacientes, médicos e status com value como string
-  const patients = [
-    { value: "1", label: "João" },
-    { value: "2", label: "Maria" },
+  const mockPatients = [
+    { id: 1, name: "João" },
+    { id: 2, name: "Maria" },
   ];
 
-  const doctors = [
-    { value: "1", label: "Dr. Ana" },
-    { value: "2", label: "Dr. Carlos" },
-  ];
-
-  const statusOptions = [
-    { value: "0", label: "Agendada" },
-    { value: "1", label: "Confirmada" },
+  const mockDoctors = [
+    { id: 1, name: "Dr. Ana" },
+    { id: 2, name: "Dr. Carlos" },
   ];
 
   beforeEach(() => {
-    (useAppointments as jest.Mock).mockReturnValue({
-      addAppointment: mockAddAppointment,
-    });
+    (useAppointments as jest.Mock).mockReturnValue({ addAppointment: mockAddAppointment });
+    (usePatient as jest.Mock).mockReturnValue({ patients: mockPatients });
+    (useDoctor as jest.Mock).mockReturnValue({ doctors: mockDoctors });
     (useNavigate as jest.Mock).mockReturnValue(mockNavigate);
     jest.clearAllMocks();
   });
 
   it("renderiza todos os campos e botões", () => {
-    render(<CreateAppointment patients={patients} doctors={doctors} statusOptions={statusOptions} />);
-
+    render(<CreateAppointment />);
     expect(screen.getByLabelText("Paciente")).toBeInTheDocument();
     expect(screen.getByLabelText("Médico")).toBeInTheDocument();
     expect(screen.getByLabelText("Data da Consulta")).toBeInTheDocument();
@@ -53,7 +47,7 @@ describe("CreateAppointment", () => {
   });
 
   it("atualiza os valores do formulário ao digitar/selecionar", async () => {
-    render(<CreateAppointment patients={patients} doctors={doctors} statusOptions={statusOptions} />);
+    render(<CreateAppointment />);
 
     const patientSelect = screen.getByLabelText("Paciente") as HTMLSelectElement;
     const doctorSelect = screen.getByLabelText("Médico") as HTMLSelectElement;
@@ -75,7 +69,7 @@ describe("CreateAppointment", () => {
   });
 
   it("chama addAppointment e navegação ao submeter o formulário", async () => {
-    render(<CreateAppointment patients={patients} doctors={doctors} statusOptions={statusOptions} />);
+    render(<CreateAppointment />);
 
     await userEvent.selectOptions(screen.getByLabelText("Paciente"), "1");
     await userEvent.selectOptions(screen.getByLabelText("Médico"), "2");
@@ -87,9 +81,9 @@ describe("CreateAppointment", () => {
 
     expect(mockAddAppointment).toHaveBeenCalledWith({
       patientId: 1,
-      patientName: "",
+      patientName: "João",
       doctorId: 2,
-      doctorName: "",
+      doctorName: "Dr. Carlos",
       appointmentDate: "2025-08-21T14:00",
       status: 0,
       notes: "Observação teste",
@@ -99,8 +93,7 @@ describe("CreateAppointment", () => {
   });
 
   it("botão cancelar navega sem chamar addAppointment", async () => {
-    render(<CreateAppointment patients={patients} doctors={doctors} statusOptions={statusOptions} />);
-
+    render(<CreateAppointment />);
     await userEvent.click(screen.getByText("Cancelar"));
 
     expect(mockAddAppointment).not.toHaveBeenCalled();

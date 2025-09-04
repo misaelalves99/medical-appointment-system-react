@@ -47,13 +47,27 @@ describe("DoctorList Component", () => {
     expect(screen.getByText("Dra. Exemplo")).toBeInTheDocument();
   });
 
-  it("filtra médicos com base no input de pesquisa", () => {
+  it("filtra médicos pelo input de pesquisa", () => {
     render(<DoctorList />);
-    const input = screen.getByPlaceholderText("Pesquisar médicos...");
+    const input = screen.getByPlaceholderText(
+      "Pesquisar por ID, Nome, CRM, Especialidade ou Status..."
+    );
+
+    // filtra por especialidade
     fireEvent.change(input, { target: { value: "Cardiologia" } });
     expect(screen.getByText("Dr. Teste")).toBeInTheDocument();
     expect(screen.queryByText("Dra. Exemplo")).not.toBeInTheDocument();
 
+    // filtra por status "Não"
+    fireEvent.change(input, { target: { value: "Não" } });
+    expect(screen.getByText("Dra. Exemplo")).toBeInTheDocument();
+    expect(screen.queryByText("Dr. Teste")).not.toBeInTheDocument();
+
+    // filtra por ID
+    fireEvent.change(input, { target: { value: "1" } });
+    expect(screen.getByText("Dr. Teste")).toBeInTheDocument();
+
+    // filtra por texto inexistente
     fireEvent.change(input, { target: { value: "NãoExiste" } });
     expect(screen.getByText("Nenhum médico encontrado.")).toBeInTheDocument();
   });
@@ -64,8 +78,9 @@ describe("DoctorList Component", () => {
     expect(navigateMock).toHaveBeenCalledWith("/doctors/create");
   });
 
-  it("botões de Detalhes, Editar e Excluir chamam navigate com os links corretos", () => {
+  it("botões Detalhes, Editar e Excluir chamam navigate corretamente", () => {
     render(<DoctorList />);
+
     fireEvent.click(screen.getAllByText("Detalhes")[0]);
     expect(navigateMock).toHaveBeenCalledWith("/doctors/details/1");
 

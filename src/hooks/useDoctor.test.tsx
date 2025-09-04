@@ -17,10 +17,17 @@ describe("useDoctor hook", () => {
     <DoctorContext.Provider value={mockContext}>{children}</DoctorContext.Provider>
   );
 
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   it("deve retornar o contexto de doctors", () => {
     const { result } = renderHook(() => useDoctor(), { wrapper });
-
     expect(result.current).toBe(mockContext);
+  });
+
+  it("deve chamar addDoctor corretamente", () => {
+    const { result } = renderHook(() => useDoctor(), { wrapper });
 
     act(() => {
       result.current.addDoctor({
@@ -45,5 +52,43 @@ describe("useDoctor hook", () => {
       phone: "11999999999",
       isActive: true,
     });
+  });
+
+  it("deve chamar updateDoctor corretamente", () => {
+    const { result } = renderHook(() => useDoctor(), { wrapper });
+
+    act(() => {
+      result.current.updateDoctor({
+        id: 1,
+        name: "Dr. Atualizado",
+        fullName: "Dr. Teste Completo",
+        crm: "123456",
+        specialty: "Cardio",
+        email: "teste@doc.com",
+        phone: "11999999999",
+        isActive: true,
+      });
+    });
+
+    expect(mockContext.updateDoctor).toHaveBeenCalledWith({
+      id: 1,
+      name: "Dr. Atualizado",
+      fullName: "Dr. Teste Completo",
+      crm: "123456",
+      specialty: "Cardio",
+      email: "teste@doc.com",
+      phone: "11999999999",
+      isActive: true,
+    });
+  });
+
+  it("deve chamar removeDoctor corretamente", () => {
+    const { result } = renderHook(() => useDoctor(), { wrapper });
+
+    act(() => {
+      result.current.removeDoctor(1);
+    });
+
+    expect(mockContext.removeDoctor).toHaveBeenCalledWith(1);
   });
 });

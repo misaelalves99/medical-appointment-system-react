@@ -1,5 +1,3 @@
-// src/pages/Appointments/CalendarAppointments.test.tsx
-
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import CalendarAppointments from "./CalendarAppointments";
@@ -7,7 +5,6 @@ import { useAppointments } from "../../../hooks/useAppointments";
 import { useNavigate } from "react-router-dom";
 import { AppointmentStatus } from "../../../types/Appointment";
 
-// Mock hooks
 jest.mock("../../../hooks/useAppointments");
 jest.mock("react-router-dom", () => ({
   useNavigate: jest.fn(),
@@ -32,7 +29,7 @@ describe("CalendarAppointments", () => {
     expect(screen.getByText("Nenhuma consulta cadastrada.")).toBeInTheDocument();
   });
 
-  it("renderiza consultas e ordena por data", () => {
+  it("renderiza consultas e ordena por data com todos os campos", () => {
     const appointmentsMock = [
       {
         id: 2,
@@ -59,15 +56,19 @@ describe("CalendarAppointments", () => {
     render(<CalendarAppointments />);
 
     const rows = screen.getAllByRole("row");
-    // 1 header + 2 appointments = 3
-    expect(rows).toHaveLength(3);
+    expect(rows).toHaveLength(3); // 1 header + 2 appointments
 
-    // Verifica ordem da primeira consulta
+    // Conferindo valores formatados
+    expect(screen.getByText("18/08/2025")).toBeInTheDocument();
+    expect(screen.getByText("14:30")).toBeInTheDocument();
     expect(screen.getByText("Maria")).toBeInTheDocument();
-    expect(screen.getByText("João")).toBeInTheDocument();
-
-    // Verifica status
+    expect(screen.getByText("Dr. Pedro")).toBeInTheDocument();
     expect(screen.getByText("Confirmada")).toBeInTheDocument();
+
+    expect(screen.getByText("20/08/2025")).toBeInTheDocument();
+    expect(screen.getByText("10:00")).toBeInTheDocument();
+    expect(screen.getByText("João")).toBeInTheDocument();
+    expect(screen.getByText("Dr. Ana")).toBeInTheDocument();
     expect(screen.getByText("Agendada")).toBeInTheDocument();
   });
 
@@ -100,5 +101,27 @@ describe("CalendarAppointments", () => {
 
     expect(screen.getByText("ID 5")).toBeInTheDocument();
     expect(screen.getByText("ID 10")).toBeInTheDocument();
+  });
+
+  it("exibe 'Desconhecido' quando status não é válido", () => {
+    // Tipo temporário para simular status inválido
+    const invalidStatus: unknown = "invalid-status";
+
+    const appointmentsMock = [
+      {
+        id: 1,
+        patientId: 1,
+        patientName: "Teste",
+        doctorId: 2,
+        doctorName: "Dr. Teste",
+        appointmentDate: "2025-08-18T14:30:00Z",
+        status: invalidStatus as AppointmentStatus,
+      },
+    ];
+    (useAppointments as jest.Mock).mockReturnValue({ appointments: appointmentsMock });
+
+    render(<CalendarAppointments />);
+
+    expect(screen.getByText("Desconhecido")).toBeInTheDocument();
   });
 });

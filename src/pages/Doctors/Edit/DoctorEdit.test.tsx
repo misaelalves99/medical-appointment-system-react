@@ -1,6 +1,6 @@
 // src/pages/Doctors/Edit/DoctorEdit.test.tsx
 
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDoctor } from "../../../hooks/useDoctor";
 import DoctorEdit from "./DoctorEdit";
@@ -40,21 +40,19 @@ describe("DoctorEdit Component", () => {
     expect(screen.getByText("Carregando...")).toBeInTheDocument();
   });
 
-  it("renderiza corretamente o formulário com dados do médico", async () => {
+  it("renderiza o formulário com dados do médico", () => {
     render(<DoctorEdit />);
-    await waitFor(() => {
-      expect(screen.getByDisplayValue(doctorExample.name)).toBeInTheDocument();
-      expect(screen.getByDisplayValue(doctorExample.crm)).toBeInTheDocument();
-      expect(screen.getByDisplayValue(doctorExample.specialty)).toBeInTheDocument();
-      expect(screen.getByDisplayValue(doctorExample.email)).toBeInTheDocument();
-      expect(screen.getByDisplayValue(doctorExample.phone)).toBeInTheDocument();
-      expect(screen.getByRole("checkbox")).toBeChecked();
-    });
+    expect(screen.getByDisplayValue(doctorExample.name)).toBeInTheDocument();
+    expect(screen.getByDisplayValue(doctorExample.crm)).toBeInTheDocument();
+    expect(screen.getByDisplayValue(doctorExample.specialty)).toBeInTheDocument();
+    expect(screen.getByDisplayValue(doctorExample.email)).toBeInTheDocument();
+    expect(screen.getByDisplayValue(doctorExample.phone)).toBeInTheDocument();
+    expect(screen.getByRole("checkbox")).toBeChecked();
   });
 
-  it("atualiza os valores do formulário ao digitar nos inputs", async () => {
+  it("atualiza os valores do formulário ao digitar nos inputs e alterar checkbox", () => {
     render(<DoctorEdit />);
-    const nameInput = await screen.findByDisplayValue(doctorExample.name);
+    const nameInput = screen.getByDisplayValue(doctorExample.name);
     fireEvent.change(nameInput, { target: { value: "Dr. Alterado" } });
     expect(nameInput).toHaveValue("Dr. Alterado");
 
@@ -63,17 +61,15 @@ describe("DoctorEdit Component", () => {
     expect(checkbox.checked).toBe(false);
   });
 
-  it("chama updateDoctor e navigate ao enviar o formulário", async () => {
+  it("chama updateDoctor e navigate ao enviar o formulário", () => {
     render(<DoctorEdit />);
     fireEvent.click(screen.getByText("Salvar Alterações"));
 
-    await waitFor(() => {
-      expect(updateDoctorMock).toHaveBeenCalledWith(doctorExample);
-      expect(navigateMock).toHaveBeenCalledWith("/doctors");
-    });
+    expect(updateDoctorMock).toHaveBeenCalledWith(doctorExample);
+    expect(navigateMock).toHaveBeenCalledWith("/doctors");
   });
 
-  it("botão Cancelar chama navigate com /doctors", async () => {
+  it("botão Cancelar chama navigate com /doctors", () => {
     render(<DoctorEdit />);
     fireEvent.click(screen.getByText("Cancelar"));
     expect(navigateMock).toHaveBeenCalledWith("/doctors");

@@ -17,14 +17,42 @@ describe("useSpecialty hook", () => {
     <SpecialtyContext.Provider value={mockContext}>{children}</SpecialtyContext.Provider>
   );
 
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   it("deve retornar o contexto de especialidades", () => {
     const { result } = renderHook(() => useSpecialty(), { wrapper });
     expect(result.current).toBe(mockContext);
+  });
+
+  it("deve chamar addSpecialty corretamente", () => {
+    const { result } = renderHook(() => useSpecialty(), { wrapper });
 
     act(() => {
       result.current.addSpecialty("Cardiologia");
     });
 
     expect(mockContext.addSpecialty).toHaveBeenCalledWith("Cardiologia");
+  });
+
+  it("deve chamar updateSpecialty corretamente", () => {
+    const { result } = renderHook(() => useSpecialty(), { wrapper });
+
+    act(() => {
+      result.current.updateSpecialty(1, "Neurologia");
+    });
+
+    expect(mockContext.updateSpecialty).toHaveBeenCalledWith(1, "Neurologia");
+  });
+
+  it("deve chamar removeSpecialty corretamente", () => {
+    const { result } = renderHook(() => useSpecialty(), { wrapper });
+
+    act(() => {
+      result.current.removeSpecialty(1);
+    });
+
+    expect(mockContext.removeSpecialty).toHaveBeenCalledWith(1);
   });
 });

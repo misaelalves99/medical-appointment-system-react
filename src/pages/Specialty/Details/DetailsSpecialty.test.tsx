@@ -14,6 +14,9 @@ jest.mock('react-router-dom', () => ({
   Link: ({ children, to }: { children: React.ReactNode; to: string }) => <a href={to}>{children}</a>,
 }));
 
+const mockedUseSpecialty = useSpecialty as jest.MockedFunction<typeof useSpecialty>;
+const mockedUseParams = useParams as jest.Mock;
+
 describe('DetailsSpecialty', () => {
   const addSpecialtyMock = jest.fn();
   const updateSpecialtyMock = jest.fn();
@@ -24,7 +27,7 @@ describe('DetailsSpecialty', () => {
   beforeEach(() => {
     jest.clearAllMocks();
 
-    (useSpecialty as jest.MockedFunction<typeof useSpecialty>).mockReturnValue({
+    mockedUseSpecialty.mockReturnValue({
       specialties,
       addSpecialty: addSpecialtyMock,
       updateSpecialty: updateSpecialtyMock,
@@ -33,9 +36,8 @@ describe('DetailsSpecialty', () => {
   });
 
   it('deve mostrar mensagem se especialidade não for encontrada', () => {
-    (useParams as jest.Mock).mockReturnValue({ id: '999' });
-
-    (useSpecialty as jest.MockedFunction<typeof useSpecialty>).mockReturnValue({
+    mockedUseParams.mockReturnValue({ id: '999' });
+    mockedUseSpecialty.mockReturnValue({
       specialties: [],
       addSpecialty: addSpecialtyMock,
       updateSpecialty: updateSpecialtyMock,
@@ -52,7 +54,7 @@ describe('DetailsSpecialty', () => {
   });
 
   it('deve renderizar especialidade corretamente', () => {
-    (useParams as jest.Mock).mockReturnValue({ id: '1' });
+    mockedUseParams.mockReturnValue({ id: '1' });
 
     render(
       <MemoryRouter>
@@ -61,12 +63,12 @@ describe('DetailsSpecialty', () => {
     );
 
     expect(screen.getByText(/detalhes da especialidade/i)).toBeInTheDocument();
-    expect(screen.getByText(/id: 1/i)).toBeInTheDocument();
-    expect(screen.getByText(/cardiologia/i)).toBeInTheDocument();
+    expect(screen.getByText(/id:/i)).toHaveTextContent('ID: 1');
+    expect(screen.getByText(/nome:/i)).toHaveTextContent('Nome: Cardiologia');
   });
 
   it('deve ter links de editar e voltar com href corretos', () => {
-    (useParams as jest.Mock).mockReturnValue({ id: '1' });
+    mockedUseParams.mockReturnValue({ id: '1' });
 
     render(
       <MemoryRouter>

@@ -2,7 +2,10 @@
 
 import { renderHook, act } from "@testing-library/react";
 import React from "react";
-import { AppointmentsContext, AppointmentsContextType } from "../contexts/AppointmentsContext";
+import {
+  AppointmentsContext,
+  AppointmentsContextType,
+} from "../contexts/AppointmentsContext";
 import { useAppointments } from "./useAppointments";
 import { AppointmentStatus } from "../types/Appointment";
 
@@ -17,16 +20,24 @@ describe("useAppointments hook", () => {
   };
 
   const wrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-    <AppointmentsContext.Provider value={mockContext}>{children}</AppointmentsContext.Provider>
+    <AppointmentsContext.Provider value={mockContext}>
+      {children}
+    </AppointmentsContext.Provider>
   );
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
 
   it("deve retornar o contexto de appointments", () => {
     const { result } = renderHook(() => useAppointments(), { wrapper });
-
     expect(result.current).toBe(mockContext);
+  });
+
+  it("deve chamar addAppointment corretamente", () => {
+    const { result } = renderHook(() => useAppointments(), { wrapper });
 
     act(() => {
-      // ✅ Removido o 'id', pois addAppointment espera Omit<Appointment, "id">
       result.current.addAppointment({
         patientId: 1,
         doctorId: 1,
@@ -41,5 +52,57 @@ describe("useAppointments hook", () => {
       appointmentDate: "2025-01-01",
       status: AppointmentStatus.Scheduled,
     });
+  });
+
+  it("deve chamar updateAppointment corretamente", () => {
+    const { result } = renderHook(() => useAppointments(), { wrapper });
+
+    act(() => {
+      result.current.updateAppointment({
+        id: 1,
+        patientId: 1,
+        doctorId: 1,
+        appointmentDate: "2025-01-01",
+        status: AppointmentStatus.Completed,
+      });
+    });
+
+    expect(mockContext.updateAppointment).toHaveBeenCalledWith({
+      id: 1,
+      patientId: 1,
+      doctorId: 1,
+      appointmentDate: "2025-01-01",
+      status: AppointmentStatus.Completed,
+    });
+  });
+
+  it("deve chamar deleteAppointment corretamente", () => {
+    const { result } = renderHook(() => useAppointments(), { wrapper });
+
+    act(() => {
+      result.current.deleteAppointment(1);
+    });
+
+    expect(mockContext.deleteAppointment).toHaveBeenCalledWith(1);
+  });
+
+  it("deve chamar confirmAppointment corretamente", () => {
+    const { result } = renderHook(() => useAppointments(), { wrapper });
+
+    act(() => {
+      result.current.confirmAppointment(1);
+    });
+
+    expect(mockContext.confirmAppointment).toHaveBeenCalledWith(1);
+  });
+
+  it("deve chamar cancelAppointment corretamente", () => {
+    const { result } = renderHook(() => useAppointments(), { wrapper });
+
+    act(() => {
+      result.current.cancelAppointment(1);
+    });
+
+    expect(mockContext.cancelAppointment).toHaveBeenCalledWith(1);
   });
 });
