@@ -74,7 +74,7 @@ describe("CreateAppointment", () => {
     await userEvent.selectOptions(screen.getByLabelText("Paciente"), "1");
     await userEvent.selectOptions(screen.getByLabelText("Médico"), "2");
     await userEvent.type(screen.getByLabelText("Data da Consulta"), "2025-08-21T14:00");
-    await userEvent.selectOptions(screen.getByLabelText("Status"), "0");
+    await userEvent.selectOptions(screen.getByLabelText("Status"), "1"); // "1" = Agendado
     await userEvent.type(screen.getByLabelText("Observações"), "Observação teste");
 
     await userEvent.click(screen.getByText("Salvar"));
@@ -85,7 +85,7 @@ describe("CreateAppointment", () => {
       doctorId: 2,
       doctorName: "Dr. Carlos",
       appointmentDate: "2025-08-21T14:00",
-      status: 0,
+      status: 1, // number coerced do select
       notes: "Observação teste",
     });
 

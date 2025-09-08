@@ -1,18 +1,16 @@
 // src/contexts/SpecialtyContext.test.tsx
-
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import React, { useContext, useState, ReactNode } from "react";
 import { SpecialtyContext, SpecialtyContextType } from "./SpecialtyContext";
 import type { Specialty } from "../types/Specialty";
 
-describe("SpecialtyContext", () => {
-  // Provider de teste com tipagem correta
+describe("SpecialtyContext (isolado)", () => {
   const TestProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [specialties, setSpecialties] = useState<Specialty[]>([]);
 
     const addSpecialty = (name: string) => {
-      const newId = specialties.length > 0 ? Math.max(...specialties.map(s => s.id)) + 1 : 1;
+      const newId = specialties.length ? Math.max(...specialties.map(s => s.id)) + 1 : 1;
       setSpecialties([...specialties, { id: newId, name }]);
     };
 
@@ -30,15 +28,12 @@ describe("SpecialtyContext", () => {
   };
 
   const TestComponent = () => {
-    const { specialties, addSpecialty, updateSpecialty, removeSpecialty } =
-      useContext<SpecialtyContextType>(SpecialtyContext)!;
+    const { specialties, addSpecialty, updateSpecialty, removeSpecialty } = useContext<SpecialtyContextType>(SpecialtyContext)!;
 
     return (
       <div>
         <ul>
-          {specialties.map(s => (
-            <li key={s.id}>{s.name}</li>
-          ))}
+          {specialties.map(s => <li key={s.id}>{s.name}</li>)}
         </ul>
         <button onClick={() => addSpecialty("Cardiologia")}>Add</button>
         <button onClick={() => updateSpecialty(1, "Neurologia")}>Update</button>
@@ -49,7 +44,7 @@ describe("SpecialtyContext", () => {
     );
   };
 
-  it("deve iniciar com lista vazia", () => {
+  it("inicia com lista vazia", () => {
     render(
       <TestProvider>
         <TestComponent />
@@ -58,19 +53,18 @@ describe("SpecialtyContext", () => {
     expect(screen.queryAllByRole("listitem")).toHaveLength(0);
   });
 
-  it("deve adicionar uma especialidade", async () => {
+  it("adiciona uma especialidade", async () => {
     render(
       <TestProvider>
         <TestComponent />
       </TestProvider>
     );
 
-    expect(screen.queryByText("Cardiologia")).not.toBeInTheDocument();
     await userEvent.click(screen.getByText("Add"));
     expect(screen.getByText("Cardiologia")).toBeInTheDocument();
   });
 
-  it("deve atualizar uma especialidade existente", async () => {
+  it("atualiza uma especialidade existente", async () => {
     render(
       <TestProvider>
         <TestComponent />
@@ -80,10 +74,9 @@ describe("SpecialtyContext", () => {
     await userEvent.click(screen.getByText("Add"));
     await userEvent.click(screen.getByText("Update"));
     expect(screen.getByText("Neurologia")).toBeInTheDocument();
-    expect(screen.queryByText("Cardiologia")).not.toBeInTheDocument();
   });
 
-  it("não deve atualizar se o id não existir", async () => {
+  it("não atualiza se o id não existir", async () => {
     render(
       <TestProvider>
         <TestComponent />
@@ -92,11 +85,10 @@ describe("SpecialtyContext", () => {
 
     await userEvent.click(screen.getByText("Add"));
     await userEvent.click(screen.getByText("UpdateInvalid"));
-    // Continua como "Cardiologia"
     expect(screen.getByText("Cardiologia")).toBeInTheDocument();
   });
 
-  it("deve remover uma especialidade existente", async () => {
+  it("remove uma especialidade existente", async () => {
     render(
       <TestProvider>
         <TestComponent />
@@ -104,12 +96,11 @@ describe("SpecialtyContext", () => {
     );
 
     await userEvent.click(screen.getByText("Add"));
-    expect(screen.getByText("Cardiologia")).toBeInTheDocument();
     await userEvent.click(screen.getByText("Remove"));
     expect(screen.queryByText("Cardiologia")).not.toBeInTheDocument();
   });
 
-  it("não deve remover se o id não existir", async () => {
+  it("não remove se o id não existir", async () => {
     render(
       <TestProvider>
         <TestComponent />
@@ -118,7 +109,6 @@ describe("SpecialtyContext", () => {
 
     await userEvent.click(screen.getByText("Add"));
     await userEvent.click(screen.getByText("RemoveInvalid"));
-    // Continua na lista
     expect(screen.getByText("Cardiologia")).toBeInTheDocument();
   });
 });

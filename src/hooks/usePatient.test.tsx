@@ -25,6 +25,7 @@ describe("usePatient hook", () => {
   it("deve retornar o contexto de pacientes dentro do provider", () => {
     const { result } = renderHook(() => usePatient(), { wrapper });
     expect(result.current).toBe(mockContext);
+    expect(result.current.patients).toEqual([]);
   });
 
   it("deve chamar addPatient corretamente", () => {
@@ -39,11 +40,10 @@ describe("usePatient hook", () => {
       address: "Rua Teste, 123",
     };
 
-    act(() => {
-      result.current.addPatient(newPatient);
-    });
+    act(() => result.current.addPatient(newPatient));
 
     expect(mockContext.addPatient).toHaveBeenCalledWith(newPatient);
+    expect(mockContext.addPatient).toHaveBeenCalledTimes(1);
   });
 
   it("deve chamar updatePatient corretamente", () => {
@@ -59,21 +59,19 @@ describe("usePatient hook", () => {
       address: "Rua Teste, 123",
     };
 
-    act(() => {
-      result.current.updatePatient(updatedPatient);
-    });
+    act(() => result.current.updatePatient(updatedPatient));
 
     expect(mockContext.updatePatient).toHaveBeenCalledWith(updatedPatient);
+    expect(mockContext.updatePatient).toHaveBeenCalledTimes(1);
   });
 
   it("deve chamar deletePatient corretamente", () => {
     const { result } = renderHook(() => usePatient(), { wrapper });
 
-    act(() => {
-      result.current.deletePatient(1);
-    });
+    act(() => result.current.deletePatient(1));
 
     expect(mockContext.deletePatient).toHaveBeenCalledWith(1);
+    expect(mockContext.deletePatient).toHaveBeenCalledTimes(1);
   });
 
   it("deve chamar updatePatientProfilePicture corretamente", () => {
@@ -81,15 +79,15 @@ describe("usePatient hook", () => {
 
     const profilePath = "/path/to/foto.png";
 
-    act(() => {
-      result.current.updatePatientProfilePicture(1, profilePath);
-    });
+    act(() => result.current.updatePatientProfilePicture(1, profilePath));
 
     expect(mockContext.updatePatientProfilePicture).toHaveBeenCalledWith(1, profilePath);
+    expect(mockContext.updatePatientProfilePicture).toHaveBeenCalledTimes(1);
   });
 
   it("deve lançar erro se usado fora do PatientProvider", () => {
-    expect(() => usePatient()).toThrow(
+    const { result } = renderHook(() => usePatient());
+    expect(() => result.current).toThrow(
       new Error("usePatient deve ser usado dentro de um PatientProvider")
     );
   });

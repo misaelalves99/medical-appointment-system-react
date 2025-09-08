@@ -29,7 +29,7 @@ describe("ConfirmAppointment", () => {
     expect(screen.getByText("Consulta não encontrada.")).toBeInTheDocument();
   });
 
-  it("renderiza detalhes da consulta corretamente com data formatada", () => {
+  it("renderiza detalhes da consulta corretamente", () => {
     (useParams as jest.Mock).mockReturnValue({ id: "1" });
     (useAppointments as jest.Mock).mockReturnValue({
       appointments: [
@@ -49,7 +49,15 @@ describe("ConfirmAppointment", () => {
     expect(screen.getByText("Confirmar Consulta")).toBeInTheDocument();
     expect(screen.getByText(/João/)).toBeInTheDocument();
     expect(screen.getByText(/Dra. Ana/)).toBeInTheDocument();
-    expect(screen.getByText("21/08/2025 10:30:00") || screen.getByText(/21\/08\/2025/)).toBeInTheDocument();
+
+    // Verifica data/hora aproximada
+    expect(screen.getByText(/21\/08\/2025/)).toBeInTheDocument();
+    expect(screen.getByText(/10:30/)).toBeInTheDocument();
+
+    // Conferindo itens do UL
+    expect(screen.getByText(/Data e Hora:/)).toBeInTheDocument();
+    expect(screen.getByText(/Paciente:/)).toBeInTheDocument();
+    expect(screen.getByText(/Médico:/)).toBeInTheDocument();
   });
 
   it("chama confirmAppointment e navigate ao confirmar", async () => {

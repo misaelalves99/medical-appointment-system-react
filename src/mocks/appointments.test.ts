@@ -1,5 +1,4 @@
 // src/mocks/appointments.test.ts
-
 import { appointmentsMock } from "./appointments";
 import { AppointmentStatus } from "../types/Appointment";
 
@@ -20,11 +19,15 @@ describe("appointmentsMock", () => {
       expect(appointment).toHaveProperty("notes");
 
       expect(typeof appointment.id).toBe("number");
+      expect(appointment.id).toBeGreaterThan(0);
       expect(typeof appointment.patientId).toBe("number");
+      expect(appointment.patientId).toBeGreaterThan(0);
       expect(typeof appointment.patientName).toBe("string");
       expect(typeof appointment.doctorId).toBe("number");
+      expect(appointment.doctorId).toBeGreaterThan(0);
       expect(typeof appointment.doctorName).toBe("string");
       expect(typeof appointment.appointmentDate).toBe("string");
+      expect(!isNaN(Date.parse(appointment.appointmentDate))).toBe(true); // Data válida
       expect(typeof appointment.notes).toBe("string");
       expect(Object.values(AppointmentStatus)).toContain(appointment.status);
     });

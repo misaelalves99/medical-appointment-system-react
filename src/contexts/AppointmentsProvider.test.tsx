@@ -61,7 +61,13 @@ const TestComponent = () => {
   );
 };
 
-describe("AppointmentsProvider", () => {
+describe("AppointmentsProvider (real provider)", () => {
+  let user: ReturnType<typeof userEvent.setup>;
+
+  beforeEach(() => {
+    user = userEvent.setup();
+  });
+
   it("loads initial state from appointmentsMock", () => {
     render(
       <AppointmentsProvider>
@@ -86,7 +92,6 @@ describe("AppointmentsProvider", () => {
       </AppointmentsProvider>
     );
 
-    const user = userEvent.setup();
     const count = screen.getByTestId("appointments-count");
     const initialCount = Number(count.textContent);
 
@@ -103,9 +108,6 @@ describe("AppointmentsProvider", () => {
       </AppointmentsProvider>
     );
 
-    const user = userEvent.setup();
-
-    // garante pelo menos 1 agendamento
     await user.click(screen.getByText("Add"));
     await user.click(screen.getByText("Update"));
 
@@ -118,8 +120,6 @@ describe("AppointmentsProvider", () => {
         <TestComponent />
       </AppointmentsProvider>
     );
-
-    const user = userEvent.setup();
 
     await user.click(screen.getByText("Add"));
     await user.click(screen.getByText("Confirm"));
@@ -136,8 +136,6 @@ describe("AppointmentsProvider", () => {
       </AppointmentsProvider>
     );
 
-    const user = userEvent.setup();
-
     await user.click(screen.getByText("Add"));
     await user.click(screen.getByText("Cancel"));
 
@@ -153,15 +151,11 @@ describe("AppointmentsProvider", () => {
       </AppointmentsProvider>
     );
 
-    const user = userEvent.setup();
-
     await user.click(screen.getByText("Add"));
     const count = screen.getByTestId("appointments-count");
-
     expect(Number(count.textContent)).toBeGreaterThan(0);
 
     await user.click(screen.getByText("Delete"));
-
     expect(Number(count.textContent)).toBeGreaterThanOrEqual(0);
   });
 });

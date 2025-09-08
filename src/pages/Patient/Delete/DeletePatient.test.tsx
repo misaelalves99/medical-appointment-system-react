@@ -1,57 +1,72 @@
 // src/pages/Patient/Delete/DeletePatient.test.tsx
 
-import { useEffect, useState } from "react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import { useNavigate, useParams } from "react-router-dom";
-import styles from "./DeletePatient.module.css";
-import type { Patient } from "../../../types/Patient";
 import { usePatient } from "../../../hooks/usePatient";
+import DeletePatient from "./DeletePatient";
 
-export default function DeletePatient() {
-  const navigate = useNavigate();
-  const { id } = useParams<{ id: string }>();
-  const { patients, deletePatient } = usePatient();
-  const [patient, setPatient] = useState<Patient | null | undefined>(undefined); // undefined = carregando
+jest.mock("../../../hooks/usePatient");
+jest.mock("react-router-dom", () => ({
+  useNavigate: jest.fn(),
+  useParams: jest.fn(),
+}));
 
-  useEffect(() => {
-    if (!id) {
-      setPatient(null);
-      return;
-    }
+describe("DeletePatient Component", () => {
+  const navigateMock = jest.fn();
+  const deletePatientMock = jest.fn();
+  const patientExample = {
+    id: 1,
+    name: "João Teste",
+    cpf: "12345678900",
+    dateOfBirth: "1990-01-01",
+    email: "teste@email.com",
+    phone: "999999999",
+    address: "Rua A",
+    gender: "Masculino",
+  };
 
-    const foundPatient = patients.find(p => p.id === Number(id)) || null;
-    setPatient(foundPatient);
-  }, [id, patients]);
+  beforeEach(() => {
+    jest.clearAllMocks();
+    (useNavigate as jest.Mock).mockReturnValue(navigateMock);
+    (usePatient as jest.Mock).mockReturnValue({
+      patients: [patientExample],
+      deletePatient: deletePatientMock,
+    });
+    (useParams as jest.Mock).mockReturnValue({ id: "1" });
+  });
 
-  function handleDelete() {
-    if (patient) {
-      deletePatient(patient.id);
-      console.log("Paciente excluído:", patient);
-      navigate("/patient");
-    }
-  }
+  it("mostra 'Carregando...' enquanto carrega o paciente", () => {
+    (usePatient as jest.Mock).mockReturnValue({ patients: [], deletePatient: deletePatientMock });
+    (useParams as jest.Mock).mockReturnValue({ id: "999" }); // id inexistente
+    render(<DeletePatient />);
+    expect(screen.getByText("Carregando...")).toBeInTheDocument();
+  });
 
-  if (patient === undefined) {
-    return <p>Carregando...</p>;
-  }
+  it("mostra 'Paciente não encontrado.' se não houver paciente com o id", () => {
+    (usePatient as jest.Mock).mockReturnValue({ patients: [], deletePatient: deletePatientMock });
+    (useParams as jest.Mock).mockReturnValue({ id: "999" });
+    render(<DeletePatient />);
+    expect(screen.getByText("Paciente não encontrado.")).toBeInTheDocument();
+  });
 
-  if (!patient) {
-    return <p>Paciente não encontrado.</p>;
-  }
+  it("renderiza o paciente corretamente", async () => {
+    render(<DeletePatient />);
+    expect(await screen.findByText("Confirmar Exclusão")).toBeInTheDocument();
+    expect(screen.getByText(/João Teste/)).toBeInTheDocument();
+    expect(screen.getByText("Excluir")).toBeInTheDocument();
+    expect(screen.getByText("Cancelar")).toBeInTheDocument();
+  });
 
-  return (
-    <div className={styles.container}>
-      <h1>Confirmar Exclusão</h1>
-      <p>
-        Tem certeza de que deseja excluir o paciente{" "}
-        <strong>{patient.name}</strong>?
-      </p>
+  it("chama deletePatient e navega ao clicar em 'Excluir'", async () => {
+    render(<DeletePatient />);
+    fireEvent.click(screen.getByText("Excluir"));
+    expect(deletePatientMock).toHaveBeenCalledWith(1);
+    expect(navigateMock).toHaveBeenCalledWith("/patient");
+  });
 
-      <button onClick={handleDelete} className={styles.deleteButton}>
-        Excluir
-      </button>
-      <button onClick={() => navigate("/patient")} className={styles.cancelButton}>
-        Cancelar
-      </button>
-    </div>
-  );
-}
+  it("botão 'Cancelar' chama navigate com /patient", async () => {
+    render(<DeletePatient />);
+    fireEvent.click(screen.getByText("Cancelar"));
+    expect(navigateMock).toHaveBeenCalledWith("/patient");
+  });
+});

@@ -13,26 +13,33 @@ export const SpecialtyProvider: React.FC<SpecialtyProviderProps> = ({ children }
   const [specialties, setSpecialties] = useState<Specialty[]>(specialtiesMock);
 
   const addSpecialty = (name: string) => {
-    const newId = specialties.length > 0 ? Math.max(...specialties.map(s => s.id)) + 1 : 1;
+    const newId =
+      specialties.length > 0 ? Math.max(...specialties.map((s) => s.id)) + 1 : 1;
+
     const newSpecialty: Specialty = { id: newId, name };
-    setSpecialties(prev => [...prev, newSpecialty]);
-    console.log("Nova especialidade adicionada:", newSpecialty);
+    setSpecialties((prev) => [...prev, newSpecialty]);
+
+    console.log("✅ Nova especialidade adicionada:", newSpecialty);
   };
 
   const updateSpecialty = (id: number, name: string) => {
-    setSpecialties(prev =>
-      prev.map(s => (s.id === id ? { ...s, name } : s))
+    setSpecialties((prev) =>
+      prev.map((s) => (s.id === id ? { ...s, name } : s))
     );
-    console.log("Especialidade atualizada:", { id, name });
+
+    console.log("✏️ Especialidade atualizada:", { id, name });
   };
 
   const removeSpecialty = (id: number) => {
-    setSpecialties(prev => prev.filter(s => s.id !== id));
-    console.log("Especialidade removida com id:", id);
+    setSpecialties((prev) => prev.filter((s) => s.id !== id));
+
+    console.log("🗑️ Especialidade removida com id:", id);
   };
 
   return (
-    <SpecialtyContext.Provider value={{ specialties, addSpecialty, updateSpecialty, removeSpecialty }}>
+    <SpecialtyContext.Provider
+      value={{ specialties, addSpecialty, updateSpecialty, removeSpecialty }}
+    >
       {children}
     </SpecialtyContext.Provider>
   );

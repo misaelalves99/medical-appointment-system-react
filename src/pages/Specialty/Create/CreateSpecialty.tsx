@@ -15,7 +15,7 @@ const CreateSpecialty: React.FC = () => {
     if (name.trim()) {
       addSpecialty(name.trim());
       setName("");
-      navigate("/specialty"); // redireciona após criar
+      navigate("/specialty");
     }
   };
 

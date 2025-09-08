@@ -1,5 +1,4 @@
 // src/hooks/useDoctor.test.tsx
-
 import { renderHook, act } from "@testing-library/react";
 import React from "react";
 import { DoctorContext, DoctorContextType } from "../contexts/DoctorContext";
@@ -24,25 +23,13 @@ describe("useDoctor hook", () => {
   it("deve retornar o contexto de doctors", () => {
     const { result } = renderHook(() => useDoctor(), { wrapper });
     expect(result.current).toBe(mockContext);
+    expect(result.current.doctors).toEqual([]);
   });
 
   it("deve chamar addDoctor corretamente", () => {
     const { result } = renderHook(() => useDoctor(), { wrapper });
 
-    act(() => {
-      result.current.addDoctor({
-        id: 1,
-        name: "Dr. Teste",
-        fullName: "Dr. Teste Completo",
-        crm: "123456",
-        specialty: "Cardio",
-        email: "teste@doc.com",
-        phone: "11999999999",
-        isActive: true,
-      });
-    });
-
-    expect(mockContext.addDoctor).toHaveBeenCalledWith({
+    const doctor = {
       id: 1,
       name: "Dr. Teste",
       fullName: "Dr. Teste Completo",
@@ -51,26 +38,18 @@ describe("useDoctor hook", () => {
       email: "teste@doc.com",
       phone: "11999999999",
       isActive: true,
-    });
+    };
+
+    act(() => result.current.addDoctor(doctor));
+
+    expect(mockContext.addDoctor).toHaveBeenCalledWith(doctor);
+    expect(mockContext.addDoctor).toHaveBeenCalledTimes(1);
   });
 
   it("deve chamar updateDoctor corretamente", () => {
     const { result } = renderHook(() => useDoctor(), { wrapper });
 
-    act(() => {
-      result.current.updateDoctor({
-        id: 1,
-        name: "Dr. Atualizado",
-        fullName: "Dr. Teste Completo",
-        crm: "123456",
-        specialty: "Cardio",
-        email: "teste@doc.com",
-        phone: "11999999999",
-        isActive: true,
-      });
-    });
-
-    expect(mockContext.updateDoctor).toHaveBeenCalledWith({
+    const updatedDoctor = {
       id: 1,
       name: "Dr. Atualizado",
       fullName: "Dr. Teste Completo",
@@ -79,16 +58,20 @@ describe("useDoctor hook", () => {
       email: "teste@doc.com",
       phone: "11999999999",
       isActive: true,
-    });
+    };
+
+    act(() => result.current.updateDoctor(updatedDoctor));
+
+    expect(mockContext.updateDoctor).toHaveBeenCalledWith(updatedDoctor);
+    expect(mockContext.updateDoctor).toHaveBeenCalledTimes(1);
   });
 
   it("deve chamar removeDoctor corretamente", () => {
     const { result } = renderHook(() => useDoctor(), { wrapper });
 
-    act(() => {
-      result.current.removeDoctor(1);
-    });
+    act(() => result.current.removeDoctor(1));
 
     expect(mockContext.removeDoctor).toHaveBeenCalledWith(1);
+    expect(mockContext.removeDoctor).toHaveBeenCalledTimes(1);
   });
 });

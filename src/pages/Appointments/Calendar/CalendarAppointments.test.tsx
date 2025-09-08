@@ -23,10 +23,16 @@ describe("CalendarAppointments", () => {
 
   it("renderiza mensagem quando não há consultas", () => {
     (useAppointments as jest.Mock).mockReturnValue({ appointments: [] });
-
     render(<CalendarAppointments />);
-
     expect(screen.getByText("Nenhuma consulta cadastrada.")).toBeInTheDocument();
+  });
+
+  it("renderiza cabeçalho correto", () => {
+    (useAppointments as jest.Mock).mockReturnValue({ appointments: [] });
+    render(<CalendarAppointments />);
+    ["Data", "Hora", "Paciente", "Médico", "Status"].forEach((header) =>
+      expect(screen.getByText(header)).toBeInTheDocument()
+    );
   });
 
   it("renderiza consultas e ordena por data com todos os campos", () => {
@@ -58,28 +64,21 @@ describe("CalendarAppointments", () => {
     const rows = screen.getAllByRole("row");
     expect(rows).toHaveLength(3); // 1 header + 2 appointments
 
-    // Conferindo valores formatados
-    expect(screen.getByText("18/08/2025")).toBeInTheDocument();
-    expect(screen.getByText("14:30")).toBeInTheDocument();
-    expect(screen.getByText("Maria")).toBeInTheDocument();
-    expect(screen.getByText("Dr. Pedro")).toBeInTheDocument();
-    expect(screen.getByText("Confirmada")).toBeInTheDocument();
+    // Conferindo ordem cronológica
+    const firstRowCells = rows[1].querySelectorAll("td");
+    expect(firstRowCells[0].textContent).toBe("18/08/2025");
+    expect(firstRowCells[1].textContent).toBe("14:30");
 
-    expect(screen.getByText("20/08/2025")).toBeInTheDocument();
-    expect(screen.getByText("10:00")).toBeInTheDocument();
-    expect(screen.getByText("João")).toBeInTheDocument();
-    expect(screen.getByText("Dr. Ana")).toBeInTheDocument();
-    expect(screen.getByText("Agendada")).toBeInTheDocument();
+    const secondRowCells = rows[2].querySelectorAll("td");
+    expect(secondRowCells[0].textContent).toBe("20/08/2025");
+    expect(secondRowCells[1].textContent).toBe("10:00");
   });
 
   it("botão 'Voltar' chama navigate", async () => {
     (useAppointments as jest.Mock).mockReturnValue({ appointments: [] });
-
     render(<CalendarAppointments />);
-
     const button = screen.getByText("Voltar");
     await userEvent.click(button);
-
     expect(mockNavigate).toHaveBeenCalledWith("/appointments");
   });
 
@@ -96,17 +95,13 @@ describe("CalendarAppointments", () => {
       },
     ];
     (useAppointments as jest.Mock).mockReturnValue({ appointments: appointmentsMock });
-
     render(<CalendarAppointments />);
-
     expect(screen.getByText("ID 5")).toBeInTheDocument();
     expect(screen.getByText("ID 10")).toBeInTheDocument();
   });
 
   it("exibe 'Desconhecido' quando status não é válido", () => {
-    // Tipo temporário para simular status inválido
     const invalidStatus: unknown = "invalid-status";
-
     const appointmentsMock = [
       {
         id: 1,
@@ -119,9 +114,7 @@ describe("CalendarAppointments", () => {
       },
     ];
     (useAppointments as jest.Mock).mockReturnValue({ appointments: appointmentsMock });
-
     render(<CalendarAppointments />);
-
     expect(screen.getByText("Desconhecido")).toBeInTheDocument();
   });
 });

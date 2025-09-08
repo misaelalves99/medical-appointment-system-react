@@ -1,10 +1,10 @@
-// src/contexts/AppointmentsContext.test.tsx
-
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { useContext, useState } from "react";
 import { AppointmentsContext, AppointmentsContextType } from "./AppointmentsContext";
 import { Appointment, AppointmentStatus } from "../types/Appointment";
 
+// Provider de teste isolado
 const AppointmentsProvider = ({ children }: { children: React.ReactNode }) => {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
 
@@ -58,6 +58,7 @@ const AppointmentsProvider = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
+// Componente de teste
 const TestComponent = () => {
   const context = useContext<AppointmentsContextType>(AppointmentsContext);
 
@@ -110,25 +111,30 @@ const TestComponent = () => {
   );
 };
 
-describe("AppointmentsContext", () => {
+describe("AppointmentsContext (isolated)", () => {
+  let user: ReturnType<typeof userEvent.setup>;
+
+  beforeEach(() => {
+    user = userEvent.setup();
+  });
+
   it("provides default values", () => {
     render(
       <AppointmentsProvider>
         <TestComponent />
       </AppointmentsProvider>
     );
-
     expect(screen.getByTestId("appointments-count").textContent).toBe("0");
   });
 
-  it("adds a new appointment", () => {
+  it("adds a new appointment", async () => {
     render(
       <AppointmentsProvider>
         <TestComponent />
       </AppointmentsProvider>
     );
 
-    fireEvent.click(screen.getByText("Add"));
+    await user.click(screen.getByText("Add"));
 
     expect(screen.getByTestId("appointments-count").textContent).toBe("1");
     expect(screen.getByTestId("first-appointment-name").textContent).toBe("John");
@@ -137,58 +143,75 @@ describe("AppointmentsContext", () => {
     );
   });
 
-  it("updates an existing appointment", () => {
+  it("updates an existing appointment", async () => {
     render(
       <AppointmentsProvider>
         <TestComponent />
       </AppointmentsProvider>
     );
 
-    fireEvent.click(screen.getByText("Add"));
-    fireEvent.click(screen.getByText("Update"));
+    await user.click(screen.getByText("Add"));
+    await user.click(screen.getByText("Update"));
 
     expect(screen.getByTestId("first-appointment-name").textContent).toBe("John Updated");
   });
 
-  it("confirms an appointment", () => {
+  it("confirms an appointment", async () => {
     render(
       <AppointmentsProvider>
         <TestComponent />
       </AppointmentsProvider>
     );
 
-    fireEvent.click(screen.getByText("Add"));
-    fireEvent.click(screen.getByText("Confirm"));
+    await user.click(screen.getByText("Add"));
+    await user.click(screen.getByText("Confirm"));
 
     expect(screen.getByTestId("first-appointment-status").textContent).toBe(
       AppointmentStatus.Confirmed
     );
   });
 
-  it("cancels an appointment", () => {
+  it("cancels an appointment", async () => {
     render(
       <AppointmentsProvider>
         <TestComponent />
       </AppointmentsProvider>
     );
 
-    fireEvent.click(screen.getByText("Add"));
-    fireEvent.click(screen.getByText("Cancel"));
+    await user.click(screen.getByText("Add"));
+    await user.click(screen.getByText("Cancel"));
 
     expect(screen.getByTestId("first-appointment-status").textContent).toBe(
       AppointmentStatus.Cancelled
     );
   });
 
-  it("deletes an appointment", () => {
+  it("deletes an appointment", async () => {
     render(
       <AppointmentsProvider>
         <TestComponent />
       </AppointmentsProvider>
     );
 
-    fireEvent.click(screen.getByText("Add"));
-    fireEvent.click(screen.getByText("Delete"));
+    await user.click(screen.getByText("Add"));
+    await user.click(screen.getByText("Delete"));
+
+    expect(screen.getByTestId("appointments-count").textContent).toBe("0");
+  });
+
+  it("does nothing when updating/deleting non-existent appointment", async () => {
+    render(
+      <AppointmentsProvider>
+        <TestComponent />
+      </AppointmentsProvider>
+    );
+
+    // Tenta clicar nos botões só se existirem
+    const updateBtn = screen.queryByText("Update");
+    if (updateBtn) await user.click(updateBtn);
+
+    const deleteBtn = screen.queryByText("Delete");
+    if (deleteBtn) await user.click(deleteBtn);
 
     expect(screen.getByTestId("appointments-count").textContent).toBe("0");
   });

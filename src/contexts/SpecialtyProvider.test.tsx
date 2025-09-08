@@ -1,48 +1,43 @@
 // src/contexts/SpecialtyProvider.test.tsx
-
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useContext } from "react";
 import { SpecialtyProvider } from "./SpecialtyProvider";
-import { SpecialtyContext } from "./SpecialtyContext";
+import { SpecialtyContext, SpecialtyContextType } from "./SpecialtyContext";
 import { specialtiesMock } from "../mocks/specialties";
 
-describe("SpecialtyProvider", () => {
+describe("SpecialtyProvider (com mock)", () => {
   const TestComponent = () => {
     const { specialties, addSpecialty, updateSpecialty, removeSpecialty } =
-      useContext(SpecialtyContext)!;
+      useContext<SpecialtyContextType>(SpecialtyContext)!;
 
     return (
       <div>
         <ul>
-          {specialties.map((s) => (
-            <li key={s.id}>{s.name}</li>
-          ))}
+          {specialties.map(s => <li key={s.id}>{s.name}</li>)}
         </ul>
         <button onClick={() => addSpecialty("Cardiologia")}>Add</button>
         <button onClick={() => updateSpecialty(1, "Neurologia")}>Update</button>
         <button onClick={() => removeSpecialty(1)}>Remove</button>
-        <button onClick={() => updateSpecialty(999, "Inexistente")}>
-          UpdateInvalid
-        </button>
+        <button onClick={() => updateSpecialty(999, "Inexistente")}>UpdateInvalid</button>
         <button onClick={() => removeSpecialty(999)}>RemoveInvalid</button>
       </div>
     );
   };
 
-  it("deve iniciar com specialtiesMock", () => {
+  it("inicia com specialtiesMock", () => {
     render(
       <SpecialtyProvider>
         <TestComponent />
       </SpecialtyProvider>
     );
 
-    specialtiesMock.forEach((s) => {
+    specialtiesMock.forEach(s => {
       expect(screen.getByText(s.name)).toBeInTheDocument();
     });
   });
 
-  it("deve adicionar uma especialidade", async () => {
+  it("adiciona uma especialidade", async () => {
     render(
       <SpecialtyProvider>
         <TestComponent />
@@ -53,7 +48,7 @@ describe("SpecialtyProvider", () => {
     expect(screen.getByText("Cardiologia")).toBeInTheDocument();
   });
 
-  it("deve atualizar uma especialidade existente", async () => {
+  it("atualiza uma especialidade existente", async () => {
     render(
       <SpecialtyProvider>
         <TestComponent />
@@ -64,7 +59,7 @@ describe("SpecialtyProvider", () => {
     expect(screen.getByText("Neurologia")).toBeInTheDocument();
   });
 
-  it("não deve atualizar se o id não existir", async () => {
+  it("não atualiza se o id não existir", async () => {
     render(
       <SpecialtyProvider>
         <TestComponent />
@@ -72,12 +67,12 @@ describe("SpecialtyProvider", () => {
     );
 
     await userEvent.click(screen.getByText("UpdateInvalid"));
-    specialtiesMock.forEach((s) => {
+    specialtiesMock.forEach(s => {
       expect(screen.getByText(s.name)).toBeInTheDocument();
     });
   });
 
-  it("deve remover uma especialidade existente", async () => {
+  it("remove uma especialidade existente", async () => {
     render(
       <SpecialtyProvider>
         <TestComponent />
@@ -91,7 +86,7 @@ describe("SpecialtyProvider", () => {
     expect(screen.queryByText(firstName)).not.toBeInTheDocument();
   });
 
-  it("não deve remover se o id não existir", async () => {
+  it("não remove se o id não existir", async () => {
     render(
       <SpecialtyProvider>
         <TestComponent />
@@ -99,7 +94,7 @@ describe("SpecialtyProvider", () => {
     );
 
     await userEvent.click(screen.getByText("RemoveInvalid"));
-    specialtiesMock.forEach((s) => {
+    specialtiesMock.forEach(s => {
       expect(screen.getByText(s.name)).toBeInTheDocument();
     });
   });

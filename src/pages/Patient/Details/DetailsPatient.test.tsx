@@ -1,5 +1,7 @@
 // src/pages/Patient/Details/DetailsPatient.test.tsx
 
+// src/pages/Patient/Details/DetailsPatient.test.tsx
+
 import { render, screen, fireEvent } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import DetailsPatient from './DetailsPatient';
@@ -8,7 +10,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import type { Patient } from '../../../types/Patient';
 import type { PatientContextType } from '../../../contexts/PatientContext';
 
-// Mock do hook usePatient
 jest.mock('../../../hooks/usePatient');
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
@@ -46,7 +47,7 @@ describe('DetailsPatient', () => {
     (useNavigate as jest.Mock).mockReturnValue(navigateMock);
   });
 
-  it('deve mostrar mensagem paciente não encontrado se id não existir', () => {
+  it('mostra mensagem paciente não encontrado se id não existir', () => {
     (useParams as jest.Mock).mockReturnValue({ id: '999' });
 
     render(
@@ -62,7 +63,7 @@ describe('DetailsPatient', () => {
     expect(navigateMock).toHaveBeenCalledWith('/patient');
   });
 
-  it('deve renderizar detalhes do paciente corretamente', () => {
+  it('renderiza detalhes do paciente corretamente', () => {
     (useParams as jest.Mock).mockReturnValue({ id: '1' });
 
     render(
@@ -71,19 +72,24 @@ describe('DetailsPatient', () => {
       </MemoryRouter>
     );
 
+    const patient = patientList[0];
+    const formattedDate = new Date(patient.dateOfBirth).toLocaleDateString('pt-BR');
+
     expect(screen.getByText(/detalhes do paciente/i)).toBeInTheDocument();
-    expect(screen.getByText(/joão/i)).toBeInTheDocument();
-    expect(screen.getByText(/masculino/i)).toBeInTheDocument();
-    expect(screen.getByText(/123456789/i)).toBeInTheDocument();
-    expect(screen.getByText(/joao@email\.com/i)).toBeInTheDocument();
-    expect(screen.getByText(/rua a/i)).toBeInTheDocument();
+    expect(screen.getByText(patient.name)).toBeInTheDocument();
+    expect(screen.getByText(patient.cpf || "-")).toBeInTheDocument();
+    expect(screen.getByText(formattedDate)).toBeInTheDocument();
+    expect(screen.getByText(patient.gender || "-")).toBeInTheDocument();
+    expect(screen.getByText(patient.phone || "-")).toBeInTheDocument();
+    expect(screen.getByText(patient.email || "-")).toBeInTheDocument();
+    expect(screen.getByText(patient.address || "-")).toBeInTheDocument();
 
     const profileImg = screen.getByAltText(/foto do paciente/i) as HTMLImageElement;
     expect(profileImg).toBeInTheDocument();
-    expect(profileImg.src).toContain('/foto.jpg');
+    expect(profileImg.src).toContain(patient.profilePicturePath);
   });
 
-  it('deve navegar ao clicar em editar', () => {
+  it('navega ao clicar em editar', () => {
     (useParams as jest.Mock).mockReturnValue({ id: '1' });
 
     render(
@@ -97,7 +103,7 @@ describe('DetailsPatient', () => {
     expect(navigateMock).toHaveBeenCalledWith('/patient/edit/1');
   });
 
-  it('deve navegar ao clicar em voltar para a lista', () => {
+  it('navega ao clicar em voltar para a lista', () => {
     (useParams as jest.Mock).mockReturnValue({ id: '1' });
 
     render(

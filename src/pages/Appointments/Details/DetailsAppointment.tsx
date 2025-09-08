@@ -1,18 +1,32 @@
 // src/pages/Appointment/Details/DetailsAppointment.tsx
 
-import React from "react";
+import React, { useMemo } from "react";
 import { Link, useParams } from "react-router-dom";
 import styles from "./DetailsAppointment.module.css";
 import { AppointmentStatus } from "../../../types/Appointment";
 import { useAppointments } from "../../../hooks/useAppointments";
+import { usePatient } from "../../../hooks/usePatient";
+import { useDoctor } from "../../../hooks/useDoctor";
 
 const AppointmentDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const appointmentId = Number(id);
-  const { appointments } = useAppointments();
 
-  // Busca o appointment no contexto
+  const { appointments } = useAppointments();
+  const { patients } = usePatient();
+  const { doctors } = useDoctor();
+
   const appointment = appointments.find(a => a.id === appointmentId);
+
+  const patientName = useMemo(() => {
+    if (!appointment) return "";
+    return patients.find(p => p.id === appointment.patientId)?.name ?? `ID ${appointment.patientId}`;
+  }, [appointment, patients]);
+
+  const doctorName = useMemo(() => {
+    if (!appointment) return "";
+    return doctors.find(d => d.id === appointment.doctorId)?.name ?? `ID ${appointment.doctorId}`;
+  }, [appointment, doctors]);
 
   if (!appointment) {
     return <p>Consulta não encontrada.</p>;
@@ -39,16 +53,12 @@ const AppointmentDetails: React.FC = () => {
 
       <div className={styles.infoRow}>
         <span className={styles.infoLabel}>Paciente</span>
-        <span className={styles.infoValue}>
-          {appointment.patientName ?? `ID ${appointment.patientId}`}
-        </span>
+        <span className={styles.infoValue}>{patientName}</span>
       </div>
 
       <div className={styles.infoRow}>
         <span className={styles.infoLabel}>Médico</span>
-        <span className={styles.infoValue}>
-          {appointment.doctorName ?? `ID ${appointment.doctorId}`}
-        </span>
+        <span className={styles.infoValue}>{doctorName}</span>
       </div>
 
       <div className={styles.infoRow}>

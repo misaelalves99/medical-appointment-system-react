@@ -15,7 +15,7 @@ const SpecialtyList: React.FC = () => {
         s.name.toLowerCase().includes(filter.toLowerCase()) ||
         s.id.toString().includes(filter)
     )
-    .sort((a, b) => a.name.localeCompare(b.name));
+    .sort((a, b) => a.id - b.id); // 🔹 sempre ordenado por ID crescente
 
   return (
     <div className={styles.specialtyIndexContainer}>

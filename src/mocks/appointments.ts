@@ -23,14 +23,4 @@ export const appointmentsMock: Appointment[] = [
     status: AppointmentStatus.Scheduled,
     notes: "Primeira consulta de rotina.",
   },
-  {
-    id: 3,
-    patientId: 3,
-    patientName: "Lucas Fernandes",
-    doctorId: 3,
-    doctorName: "Dra. Fernanda Lima",
-    appointmentDate: "2025-08-17T16:00",
-    status: AppointmentStatus.Cancelled,
-    notes: "Consulta cancelada pelo paciente.",
-  },
 ];

@@ -1,5 +1,4 @@
 // src/mocks/specialties.test.ts
-
 import { specialtiesMock } from "./specialties";
 
 describe("specialtiesMock", () => {
@@ -11,7 +10,10 @@ describe("specialtiesMock", () => {
       expect(specialty).toHaveProperty("name");
 
       expect(typeof specialty.id).toBe("number");
+      expect(specialty.id).toBeGreaterThan(0);
+
       expect(typeof specialty.name).toBe("string");
+      expect(specialty.name.length).toBeGreaterThan(0);
     });
   });
 });
