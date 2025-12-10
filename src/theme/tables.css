@@ -1,0 +1,179 @@
+/* src/theme/tables.css */
+
+/* Wrapper responsivo para tabelas */
+
+.table-wrapper {
+  width: 100%;
+  border-radius: var(--radius-card);
+  background: radial-gradient(circle at top left, rgba(34, 197, 94, 0.16), transparent 55%),
+    radial-gradient(circle at bottom right, rgba(56, 189, 248, 0.16), transparent 60%),
+    var(--color-bg-surface-elevated);
+  border: 1px solid var(--color-border-subtle);
+  box-shadow: var(--shadow-cardSubtle);
+  overflow: hidden;
+}
+
+.table-scroll {
+  width: 100%;
+  overflow-x: auto;
+}
+
+/* Tabela base */
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 720px;
+  font-size: 0.875rem;
+}
+
+.table thead {
+  background: linear-gradient(
+      90deg,
+      rgba(15, 23, 42, 0.92),
+      rgba(15, 23, 42, 0.96)
+    );
+}
+
+.table th,
+.table td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.table th {
+  font-weight: 600;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  border-bottom: 1px solid rgba(148, 163, 184, 0.45);
+}
+
+.table td {
+  color: var(--color-text-primary);
+  border-bottom: 1px solid rgba(15, 23, 42, 0.85);
+}
+
+/* Linhas / estados */
+
+.table tbody tr {
+  background: linear-gradient(
+      90deg,
+      rgba(15, 23, 42, 0.94),
+      rgba(15, 23, 42, 0.98)
+    );
+  transition:
+    background-color 0.12s ease,
+    transform 0.06s ease,
+    box-shadow 0.12s ease;
+}
+
+.table tbody tr:nth-child(2n) {
+  background: linear-gradient(
+      90deg,
+      rgba(15, 23, 42, 0.98),
+      rgba(15, 23, 42, 1)
+    );
+}
+
+.table tbody tr:hover {
+  background: radial-gradient(circle at left, rgba(34, 197, 94, 0.25), transparent 55%),
+    linear-gradient(
+      90deg,
+      rgba(15, 23, 42, 0.96),
+      rgba(15, 23, 42, 1)
+    );
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.85);
+  transform: translateY(-1px);
+}
+
+/* Células especiais */
+
+.table-cell--numeric {
+  text-align: right;
+}
+
+.table-cell--actions {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.table-cell--muted {
+  color: var(--color-text-muted);
+}
+
+/* Cabeçalhos clicáveis (ordenar) */
+
+.table-sortable {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.table-sortable-icon {
+  font-size: 0.8em;
+  opacity: 0.7;
+}
+
+/* Status badge quick */
+
+.table-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--radius-badge);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.table-status-badge--success {
+  background: rgba(34, 197, 94, 0.15);
+  color: var(--color-accent);
+}
+
+.table-status-badge--warning {
+  background: rgba(250, 204, 21, 0.16);
+  color: #facc15;
+}
+
+.table-status-badge--danger {
+  background: rgba(248, 113, 113, 0.16);
+  color: #f97373;
+}
+
+/* Rodapé / legenda */
+
+.table-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: radial-gradient(circle at top, rgba(34, 197, 94, 0.18), transparent 65%),
+    rgba(15, 23, 42, 0.98);
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+.table-footer__pagination {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.table-footer__summary {
+  opacity: 0.9;
+}
+
+@media (max-width: 640px) {
+  .table-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
