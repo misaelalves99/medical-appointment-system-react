@@ -1,0 +1,200 @@
+/* src/app/layouts/AuthLayout/AuthLayout.module.css */
+
+.root {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  background:
+    radial-gradient(circle at top, rgba(59, 130, 246, 0.18), transparent 56%),
+    radial-gradient(circle at bottom, rgba(56, 189, 248, 0.15), transparent 55%),
+    #020617;
+  color: var(--color-text-primary, #e5e7eb);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.brandMark {
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.08em;
+  background:
+    radial-gradient(circle at 0 0, rgba(56, 189, 248, 0.5), transparent 70%),
+    rgba(15, 23, 42, 1);
+  border: 1px solid rgba(56, 189, 248, 0.9);
+  color: #e5e7eb;
+}
+
+.brandName {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #e5e7eb;
+}
+
+.brandSection {
+  position: relative;
+  padding: 2.5rem 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  justify-content: space-between;
+}
+
+.brandHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.brandLogo {
+  width: 40px;
+  height: 40px;
+  border-radius: 1.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(circle at 0 0, rgba(56, 189, 248, 1), rgba(59, 130, 246, 0.1));
+  box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.9), 0 18px 40px rgba(15, 23, 42, 0.9);
+}
+
+.brandTitle {
+  font-size: 1.45rem;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+}
+
+.brandSubtitle {
+  margin-top: 0.4rem;
+  font-size: 0.95rem;
+  max-width: 360px;
+  color: var(--color-text-muted, #9ca3af);
+}
+
+.brandHighlight {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  color: var(--color-primary-300, #7dd3fc);
+}
+
+/* Illustração/estatísticas à direita da brand section */
+.brandGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  max-width: 420px;
+}
+
+.brandCard {
+  padding: 1rem;
+  border-radius: 1.3rem;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  background:
+    radial-gradient(circle at top, rgba(56, 189, 248, 0.16), transparent 65%),
+    rgba(15, 23, 42, 0.92);
+  backdrop-filter: blur(16px);
+  box-shadow:
+    0 0 0 1px rgba(15, 23, 42, 0.85),
+    0 14px 40px rgba(15, 23, 42, 0.9);
+}
+
+.brandCardLabel {
+  font-size: 0.7rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--color-text-muted, #9ca3af);
+}
+
+.brandCardValue {
+  margin-top: 0.25rem;
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+/* Seção do formulário de login/register */
+.formSection {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 3rem;
+  border-left: 1px solid rgba(148, 163, 184, 0.35);
+  background:
+    linear-gradient(
+      135deg,
+      rgba(15, 23, 42, 0.95),
+      rgba(15, 23, 42, 0.96)
+    );
+}
+
+.formWrapper {
+  width: 100%;
+  max-width: 420px;
+  padding: 2.25rem 2.1rem;
+  border-radius: 1.6rem;
+  background:
+    radial-gradient(circle at top left, rgba(56, 189, 248, 0.18), transparent 60%),
+    rgba(15, 23, 42, 0.96);
+  box-shadow:
+    0 0 0 1px rgba(15, 23, 42, 0.9),
+    0 22px 55px rgba(15, 23, 42, 0.9);
+}
+
+/* Títulos e texto dentro do form */
+.formTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+}
+
+.formSubtitle {
+  margin-top: 0.45rem;
+  font-size: 0.9rem;
+  color: var(--color-text-muted, #9ca3af);
+}
+
+/* Responsividade */
+@media (max-width: 1024px) {
+  .root {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .brandSection {
+    display: none;
+  }
+
+  .formSection {
+    border-left: none;
+    padding: 2.5rem 1.75rem;
+  }
+
+  .formWrapper {
+    padding: 2rem 1.7rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .formSection {
+    padding: 2rem 1.25rem;
+  }
+
+  .formWrapper {
+    padding: 1.75rem 1.4rem;
+    border-radius: 1.2rem;
+  }
+}

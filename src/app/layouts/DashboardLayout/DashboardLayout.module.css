@@ -1,0 +1,141 @@
+/* src/app/layouts/DashboardLayout/DashboardLayout.module.css */
+
+.layout {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  background:
+    radial-gradient(circle at top, rgba(56, 189, 248, 0.12), transparent 55%),
+    radial-gradient(circle at bottom right, rgba(59, 130, 246, 0.18), transparent 55%),
+    var(--color-bg-body, #020617);
+  color: var(--color-text-primary, #e5e7eb);
+}
+
+/* Sidebar area */
+.sidebar {
+  position: sticky;
+  top: 0;
+  align-self: flex-start;
+  height: 100vh;
+  border-right: 1px solid var(--color-border-subtle, rgba(148, 163, 184, 0.25));
+  background:
+    linear-gradient(
+      160deg,
+      rgba(15, 23, 42, 0.98),
+      rgba(15, 23, 42, 0.98)
+    );
+  backdrop-filter: blur(16px);
+  box-shadow: var(
+    --shadow-sidebar,
+    0 0 0 1px rgba(15, 23, 42, 0.8),
+    0 24px 60px rgba(15, 23, 42, 0.9)
+  );
+  z-index: var(--z-sidebar, 40);
+}
+
+/* Main area (topbar + content) */
+.main {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Topbar wrapper (para Topbar.tsx) */
+.topbarWrapper {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-topbar, 50);
+  backdrop-filter: blur(18px);
+  background:
+    linear-gradient(
+      180deg,
+      rgba(15, 23, 42, 0.92) 0%,
+      rgba(15, 23, 42, 0.88) 45%,
+      rgba(15, 23, 42, 0.82) 100%
+    );
+  border-bottom: 1px solid rgba(148, 163, 184, 0.22);
+}
+
+/* Conteúdo principal */
+.content {
+  flex: 1;
+  padding: 1.5rem;
+  padding-bottom: 2rem;
+  overflow: auto;
+}
+
+.contentInner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Background decorativo suave */
+.contentBackground {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.45;
+  z-index: -1;
+}
+
+/* Mobile: sidebar colapsada em offcanvas */
+.mobileLayout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-bg-body, #020617);
+}
+
+.mobileContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Overlay para sidebar mobile */
+.sidebarOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(6px);
+  z-index: var(--z-overlay, 45);
+}
+
+/* Sidebar em modo drawer */
+.sidebarDrawer {
+  position: fixed;
+  inset: 0 auto 0 0;
+  width: 270px;
+  max-width: 80%;
+  background: radial-gradient(circle at top, #0b1220, #020617);
+  border-right: 1px solid rgba(148, 163, 184, 0.25);
+  box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.9), 0 32px 80px rgba(15, 23, 42, 0.95);
+  z-index: var(--z-sidebar, 50);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Responsividade */
+@media (max-width: 1024px) {
+  .layout {
+    display: none;
+  }
+
+  .mobileLayout {
+    display: flex;
+  }
+
+  .content {
+    padding: 1.25rem 1rem 1.75rem;
+  }
+}
+
+@media (min-width: 1025px) {
+  .layout {
+    display: grid;
+  }
+
+  .mobileLayout {
+    display: none;
+  }
+}
