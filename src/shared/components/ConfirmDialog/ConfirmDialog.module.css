@@ -1,0 +1,171 @@
+/* src/shared/components/ConfirmDialog/ConfirmDialog.module.css */
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+  background: radial-gradient(
+      circle at 0 0,
+      rgba(56, 189, 248, 0.35),
+      transparent 60%
+    ),
+    rgba(15, 23, 42, 0.88);
+  backdrop-filter: blur(6px);
+}
+
+.dialog {
+  width: 100%;
+  max-width: 420px;
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  background:
+    radial-gradient(circle at 0 0, rgba(34, 197, 94, 0.18), transparent 60%),
+    rgba(15, 23, 42, 1);
+  border: 1px solid rgba(30, 64, 175, 0.9);
+  box-shadow:
+    0 24px 60px rgba(15, 23, 42, 1),
+    0 0 0 1px rgba(15, 23, 42, 1);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  animation: dialogIn 0.16s ease-out;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  border: 1px solid rgba(248, 113, 113, 0.9);
+  background:
+    radial-gradient(circle at 0 0, rgba(248, 113, 113, 0.4), transparent 65%),
+    rgba(15, 23, 42, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #fee2e2;
+  font-size: 1.1rem;
+}
+
+.title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #e5e7eb;
+}
+
+.description {
+  font-size: 0.87rem;
+  line-height: 1.6;
+  color: rgba(148, 163, 184, 0.96);
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+
+.cancelButton {
+  padding: 0.55rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid rgba(51, 65, 85, 0.9);
+  background: rgba(15, 23, 42, 0.96);
+  color: rgba(148, 163, 184, 0.96);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition:
+    background 0.13s ease-out,
+    border-color 0.13s ease-out,
+    color 0.13s ease-out,
+    transform 0.13s ease-out;
+}
+
+.cancelButton:hover {
+  background: rgba(15, 23, 42, 1);
+  border-color: rgba(148, 163, 184, 1);
+  color: #e5e7eb;
+  transform: translateY(-1px);
+}
+
+.confirmButton {
+  padding: 0.55rem 1.1rem;
+  border-radius: 999px;
+  border: 1px solid rgba(37, 99, 235, 0.95);
+  background:
+    radial-gradient(circle at 0 0, rgba(56, 189, 248, 0.3), transparent 70%),
+    rgba(15, 23, 42, 1);
+  color: #e5e7eb;
+  font-size: 0.85rem;
+  cursor: pointer;
+  box-shadow:
+    0 14px 40px rgba(15, 23, 42, 0.98),
+    0 0 30px rgba(56, 189, 248, 0.5);
+  transition:
+    background 0.13s ease-out,
+    border-color 0.13s ease-out,
+    transform 0.13s ease-out,
+    box-shadow 0.13s ease-out;
+}
+
+.confirmButtonDanger {
+  border-color: rgba(248, 113, 113, 1);
+  background:
+    radial-gradient(circle at 0 0, rgba(248, 113, 113, 0.28), transparent 70%),
+    rgba(15, 23, 42, 1);
+  box-shadow:
+    0 14px 40px rgba(15, 23, 42, 0.98),
+    0 0 28px rgba(248, 113, 113, 0.6);
+}
+
+.confirmButton:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    0 18px 48px rgba(15, 23, 42, 1),
+    0 0 36px rgba(56, 189, 248, 0.7);
+}
+
+.confirmButtonDanger:hover {
+  box-shadow:
+    0 18px 48px rgba(15, 23, 42, 1),
+    0 0 36px rgba(248, 113, 113, 0.8);
+}
+
+/* ===== Responsividade ===== */
+
+@media (max-width: 480px) {
+  .dialog {
+    padding: var(--space-3);
+  }
+
+  .actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+
+  .cancelButton,
+  .confirmButton {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+@keyframes dialogIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}

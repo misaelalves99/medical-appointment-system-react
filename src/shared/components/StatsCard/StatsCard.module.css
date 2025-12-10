@@ -1,0 +1,205 @@
+/* src/shared/components/StatsCard/StatsCard.module.css */
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  border-radius: var(--radius-lg);
+
+  background:
+    radial-gradient(circle at 0 0, rgba(56, 189, 248, 0.2), transparent 60%),
+    rgba(15, 23, 42, 0.98);
+  border: 1px solid rgba(30, 64, 175, 0.8);
+  box-shadow:
+    0 20px 50px rgba(15, 23, 42, 0.96),
+    0 0 0 1px rgba(15, 23, 42, 0.96);
+  overflow: hidden;
+
+  transition:
+    transform 0.12s ease-out,
+    box-shadow 0.16s ease-out,
+    border-color 0.16s ease-out,
+    background 0.16s ease-out;
+}
+
+.card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at 120% -20%,
+    rgba(34, 197, 94, 0.18),
+    transparent 60%
+  );
+  pointer-events: none;
+}
+
+.card:hover {
+  transform: translateY(-1px);
+  border-color: rgba(56, 189, 248, 0.9);
+  box-shadow:
+    0 24px 60px rgba(15, 23, 42, 0.98),
+    0 0 0 1px rgba(15, 23, 42, 1);
+}
+
+/* ===== Variantes básicas (bordas) ===== */
+
+.card--default {
+  border-color: rgba(30, 64, 175, 0.8);
+}
+
+.card--success {
+  border-color: rgba(34, 197, 94, 0.9);
+}
+
+.card--danger {
+  border-color: rgba(248, 113, 113, 0.95);
+}
+
+.card--warning {
+  border-color: rgba(245, 158, 11, 0.9);
+}
+
+.card--info {
+  border-color: rgba(56, 189, 248, 0.9);
+}
+
+/* ===== Header ===== */
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.label {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: rgba(148, 163, 184, 0.9);
+}
+
+/* Círculo do ícone (novo visual) */
+.iconWrapper {
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  border: 1px solid rgba(37, 99, 235, 0.9);
+  background:
+    radial-gradient(circle at 0 0, rgba(56, 189, 248, 0.4), transparent 65%),
+    rgba(15, 23, 42, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #e5e7eb;
+  font-size: 1rem;
+  box-shadow:
+    0 0 0 1px rgba(15, 23, 42, 1),
+    0 0 18px rgba(56, 189, 248, 0.6);
+}
+
+/* leve variação por variante (opcional) */
+.card--success .iconWrapper {
+  border-color: rgba(34, 197, 94, 0.9);
+  background:
+    radial-gradient(circle at 0 0, rgba(34, 197, 94, 0.4), transparent 65%),
+    rgba(15, 23, 42, 1);
+}
+
+.card--warning .iconWrapper {
+  border-color: rgba(245, 158, 11, 0.95);
+  background:
+    radial-gradient(circle at 0 0, rgba(245, 158, 11, 0.45), transparent 65%),
+    rgba(15, 23, 42, 1);
+}
+
+.card--danger .iconWrapper {
+  border-color: rgba(248, 113, 113, 0.95);
+  background:
+    radial-gradient(circle at 0 0, rgba(248, 113, 113, 0.45), transparent 65%),
+    rgba(15, 23, 42, 1);
+}
+
+/* ===== Valor ===== */
+
+.valueRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.value {
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  color: #e5e7eb;
+}
+
+/* ===== Rodapé (helper + tendência) ===== */
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-top: 0.25rem;
+}
+
+.helperText {
+  font-size: 0.78rem;
+  color: rgba(148, 163, 184, 0.95);
+}
+
+.trend {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.8rem;
+}
+
+.trendDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  box-shadow: 0 0 0 1px rgba(15, 23, 42, 1);
+}
+
+.trendText {
+  color: rgba(148, 163, 184, 0.95);
+}
+
+/* estados da tendência */
+
+.trend--up .trendDot {
+  background: #22c55e;
+  box-shadow:
+    0 0 0 1px rgba(15, 23, 42, 1),
+    0 0 18px rgba(34, 197, 94, 0.9);
+}
+
+.trend--down .trendDot {
+  background: #f97373;
+  box-shadow:
+    0 0 0 1px rgba(15, 23, 42, 1),
+    0 0 18px rgba(248, 113, 113, 0.9);
+}
+
+.trend--neutral .trendDot {
+  background: rgba(148, 163, 184, 0.9);
+}
+
+/* ===== Responsividade ===== */
+
+@media (max-width: 768px) {
+  .card {
+    padding: var(--space-3);
+  }
+
+  .value {
+    font-size: 1.4rem;
+  }
+}

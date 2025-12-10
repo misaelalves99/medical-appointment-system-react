@@ -1,0 +1,89 @@
+/* src/shared/layout/PageContainer/PageContainer.module.css */
+
+.pageContainer {
+  position: relative;
+  flex: 1;
+
+  display: flex;
+  justify-content: center;
+
+  padding: 1.75rem 2.25rem 2.25rem;
+  overflow: auto;
+
+  background:
+    radial-gradient(circle at 0 -40%, rgba(15, 23, 42, 0.9), transparent 55%),
+    radial-gradient(circle at 100% 140%, rgba(15, 23, 42, 0.9), transparent 60%),
+    rgba(15, 23, 42, 0.98);
+}
+
+/**
+ * Quando fullWidth === true, o conteúdo pode usar 100% da largura
+ * (tabelas, calendários, painéis mais horizontais).
+ */
+.pageContainerFull {
+  justify-content: stretch;
+}
+
+.pageInner {
+  width: 100%;
+  max-width: 1120px;
+  margin-inline: auto;
+
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+
+  padding: 0.25rem 0 0;
+  animation: pageFadeIn 0.32s ease-out;
+}
+
+/* Animação suave de entrada das páginas */
+@keyframes pageFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Se o container estiver em modo full, removemos o max-width */
+.pageContainerFull .pageInner {
+  max-width: none;
+}
+
+/* ===== Responsividade ===== */
+
+@media (max-width: 1024px) {
+  .pageContainer {
+    padding: 1.5rem 1.75rem 2rem;
+  }
+
+  .pageInner {
+    max-width: 960px;
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .pageContainer {
+    padding: 1.4rem 1.25rem 1.8rem;
+  }
+
+  .pageInner {
+    max-width: 100%;
+    gap: 1.35rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .pageContainer {
+    padding: 1.2rem 0.9rem 1.6rem;
+  }
+
+  .pageInner {
+    gap: 1.1rem;
+  }
+}

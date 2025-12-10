@@ -1,0 +1,131 @@
+/* src/shared/components/DataTable/DataTable.module.css */
+
+.tableWrapper {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(30, 64, 175, 0.85);
+  background:
+    radial-gradient(circle at 0 0, rgba(15, 23, 42, 0.92), transparent 60%),
+    rgba(15, 23, 42, 0.98);
+  box-shadow:
+    0 20px 55px rgba(15, 23, 42, 0.98),
+    0 0 0 1px rgba(15, 23, 42, 0.98);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 100%;
+  table-layout: auto;
+}
+
+.thead {
+  background:
+    linear-gradient(to bottom, rgba(15, 23, 42, 1), rgba(15, 23, 42, 0.98)),
+    radial-gradient(circle at 0 0, rgba(56, 189, 248, 0.18), transparent 60%);
+}
+
+.headerCell {
+  padding: 0.7rem 1rem;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: rgba(148, 163, 184, 0.95);
+  border-bottom: 1px solid rgba(30, 64, 175, 0.85);
+  white-space: nowrap;
+}
+
+.tbody {
+  font-size: 0.85rem;
+}
+
+.row {
+  border-bottom: 1px solid rgba(15, 23, 42, 0.9);
+}
+
+.row:last-child {
+  border-bottom: none;
+}
+
+.row:nth-child(even) .cell {
+  background: rgba(15, 23, 42, 0.9);
+}
+
+.row:nth-child(odd) .cell {
+  background: rgba(15, 23, 42, 0.96);
+}
+
+.rowInteractive {
+  cursor: pointer;
+}
+
+.rowInteractive:hover .cell {
+  background:
+    radial-gradient(circle at 0 0, rgba(56, 189, 248, 0.18), transparent 70%),
+    rgba(15, 23, 42, 0.98);
+}
+
+.cell {
+  padding: 0.7rem 1rem;
+  color: #e5e7eb;
+  border-right: 1px solid rgba(15, 23, 42, 0.9);
+}
+
+.cell:last-child {
+  border-right: none;
+}
+
+.cell--left {
+  text-align: left;
+}
+
+.cell--center {
+  text-align: center;
+}
+
+.cell--right {
+  text-align: right;
+}
+
+.emptyRow,
+.loadingRow {
+  padding: 1.3rem;
+  text-align: center;
+  color: rgba(148, 163, 184, 0.95);
+}
+
+.loadingRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+}
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  border: 2px solid rgba(51, 65, 85, 0.9);
+  border-top-color: rgba(56, 189, 248, 0.95);
+  animation: spin 0.75s linear infinite;
+}
+
+/* ===== Responsividade ===== */
+
+@media (max-width: 768px) {
+  .tableWrapper {
+    overflow-x: auto;
+  }
+
+  .table {
+    min-width: 640px;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

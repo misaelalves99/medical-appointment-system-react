@@ -1,0 +1,229 @@
+/* src/shared/ui/Button/Button.module.css */
+
+/* ===== Base ===== */
+
+.buttonRoot {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+
+  padding: 0.55rem 1.1rem;
+  border-radius: 999px;
+  border: 1px solid transparent;
+
+  font-size: 0.88rem;
+  font-weight: 500;
+  line-height: 1.2;
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+
+  background:
+    radial-gradient(circle at 0 0, rgba(56, 189, 248, 0.35), transparent 70%),
+    rgba(15, 23, 42, 1);
+  color: #e5e7eb;
+  border-color: rgba(37, 99, 235, 0.9);
+
+  box-shadow:
+    0 14px 40px rgba(15, 23, 42, 0.98),
+    0 0 30px rgba(56, 189, 248, 0.5);
+
+  transition:
+    background 0.13s ease-out,
+    border-color 0.13s ease-out,
+    color 0.13s ease-out,
+    box-shadow 0.13s ease-out,
+    transform 0.13s ease-out,
+    opacity 0.13s ease-out;
+}
+
+.buttonRoot:hover:not(.isDisabled):not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow:
+    0 18px 48px rgba(15, 23, 42, 1),
+    0 0 36px rgba(56, 189, 248, 0.7);
+}
+
+.buttonRoot:active:not(.isDisabled):not(:disabled) {
+  transform: translateY(0);
+  box-shadow:
+    0 12px 32px rgba(15, 23, 42, 1),
+    0 0 20px rgba(56, 189, 248, 0.5);
+}
+
+.buttonRoot:focus-visible {
+  outline: 2px solid rgba(56, 189, 248, 1);
+  outline-offset: 2px;
+}
+
+/* ===== Variantes (variant_*) ===== */
+
+.variant_primary {
+  background:
+    radial-gradient(circle at 0 0, rgba(56, 189, 248, 0.35), transparent 70%),
+    linear-gradient(135deg, #2563eb, #4f46e5);
+  border-color: rgba(59, 130, 246, 0.95);
+}
+
+.variant_primary:hover:not(.isDisabled):not(:disabled) {
+  filter: brightness(1.05);
+}
+
+.variant_secondary {
+  background:
+    radial-gradient(circle at 0 0, rgba(148, 163, 184, 0.25), transparent 75%),
+    rgba(15, 23, 42, 0.96);
+  border-color: rgba(51, 65, 85, 0.9);
+  color: #e5e7eb;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.96);
+}
+
+.variant_secondary:hover:not(.isDisabled):not(:disabled) {
+  border-color: #e5e7eb;
+}
+
+.variant_ghost {
+  background: transparent;
+  border-color: transparent;
+  color: rgba(148, 163, 184, 0.96);
+  box-shadow: none;
+}
+
+.variant_ghost:hover:not(.isDisabled):not(:disabled) {
+  background: rgba(15, 23, 42, 0.92);
+  color: #e5e7eb;
+}
+
+.variant_danger {
+  background:
+    radial-gradient(circle at 0 0, rgba(248, 113, 113, 0.35), transparent 70%),
+    linear-gradient(135deg, #ef4444, #b91c1c);
+  border-color: rgba(248, 113, 113, 0.95);
+  color: #fef2f2;
+}
+
+/* ===== Tones semânticos (tone_*) – toques extras ===== */
+
+.tone_primary {
+  box-shadow:
+    0 16px 44px rgba(37, 99, 235, 0.45),
+    0 0 32px rgba(56, 189, 248, 0.5);
+}
+
+.tone_danger {
+  box-shadow:
+    0 16px 44px rgba(185, 28, 28, 0.6),
+    0 0 32px rgba(248, 113, 113, 0.55);
+}
+
+.tone_neutral {
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.96);
+}
+
+/* ===== Tamanhos (size_*) ===== */
+
+.size_xs {
+  padding: 0.3rem 0.7rem;
+  font-size: 0.76rem;
+}
+
+.size_sm {
+  padding: 0.4rem 0.9rem;
+  font-size: 0.8rem;
+}
+
+.size_md {
+  padding: 0.55rem 1.1rem;
+  font-size: 0.88rem;
+}
+
+.size_lg {
+  padding: 0.75rem 1.4rem;
+  font-size: 0.95rem;
+}
+
+/* ===== Layout interno ===== */
+
+.content {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+}
+
+.label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.iconLeft,
+.iconRight {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+}
+
+.iconLeft {
+  margin-right: 0.1rem;
+}
+
+.iconRight {
+  margin-left: 0.1rem;
+}
+
+/* ===== Full width ===== */
+
+.fullWidth {
+  width: 100%;
+  display: inline-flex;
+}
+
+/* ===== Disabled / loading ===== */
+
+.isDisabled,
+.buttonRoot:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+  box-shadow: none;
+}
+
+/* estado visual extra para loading (mantém acessibilidade) */
+.isLoading {
+  cursor: wait;
+}
+
+/* Spinner minimalista no lado esquerdo */
+
+.spinner {
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  border: 2px solid rgba(148, 163, 184, 0.4);
+  border-top-color: #e5e7eb;
+  animation: buttonSpinner 0.6s linear infinite;
+}
+
+/* ===== Responsividade ===== */
+
+@media (max-width: 480px) {
+  .buttonRoot {
+    font-size: 0.82rem;
+    padding-inline: 0.9rem;
+  }
+
+  .size_lg {
+    padding: 0.7rem 1.1rem;
+  }
+}
+
+/* ===== Animations ===== */
+
+@keyframes buttonSpinner {
+  to {
+    transform: rotate(360deg);
+  }
+}

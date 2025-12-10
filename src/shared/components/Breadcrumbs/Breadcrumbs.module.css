@@ -1,0 +1,47 @@
+/* src/shared/components/Breadcrumbs/Breadcrumbs.module.css */
+
+.breadcrumbs {
+  font-size: 0.78rem;
+}
+
+.list {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.link {
+  color: rgba(148, 163, 184, 0.95);
+  text-decoration: none;
+  position: relative;
+  padding-inline: 0.2rem;
+  border-radius: 999px;
+  transition:
+    color 0.13s ease-out,
+    background 0.13s ease-out;
+}
+
+.link:hover {
+  color: #e5e7eb;
+  background: rgba(15, 23, 42, 0.9);
+}
+
+.current {
+  color: rgba(209, 213, 219, 0.98);
+  font-weight: 500;
+  padding-inline: 0.2rem;
+}
+
+.separator {
+  color: rgba(55, 65, 81, 0.9);
+}

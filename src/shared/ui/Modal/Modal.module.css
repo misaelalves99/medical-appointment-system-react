@@ -1,0 +1,123 @@
+/* src/shared/ui/Modal/Modal.module.css */
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: radial-gradient(circle at 0 0, rgba(56, 189, 248, 0.35), transparent 60%),
+    rgba(15, 23, 42, 0.92);
+  backdrop-filter: blur(6px);
+  z-index: var(--z-modal);
+}
+
+.modal {
+  width: 100%;
+  max-width: 640px;
+  border-radius: 1rem;
+  padding: 1.25rem 1.5rem;
+  background:
+    radial-gradient(circle at 0 0, rgba(34, 197, 94, 0.2), transparent 60%),
+    rgba(15, 23, 42, 1);
+  border: 1px solid rgba(30, 64, 175, 0.9);
+  box-shadow:
+    0 24px 60px rgba(15, 23, 42, 1),
+    0 0 0 1px rgba(15, 23, 42, 1);
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  animation: modalIn 0.16s ease-out;
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.titleArea {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #e5e7eb;
+}
+
+.subtitle {
+  font-size: 0.82rem;
+  color: rgba(148, 163, 184, 0.96);
+}
+
+.closeButton {
+  border: none;
+  background: transparent;
+  padding: 0.1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  color: rgba(148, 163, 184, 0.9);
+  cursor: pointer;
+  transition:
+    background 0.13s ease-out,
+    color 0.13s ease-out,
+    transform 0.13s ease-out;
+}
+
+.closeButton:hover {
+  background: rgba(15, 23, 42, 0.96);
+  color: #e5e7eb;
+  transform: translateY(-1px);
+}
+
+.body {
+  font-size: 0.9rem;
+  color: rgba(209, 213, 219, 0.98);
+}
+
+.footer {
+  margin-top: 0.3rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(30, 64, 175, 0.75);
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+/* Variantes de largura */
+.modalSm {
+  max-width: 420px;
+}
+
+.modalLg {
+  max-width: 860px;
+}
+
+@media (max-width: 480px) {
+  .modal {
+    padding: 1rem;
+  }
+
+  .footer {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+}
+
+@keyframes modalIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
