@@ -1,0 +1,895 @@
+/* src/features/appointments/styles/Appointment.module.css */
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4, 1.5rem);
+  margin-top: var(--space-4, 1.5rem);
+}
+
+/* ================== CABEÇALHO / CHIPS ================== */
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3, 1.25rem);
+  flex-wrap: wrap;
+}
+
+.sectionHeaderLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.sectionHeaderLabel {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--color-text-muted, #9ca3af);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.chipsRow {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+/* ================== GRID DE DETALHES (DETALHES + LATERAL) ================== */
+
+.sectionGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 2.3fr) minmax(260px, 1fr);
+  gap: var(--space-4, 1.6rem);
+  margin-top: var(--space-4, 1.6rem);
+}
+
+/* ================== LISTAGEM ================== */
+
+.tableWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3, 1.25rem);
+}
+
+/* header de tabela genérico (caso DataTable não trate) */
+.tableHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3, 1.25rem);
+  flex-wrap: wrap;
+}
+
+.tableHeaderLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.tableHeaderTitle {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--color-text-primary, #f9fafb);
+}
+
+.tableHeaderSubtitle {
+  font-size: 0.875rem;
+  color: var(--color-text-muted, #9ca3af);
+}
+
+/* container para ações das linhas (pills) */
+
+.tableActions {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.tableActionButton {
+  padding: 0.28rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid rgba(51, 65, 85, 0.9);
+  background:
+    radial-gradient(circle at 0 0, rgba(15, 23, 42, 0.9), transparent 70%),
+    rgba(15, 23, 42, 0.98);
+
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+
+  font-size: 0.78rem;
+  color: rgba(209, 213, 219, 0.96);
+  cursor: pointer;
+
+  transition:
+    background 0.14s ease-out,
+    border-color 0.14s ease-out,
+    color 0.14s ease-out,
+    transform 0.08s ease-out,
+    box-shadow 0.14s ease-out;
+}
+
+.tableActionButtonIcon {
+  font-size: 0.86rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tableActionButton:hover {
+  background:
+    radial-gradient(circle at 0 0, rgba(59, 130, 246, 0.35), transparent 70%),
+    rgba(15, 23, 42, 1);
+  border-color: rgba(59, 130, 246, 0.9);
+  color: #e5e7eb;
+  transform: translateY(-0.5px);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.95);
+}
+
+.tableActionButtonDanger {
+  border-color: rgba(239, 68, 68, 0.9);
+  color: #fecaca;
+}
+
+.tableActionButtonDanger:hover {
+  background:
+    radial-gradient(circle at 0 0, rgba(239, 68, 68, 0.4), transparent 70%),
+    rgba(15, 23, 42, 1);
+  box-shadow:
+    0 10px 26px rgba(127, 29, 29, 0.85),
+    0 0 0 1px rgba(15, 23, 42, 1);
+}
+
+/* essas classes podem já existir em outro trecho do arquivo;
+   aqui só mantemos o estilo base para não quebrar nada */
+
+.tableScroll {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: var(--radius-lg, 0.75rem);
+  border: 1px solid var(--color-border-subtle, #1f2937);
+}
+
+.table {
+  width: 100%;
+  min-width: 720px;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.table thead {
+  background: var(--color-bg-elevated-soft, #020617);
+}
+
+.table th {
+  text-align: left;
+  padding: 0.75rem 1rem;
+  font-weight: 500;
+  color: var(--color-text-muted, #9ca3af);
+  border-bottom: 1px solid var(--color-border-subtle, #1f2937);
+  white-space: nowrap;
+}
+
+.table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--color-border-subtle, #111827);
+  color: var(--color-text-primary, #e5e7eb);
+  vertical-align: middle;
+}
+
+.table tr:last-child td {
+  border-bottom: none;
+}
+
+.tableRowHover:hover {
+  background: var(--color-bg-elevated-strong, #020617);
+}
+
+.tablePrimaryCell {
+  font-weight: 500;
+}
+
+.tableSecondaryText,
+.tableSecondary {
+  font-size: 0.8rem;
+  color: var(--color-text-muted, #9ca3af);
+}
+
+.tableStatusCell {
+  white-space: nowrap;
+}
+
+.tableActionsCell {
+  white-space: nowrap;
+}
+
+/* ================== FORMULÁRIOS ================== */
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4, 1.5rem);
+  padding: 1.6rem 1.8rem 1.9rem;
+  border-radius: 1.25rem;
+  background: radial-gradient(
+      circle at 0 0,
+      rgba(34, 197, 94, 0.18),
+      transparent 60%
+    );
+  animation: formFadeIn 0.24s ease-out;
+}
+
+.formHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3, 1.25rem);
+}
+
+.formTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--color-text-primary, #f9fafb);
+}
+
+.formSubtitle {
+  font-size: 0.9rem;
+  color: var(--color-text-muted, #9ca3af);
+  max-width: 480px;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3, 1.25rem);
+}
+
+.formField {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.formFieldFull {
+  grid-column: 1 / -1;
+}
+
+.fieldLabel {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--color-text-muted, #9ca3af);
+}
+
+.fieldError {
+  font-size: 0.75rem;
+  color: var(--color-danger, #f97373);
+}
+
+/* textarea melhorada, padrão premium */
+
+.textarea {
+  width: 100%;
+  min-height: 120px;
+  resize: vertical;
+  padding: 0.7rem 0.9rem;
+  border-radius: 0.85rem;
+  border: 1px solid var(--color-border-subtle, #1f2937);
+  background:
+    radial-gradient(circle at 0 0, rgba(15, 23, 42, 0.9), transparent 65%),
+    rgba(15, 23, 42, 0.98);
+  color: var(--color-text-primary, #e5e7eb);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  outline: none;
+  transition:
+    border-color 0.13s ease-out,
+    box-shadow 0.13s ease-out,
+    background 0.13s ease-out,
+    transform 0.08s ease-out;
+}
+
+.textarea::placeholder {
+  color: var(--color-text-placeholder, #6b7280);
+}
+
+.textarea:focus {
+  border-color: var(--color-primary, #38bdf8);
+  box-shadow:
+    0 0 0 1px rgba(15, 23, 42, 1),
+    0 0 0 1px
+      color-mix(in srgb, var(--color-primary, #38bdf8) 80%, transparent),
+    0 14px 32px rgba(15, 23, 42, 0.96);
+  background:
+    radial-gradient(circle at 0 0, rgba(34, 197, 94, 0.18), transparent 70%),
+    rgba(15, 23, 42, 1);
+  transform: translateY(-0.5px);
+}
+
+.formFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3, 1.25rem);
+  margin-top: var(--space-2, 0.75rem);
+  border-top: 1px solid var(--color-border-subtle, #1f2937);
+  padding-top: var(--space-3, 1.25rem);
+}
+
+.formFooterLeft {
+  flex: 1;
+}
+
+.formHint {
+  font-size: 0.8rem;
+  color: var(--color-text-muted, #9ca3af);
+}
+
+.formFooterActions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2, 0.75rem);
+}
+
+/* ================== DETALHES / RESUMO ================== */
+
+/* header da área de detalhes principal */
+.detailsHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4, 1.5rem);
+  margin-bottom: var(--space-4, 1.5rem);
+  padding-bottom: var(--space-3, 1.25rem);
+  border-bottom: 1px solid var(--color-border-subtle, #1f2937);
+}
+
+.detailsTitle {
+  font-size: 1.45rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--color-text-primary, #f9fafb);
+}
+
+.detailsStatusRow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+/* header actions no topo da página */
+.headerActionsRow {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-2, 0.75rem);
+  flex-wrap: wrap;
+}
+
+/* grid com 3 colunas de informações (paciente / profissional / agenda) */
+
+.detailsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-4, 1.6rem);
+}
+
+.detailsColumn {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2, 0.75rem);
+  padding: 0.75rem 0.25rem;
+}
+
+.detailsSectionTitle {
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--color-text-muted, #9ca3af);
+}
+
+/* lista de detalhes (dt / dd) */
+
+.detailsList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.detailsList > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.55rem 0.65rem;
+  border-radius: 0.8rem;
+  background:
+    radial-gradient(circle at 0 0, rgba(15, 23, 42, 0.8), transparent 60%),
+    rgba(15, 23, 42, 0.98);
+  border: 1px solid rgba(15, 23, 42, 1);
+}
+
+.detailsList dt {
+  font-size: 0.78rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted, #9ca3af);
+}
+
+.detailsList dd {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--color-text-primary, #e5e7eb);
+}
+
+.detailsRow {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.detailsLabel {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--color-text-muted, #9ca3af);
+}
+
+.detailsValue {
+  font-size: 0.9rem;
+  color: var(--color-text-primary, #e5e7eb);
+}
+
+.detailsStrong {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-text-primary, #f9fafb);
+}
+
+.detailsMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: var(--space-2, 0.75rem);
+}
+
+.detailsNote {
+  margin-top: var(--space-2, 0.75rem);
+  font-size: 0.9rem;
+  color: var(--color-text-muted, #9ca3af);
+}
+
+/* bloco de observações */
+
+.detailsNotesBlock {
+  margin-top: var(--space-4, 1.6rem);
+  padding-top: var(--space-3, 1.25rem);
+  border-top: 1px solid var(--color-border-subtle, #1f2937);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2, 0.75rem);
+}
+
+.detailsNotes {
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: var(--color-text-primary, #e5e7eb);
+  white-space: pre-line;
+}
+
+.detailsNotesEmpty {
+  font-size: 0.88rem;
+  color: var(--color-text-muted, #9ca3af);
+  font-style: italic;
+}
+
+/* lateral de ações rápidas */
+
+.sideSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3, 1.25rem);
+  padding: 0.25rem 0.25rem 0.25rem;
+}
+
+.sideSectionText {
+  font-size: 0.85rem;
+  color: var(--color-text-muted, #9ca3af);
+}
+
+.actionsStack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2, 0.75rem);
+}
+
+/* ================== FILTROS ================== */
+
+.filtersRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-3, 1.25rem);
+  margin-bottom: var(--space-3, 1.25rem);
+  flex-wrap: wrap;
+}
+
+.filtersRowInner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3, 1.25rem);
+}
+
+.filtersGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 180px;
+}
+
+.filtersLabel {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--color-text-muted, #9ca3af);
+}
+
+/* ================== CANCELAR / EXCLUIR ================== */
+
+.cancelHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3, 1.25rem);
+  margin-bottom: var(--space-3, 1.25rem);
+}
+
+.cancelStatus {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.cancelSummary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-3, 1.25rem);
+  margin-bottom: var(--space-3, 1.25rem);
+}
+
+.deleteForm {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3, 1.25rem);
+}
+
+/* ================== CALENDÁRIO ================== */
+
+.calendarWrapper {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr);
+  gap: var(--space-4, 1.5rem);
+  margin-top: var(--space-3, 1.25rem);
+}
+
+.calendarSidebar {
+  border-left: 1px solid var(--color-border-subtle, #1f2937);
+  padding-left: var(--space-3, 1.25rem);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2, 0.75rem);
+}
+
+.calendarDateLabel {
+  font-size: 0.85rem;
+  color: var(--color-text-muted, #9ca3af);
+}
+
+.calendarEmptyDay {
+  font-size: 0.85rem;
+  color: var(--color-text-muted, #9ca3af);
+  margin-top: 0.25rem;
+}
+
+.calendarAppointmentsList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2, 0.75rem);
+  margin-top: var(--space-2, 0.75rem);
+}
+
+.calendarAppointmentItem {
+  border-radius: var(--radius-md, 0.5rem);
+  border: 1px solid var(--color-border-subtle, #1f2937);
+  background: var(--color-bg-elevated, #020617);
+  padding: 0.75rem 0.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.calendarAppointmentHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2, 0.75rem);
+}
+
+.calendarAppointmentTime {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--color-text-muted, #9ca3af);
+}
+
+.calendarAppointmentPatient {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--color-text-primary, #e5e7eb);
+}
+
+.calendarAppointmentDoctor {
+  font-size: 0.8rem;
+  color: var(--color-text-muted, #9ca3af);
+}
+
+.calendarAppointmentSpecialty {
+  font-size: 0.8rem;
+  color: var(--color-text-muted, #9ca3af);
+}
+
+/* ---- componente AppointmentCalendar em si ---- */
+
+.calendar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3, 1.25rem);
+}
+
+.calendarHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2, 0.75rem);
+}
+
+.calendarMonthLabel {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-text-primary, #f9fafb);
+  text-transform: capitalize;
+}
+
+.calendarNavButton {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-border-subtle, #1f2937);
+  background: var(--color-bg-elevated, #020617);
+  color: var(--color-text-muted, #9ca3af);
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.calendarNavButton:hover {
+  border-color: var(--color-primary, #38bdf8);
+  color: var(--color-text-primary, #e5e7eb);
+}
+
+.calendarGrid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0.25rem;
+  font-size: 0.8rem;
+}
+
+.calendarWeekday {
+  text-align: center;
+  font-weight: 500;
+  color: var(--color-text-muted, #9ca3af);
+  padding-bottom: 0.25rem;
+}
+
+.calendarDayBlank {
+  height: 2.5rem;
+}
+
+.calendarDay {
+  position: relative;
+  min-height: 2.5rem;
+  border-radius: var(--radius-md, 0.5rem);
+  background: var(--color-bg-elevated-soft, #020617);
+  border: 1px solid var(--color-border-subtle, #1f2937);
+  cursor: pointer;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 0.35rem 0.4rem;
+}
+
+.calendarDay:hover {
+  border-color: var(--color-primary-soft, #0ea5e9);
+}
+
+.calendarDayNumber {
+  font-size: 0.78rem;
+  color: var(--color-text-primary, #e5e7eb);
+}
+
+.calendarDayDot {
+  position: absolute;
+  bottom: 0.28rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0.35rem;
+  height: 0.35rem;
+  border-radius: 999px;
+  background: var(--color-primary, #38bdf8);
+}
+
+.calendarDayToday {
+  border-color: var(--color-primary, #38bdf8);
+}
+
+.calendarDayWithAppointments {
+  background: linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--color-primary, #38bdf8) 7%, transparent),
+      transparent
+    ),
+    var(--color-bg-elevated-soft, #020617);
+}
+
+.calendarDaySelected {
+  outline: 1px solid
+    color-mix(in srgb, var(--color-primary, #38bdf8) 45%, transparent);
+  outline-offset: 1px;
+}
+
+.calendarSelectedList {
+  margin-top: var(--space-3, 1.25rem);
+  border-top: 1px solid var(--color-border-subtle, #1f2937);
+  padding-top: var(--space-3, 1.25rem);
+}
+
+.calendarSelectedEmpty {
+  font-size: 0.85rem;
+  color: var(--color-text-muted, #9ca3af);
+}
+
+.calendarSelectedItems {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2, 0.75rem);
+}
+
+.calendarSelectedItem {
+  border-radius: var(--radius-md, 0.5rem);
+  border: 1px solid var(--color-border-subtle, #1f2937);
+  background: var(--color-bg-elevated, #020617);
+  padding: 0.75rem 0.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.calendarSelectedHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2, 0.75rem);
+}
+
+.calendarSelectedTime {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--color-text-muted, #9ca3af);
+}
+
+.calendarSelectedPatient {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--color-text-primary, #e5e7eb);
+}
+
+.calendarSelectedDoctor {
+  font-size: 0.8rem;
+  color: var(--color-text-muted, #9ca3af);
+}
+
+.calendarSelectedSpecialty {
+  font-size: 0.8rem;
+  color: var(--color-text-muted, #9ca3af);
+}
+
+/* ================== ESTADOS GERAIS ================== */
+
+.centered {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4, 1.5rem) 0;
+}
+
+/* ================== ANIMAÇÃO ================== */
+
+@keyframes formFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ================== RESPONSIVIDADE ================== */
+
+@media (max-width: 900px) {
+  .formGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .detailsGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .cancelSummary {
+    grid-template-columns: 1fr;
+  }
+
+  .calendarWrapper {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .calendarSidebar {
+    border-left: none;
+    border-top: 1px solid var(--color-border-subtle, #1f2937);
+    padding-left: 0;
+    padding-top: var(--space-3, 1.25rem);
+  }
+
+  .sectionGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .form {
+    padding: 1.4rem 1.4rem 1.7rem;
+    border-radius: 1.1rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .tableHeader {
+    align-items: flex-start;
+  }
+
+  .formFooter {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .detailsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .filtersRow {
+    align-items: stretch;
+  }
+
+  .filtersRowInner {
+    width: 100%;
+  }
+
+  .filtersGroup {
+    width: 100%;
+  }
+}

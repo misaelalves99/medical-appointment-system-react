@@ -1,0 +1,284 @@
+/* src/features/auth/pages/AuthPages.module.css */
+
+.page {
+  position: relative;
+  min-height: 100vh;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(circle at 0 0, rgba(56, 189, 248, 0.22), transparent 55%),
+    radial-gradient(circle at 100% 100%, rgba(59, 130, 246, 0.18), transparent 55%),
+    #020617;
+  color: #e5e7eb;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.glowTop,
+.glowBottom {
+  position: absolute;
+  pointer-events: none;
+  filter: blur(52px);
+  opacity: 0.85;
+  z-index: 0;
+}
+
+.glowTop {
+  top: -56px;
+  left: -40px;
+  width: 260px;
+  height: 260px;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.55), transparent 70%);
+}
+
+.glowBottom {
+  right: -60px;
+  bottom: -60px;
+  width: 280px;
+  height: 280px;
+  background: radial-gradient(circle, rgba(37, 99, 235, 0.55), transparent 70%);
+}
+
+.card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1080px;
+  border-radius: 1.5rem;
+  border: 1px solid rgba(30, 64, 175, 0.85);
+  background:
+    radial-gradient(circle at 0 0, rgba(56, 189, 248, 0.35), transparent 60%),
+    rgba(15, 23, 42, 0.98);
+  box-shadow:
+    0 26px 80px rgba(15, 23, 42, 0.95),
+    0 0 0 1px rgba(15, 23, 42, 0.9);
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  overflow: hidden;
+}
+
+/* Left panel (texto / storytelling) */
+
+.leftPanel {
+  padding: 2.1rem 2rem 2.2rem 2.3rem;
+  border-right: 1px solid rgba(30, 64, 175, 0.7);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  background:
+    radial-gradient(circle at 0 0, rgba(34, 197, 94, 0.26), transparent 65%),
+    linear-gradient(135deg, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 0.98));
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.brandLogo {
+  width: 48px;
+  height: 48px;
+  border-radius: 999px;
+  border: 1px solid rgba(56, 189, 248, 0.95);
+  background:
+    radial-gradient(circle at 0 0, rgba(56, 189, 248, 0.6), transparent 70%),
+    rgba(15, 23, 42, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.1rem; /* ícone/texto da marca num tamanho padrão */
+  letter-spacing: 0.08em;
+}
+
+.brandText {
+  display: flex;
+  flex-direction: column;
+  gap: 0.12rem;
+}
+
+.brandTitle {
+  font-size: 0.98rem;
+  font-weight: 600;
+}
+
+.brandSubtitle {
+  font-size: 0.8rem;
+  color: rgba(148, 163, 184, 0.96);
+}
+
+.title {
+  font-size: 1.7rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.subtitle {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: rgba(148, 163, 184, 0.96);
+  max-width: 430px;
+}
+
+.subtitle strong {
+  color: #f9fafb;
+}
+
+.highlights {
+  margin-top: 0.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.highlightItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: rgba(209, 213, 219, 0.96);
+}
+
+.highlightDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: #22c55e;
+  box-shadow: 0 0 12px rgba(34, 197, 94, 0.95);
+}
+
+/* Right panel (form) */
+
+.rightPanel {
+  padding: 2rem 2.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  background:
+    radial-gradient(circle at 100% 0, rgba(37, 99, 235, 0.32), transparent 70%),
+    rgba(15, 23, 42, 0.98);
+}
+
+.formHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.formTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.formSubtitle {
+  font-size: 0.82rem;
+  color: rgba(148, 163, 184, 0.96);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.errorMessage {
+  margin-top: 0.3rem;
+  font-size: 0.78rem;
+  color: #fecaca;
+}
+
+.actionsRow {
+  margin-top: 0.6rem;
+}
+
+.divider {
+  margin: 1rem 0 0.7rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.78rem;
+  color: rgba(148, 163, 184, 0.96);
+}
+
+.dividerLine {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    rgba(31, 41, 55, 0),
+    rgba(31, 41, 55, 0.9),
+    rgba(31, 41, 55, 0)
+  );
+}
+
+.dividerLabel {
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 500;
+}
+
+.socialRow {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+/* se os SocialButton já tiverem sua própria largura, isso só organiza melhor */
+.socialRow > * {
+  flex: 1 1 0;
+  min-width: 140px;
+}
+
+.switchAuth {
+  margin-top: 0.9rem;
+  font-size: 0.8rem;
+  color: rgba(148, 163, 184, 0.96);
+}
+
+.switchAuthLink {
+  color: #38bdf8;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.switchAuthLink:hover {
+  text-decoration: underline;
+}
+
+/* Responsivo */
+
+@media (max-width: 900px) {
+  .card {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .leftPanel {
+    display: none;
+  }
+
+  .rightPanel {
+    padding: 1.8rem 1.6rem 1.9rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .page {
+    padding: 1rem;
+  }
+
+  .card {
+    border-radius: 1.1rem;
+  }
+
+  .formTitle {
+    font-size: 1.15rem;
+  }
+
+  .brandLogo {
+    width: 44px;
+    height: 44px;
+    font-size: 1rem;
+  }
+}

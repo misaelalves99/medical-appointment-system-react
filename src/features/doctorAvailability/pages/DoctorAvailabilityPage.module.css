@@ -1,0 +1,216 @@
+/* src/features/doctorAvailability/pages/DoctorAvailabilityPage.module.css */
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4, 1.5rem);
+  margin-top: var(--space-4, 1.5rem);
+}
+
+/* ========= TÍTULO / INTRO ========= */
+
+.sectionTitle {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--color-text-primary, #f9fafb);
+}
+
+.sectionSubtitle {
+  font-size: 0.9rem;
+  color: var(--color-text-muted, #9ca3af);
+  max-width: 520px;
+}
+
+/* ========= FILTROS ========= */
+
+.filtersRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4, 1.5rem);
+  margin-bottom: var(--space-4, 1.5rem);
+  flex-wrap: wrap;
+}
+
+.filtersLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  flex: 1;
+  min-width: 220px;
+}
+
+.filtersRight {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3, 1.25rem);
+  min-width: 260px;
+  max-width: 520px;
+}
+
+.filterItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.filterLabel {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--color-text-muted, #9ca3af);
+}
+
+/* ========= TABELA ========= */
+
+.tableWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3, 1.25rem);
+}
+
+.tableScroll {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: var(--radius-lg, 0.75rem);
+  border: 1px solid var(--color-border-subtle, #1f2937);
+}
+
+.table {
+  width: 100%;
+  min-width: 760px;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.table thead {
+  background: var(--color-bg-elevated-soft, #020617);
+}
+
+.table th {
+  text-align: left;
+  padding: 0.75rem 1rem;
+  font-weight: 500;
+  color: var(--color-text-muted, #9ca3af);
+  border-bottom: 1px solid var(--color-border-subtle, #1f2937);
+  white-space: nowrap;
+}
+
+.table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--color-border-subtle, #111827);
+  color: var(--color-text-primary, #e5e7eb);
+  vertical-align: middle;
+}
+
+.table tr:last-child td {
+  border-bottom: none;
+}
+
+.tableRowHover {
+  cursor: default;
+  transition:
+    background 0.14s ease-out,
+    transform 0.08s ease-out;
+}
+
+.tableRowHover:hover {
+  background: var(--color-bg-elevated-strong, #020617);
+  transform: translateY(-0.5px);
+}
+
+.nameCell {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.doctorName {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-text-primary, #f9fafb);
+}
+
+.tableSecondaryText {
+  font-size: 0.8rem;
+  color: var(--color-text-muted, #9ca3af);
+}
+
+/* Dia / horário / capacidade / status */
+
+.dayPill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.18rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--color-text-primary, #f9fafb);
+  background: color-mix(
+    in srgb,
+    var(--color-primary, #38bdf8) 18%,
+    transparent
+  );
+  border: 1px solid color-mix(
+      in srgb,
+      var(--color-primary, #38bdf8) 45%,
+      transparent
+    );
+}
+
+.timeCell {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.timeRange {
+  font-size: 0.85rem;
+  color: var(--color-text-primary, #e5e7eb);
+}
+
+.capacityText {
+  font-size: 0.8rem;
+  color: var(--color-text-muted, #9ca3af);
+}
+
+.statusCell {
+  white-space: nowrap;
+}
+
+/* ========= ESTADOS GERAIS ========= */
+
+.centered {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4, 1.5rem) 0;
+}
+
+/* ========= RESPONSIVIDADE ========= */
+
+@media (max-width: 900px) {
+  .filtersRight {
+    grid-template-columns: 1fr;
+    width: 100%;
+    max-width: none;
+  }
+
+  .section {
+    margin-top: var(--space-3, 1.25rem);
+  }
+}
+
+@media (max-width: 640px) {
+  .filtersRow {
+    gap: var(--space-3, 1.25rem);
+  }
+
+  .filtersLeft {
+    min-width: 100%;
+  }
+
+  .filtersRight {
+    min-width: 100%;
+  }
+}

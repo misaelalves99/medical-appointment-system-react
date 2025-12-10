@@ -1,0 +1,64 @@
+/* src/features/dashboard/components/DashboardStatsGrid.module.css */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1.1rem;
+  align-items: stretch;
+
+  /* Dá uma sensação de bloco organizado logo abaixo do header */
+  margin-top: 0.4rem;
+
+  /* Animação suave ao carregar o dashboard */
+  animation: statsFadeIn 0.32s ease-out;
+}
+
+/* Garante que todos os cards tenham uma altura mínima confortável */
+.grid > * {
+  min-height: 120px;
+}
+
+/* ===== Responsividade ===== */
+
+/* Telas grandes um pouco mais compactas */
+@media (max-width: 1280px) {
+  .grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+  }
+}
+
+/* Tablets: 2 colunas */
+@media (max-width: 960px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.95rem;
+    margin-top: 0.3rem;
+  }
+}
+
+/* Mobile: 1 coluna (stack) */
+@media (max-width: 640px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.9rem;
+    margin-top: 0.25rem;
+  }
+
+  .grid > * {
+    min-height: 110px;
+  }
+}
+
+/* ===== Animação ===== */
+
+@keyframes statsFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

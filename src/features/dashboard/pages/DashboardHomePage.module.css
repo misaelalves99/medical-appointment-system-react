@@ -1,0 +1,53 @@
+/* src/features/dashboard/pages/DashboardHomePage.module.css */
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1.15fr);
+  gap: 1.5rem;
+  margin-top: 1.4rem;
+
+  align-items: flex-start;
+}
+
+/* Coluna da esquerda: KPIs / cards de estatísticas */
+.leftColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+/* Coluna da direita: próximas consultas, listas, etc. */
+.rightColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+/* ===== Responsividade ===== */
+
+/* Tablets / telas médias */
+@media (max-width: 1024px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+    margin-top: 1.1rem;
+    gap: 1.25rem;
+  }
+
+  .rightColumn {
+    /* deixa a seção de próximas consultas respirar um pouco embaixo */
+    margin-top: 0.4rem;
+  }
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  .layout {
+    margin-top: 1rem;
+    gap: 1rem;
+  }
+
+  .leftColumn,
+  .rightColumn {
+    gap: 0.9rem;
+  }
+}
