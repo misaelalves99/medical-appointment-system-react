@@ -49,7 +49,7 @@ export function mapAuthError(code?: string | null): string {
   const message = ERROR_MESSAGES[code];
   if (message) return message;
 
-  // Se for algum erro novo/não mapeado, logar opcionalmente e retornar mensagem genérica
+  // Se for algum erro novo/não mapeado, logar opcionalmente e retornar mensagem genérica.
   if (import.meta.env.DEV) {
     // eslint-disable-next-line no-console
     console.warn('[authErrorMap] Código de erro não mapeado:', code);
