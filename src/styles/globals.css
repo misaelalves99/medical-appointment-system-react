@@ -1,0 +1,250 @@
+/* src/styles/globals.css */
+
+/* ===== Reset básico ===== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+}
+
+/* ===== Variáveis de tema (dark como padrão) ===== */
+
+:root {
+  /* Paleta base – modo light (fallback) */
+  --color-bg-body: #f3f4f6;
+  --color-bg-surface: #ffffff;
+  --color-bg-surface-elevated: #ffffff;
+  --color-bg-input: #f9fafb;
+  --color-bg-input-elevated: #ffffff;
+
+  --color-text-primary: #0f172a;
+  --color-text-secondary: #1e293b;
+  --color-text-muted: #6b7280;
+
+  --color-border-subtle: rgba(148, 163, 184, 0.5);
+
+  --color-accent: #16a34a;
+  --color-accent-soft: rgba(34, 197, 94, 0.16);
+
+  --color-danger: #ef4444;
+  --color-danger-soft: #f97373;
+
+  /* Espaçamentos (escala) */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+
+  /* Raios */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-card: 1rem;
+  --radius-input: 0.75rem;
+  --radius-badge: 999px;
+  --radius-full: 999px;
+
+  /* Sombras */
+  --shadow-shell: 0 18px 45px rgba(15, 23, 42, 0.25);
+  --shadow-cardSoft: 0 18px 45px rgba(15, 23, 42, 0.45);
+  --shadow-cardSubtle: 0 10px 30px rgba(15, 23, 42, 0.35);
+  --shadow-focusSoft: 0 0 0 1px rgba(34, 197, 94, 0.7), 0 0 0 6px rgba(34, 197, 94, 0.15);
+
+  /* Z-index */
+  --z-sidebar: 40;
+  --z-topbar: 50;
+  --z-modal: 60;
+  --z-toast: 70;
+
+  /* Tipografia */
+  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text',
+    'Segoe UI', sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
+    'Courier New', monospace;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+}
+
+/* ===== Overrides para modo dark (default do dashboard) ===== */
+
+:root,
+:root[data-theme='dark'] {
+  --color-bg-body: radial-gradient(circle at top, #020617 0, #020617 55%, #000 100%);
+  --color-bg-surface: #020617;
+  --color-bg-surface-elevated: radial-gradient(circle at top, #020617, #020617 60%, #020617);
+
+  --color-bg-input: rgba(15, 23, 42, 0.95);
+  --color-bg-input-elevated: rgba(15, 23, 42, 1);
+
+  --color-text-primary: #e5e7eb;
+  --color-text-secondary: #cbd5f5;
+  --color-text-muted: #9ca3af;
+
+  --color-border-subtle: rgba(30, 64, 175, 0.65);
+
+  --color-accent: #22c55e;
+  --color-accent-soft: rgba(34, 197, 94, 0.16);
+
+  --color-danger: #fb7185;
+  --color-danger-soft: #fecaca;
+
+  --shadow-shell: 0 24px 80px rgba(0, 0, 0, 0.85);
+  --shadow-cardSoft: 0 24px 80px rgba(15, 23, 42, 0.95);
+  --shadow-cardSubtle: 0 18px 60px rgba(15, 23, 42, 0.8);
+
+  --shadow-focusSoft: 0 0 0 1px rgba(34, 197, 94, 0.9), 0 0 0 9px rgba(22, 163, 74, 0.22);
+}
+
+/* Modo claro explicitamente */
+:root[data-theme='light'] {
+  --color-bg-body: #f3f4f6;
+  --color-bg-surface: #ffffff;
+  --color-bg-surface-elevated: #ffffff;
+
+  --color-bg-input: #f9fafb;
+  --color-bg-input-elevated: #ffffff;
+
+  --color-text-primary: #0f172a;
+  --color-text-secondary: #1f2937;
+  --color-text-muted: #6b7280;
+
+  --color-border-subtle: rgba(148, 163, 184, 0.5);
+
+  --shadow-shell: 0 18px 40px rgba(148, 163, 184, 0.4);
+  --shadow-cardSoft: 0 18px 40px rgba(148, 163, 184, 0.45);
+  --shadow-cardSubtle: 0 12px 30px rgba(148, 163, 184, 0.4);
+}
+
+/* ===== Base de tipografia + fundo ===== */
+
+body {
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: 1.5;
+  background: var(--color-bg-body);
+  color: var(--color-text-primary);
+}
+
+/* Links */
+
+a {
+  color: var(--color-accent);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Botões base */
+
+button {
+  font-family: inherit;
+}
+
+/* Imagens */
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* Inputs */
+
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+/* Remove estilos padrão de listas */
+
+ul,
+ol {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+/* Títulos padrão do dashboard */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  color: var(--color-text-secondary);
+}
+
+h1 {
+  font-size: clamp(1.8rem, 2.2vw, 2.3rem);
+}
+
+h2 {
+  font-size: clamp(1.4rem, 1.8vw, 1.8rem);
+}
+
+h3 {
+  font-size: 1.25rem;
+}
+
+/* Root app container */
+
+#root {
+  min-height: 100vh;
+}
+
+/* Classes utilitárias globais básicas */
+
+.text-muted {
+  color: var(--color-text-muted);
+}
+
+.text-accent {
+  color: var(--color-accent);
+}
+
+.text-danger {
+  color: var(--color-danger-soft);
+}
+
+.bg-surface {
+  background: var(--color-bg-surface);
+}
+
+/* Transição suave quando muda o tema */
+
+body,
+#root {
+  transition:
+    background 0.2s ease-out,
+    color 0.2s ease-out;
+}

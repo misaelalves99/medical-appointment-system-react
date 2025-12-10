@@ -1,0 +1,177 @@
+/* src/styles/utilities.css */
+
+/* ===== Acessibilidade ===== */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ===== Layout helpers ===== */
+
+.flex {
+  display: flex;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.gap-sm {
+  gap: var(--space-2);
+}
+
+.gap-md {
+  gap: var(--space-3);
+}
+
+.gap-lg {
+  gap: var(--space-4);
+}
+
+.grid-auto-fill {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--space-4);
+}
+
+/* ===== Espaçamento ===== */
+
+.mt-1 {
+  margin-top: var(--space-1);
+}
+
+.mt-2 {
+  margin-top: var(--space-2);
+}
+
+.mt-3 {
+  margin-top: var(--space-3);
+}
+
+.mt-4 {
+  margin-top: var(--space-4);
+}
+
+.mb-2 {
+  margin-bottom: var(--space-2);
+}
+
+.mb-3 {
+  margin-bottom: var(--space-3);
+}
+
+.mb-4 {
+  margin-bottom: var(--space-4);
+}
+
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ===== Texto / alinhamento ===== */
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-xs {
+  font-size: var(--text-xs);
+}
+
+.text-sm {
+  font-size: var(--text-sm);
+}
+
+.text-muted {
+  color: var(--color-text-muted);
+}
+
+/* ===== Pills / chips reutilizáveis ===== */
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border-radius: var(--radius-badge);
+  padding: 0.25rem 0.6rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.pill--accent {
+  background: rgba(34, 197, 94, 0.18);
+  color: var(--color-accent);
+}
+
+.pill--muted {
+  background: rgba(148, 163, 184, 0.16);
+  color: var(--color-text-muted);
+}
+
+.pill--danger {
+  background: rgba(248, 113, 113, 0.16);
+  color: var(--color-danger-soft);
+}
+
+/* ===== Cartões rápidos ===== */
+
+.card-surface {
+  border-radius: var(--radius-card);
+  background: radial-gradient(circle at top, rgba(34, 197, 94, 0.14), transparent 60%),
+    var(--color-bg-surface-elevated);
+  border: 1px solid var(--color-border-subtle);
+  box-shadow: var(--shadow-cardSubtle);
+}
+
+/* ===== Estados globais ===== */
+
+.is-clickable {
+  cursor: pointer;
+}
+
+.is-disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* ===== Breakpoints helpers (apenas para ajustes rápidos) ===== */
+
+@media (max-width: 1024px) {
+  .hide-on-desktop {
+    display: none !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .hide-on-mobile {
+    display: none !important;
+  }
+}
